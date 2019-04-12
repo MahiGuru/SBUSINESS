@@ -5,16 +5,21 @@ import { LayoutComponent } from './layout.component';
 const routes: Routes = [
   {
     path: '',
-    component: LayoutComponent
-  },
-  {
-    path: 'layout',
-    loadChildren: './layout/layout.module#LayoutModule'
-  },
-  {
-    path: '',
-    redirectTo: '',
-    pathMatch: 'full'
+    component: LayoutComponent,
+    children: [
+      {
+        path: 'inventory',
+        loadChildren: '../inventory/inventory.module#InventoryModule'
+      },
+      {
+        path: 'print',
+        loadChildren: '../print-orders/print-orders.module#PrintOrdersModule'
+      },
+      {
+        path: 'releases',
+        loadChildren: '../releases/releases.modules#ReleasesModule'
+      }
+    ]
   }
 ];
 

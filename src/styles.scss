@@ -221,3 +221,14 @@ body {
   .lowercase {
       text-transform: lowercase;
   }
+  .mat-form-field-appearance-legacy {
+    .mat-form-field-underline{
+      background-color: #333333;
+    }
+    .mat-form-field-ripple{
+      background-color: #333333;
+    }
+  }
+  .mat-form-field-appearance-legacy .mat-form-field-label, .mat-select-value, .mat-select-arrow, .mat-tab-label, .mat-tab-link{
+    color: #333333;
+  }

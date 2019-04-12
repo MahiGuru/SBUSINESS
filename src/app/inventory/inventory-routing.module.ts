@@ -4,13 +4,8 @@ import { InventoryComponent } from './inventory.component';
 
 const routes: Routes = [
   {
-    path: 'inventory',
-    component: InventoryComponent
-  },
-  {
     path: '',
-    redirectTo: 'inventory',
-    pathMatch: 'full'
+    component: InventoryComponent
   }
 ];
 
