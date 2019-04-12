@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import './themes/shutter-business-varibles';
+@mixin font-size($size) {
+    font-size: $size;
+}
 html,
 body {
   height: 100%;
@@ -9,7 +12,212 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-
-.mat-toolbar.mat-primary {
-  background: #fff;
+.text{
+  &-right{
+    text-align: right;
+  }
+  &-center{
+    text-align: center;
+  }
+  &-left{
+    text-align: left;
+  }
 }
+/*!
+     *   FONT SIZE AND VARIABLES
+     */
+     $font-class: fs !default;
+     @for $i from 11 through 40 {
+         .#{$font-class}-#{$i} {
+             font-size: $i +px;
+         }
+     }
+     /*!
+      *   Line height
+      */
+     @for $i from 11 through 40 {
+         .lh-#{$i} {
+             line-height: $i +px;
+         }
+     }
+     /*!
+      *   FONT WEIGHT variables
+      */
+     $fw-medium: 500;
+     $fw-light: 400;
+     $fw-bold: 900;
+     $fw-normal: normal; //FONT WEIGHT CLASSES (e.g. class="fw-light")
+     .fw {
+         &-500 {
+             font-weight: $fw-500;
+         }
+         &-600 {
+             font-weight: $fw-600;
+         }
+         &-bold {
+             font-weight: $fw-bold;
+         }
+         &-light {
+             font-weight: $fw-light;
+         }
+         &-normal {
+             font-weight: $fw-normal;
+         }
+     }
+/*!
+     *  BORDER RADIUS
+     */
+     @for $i from 1 through 10 {
+      .border-radius-#{$i*5} {
+          border-radius: #{$i*5}px;
+      }
+      .border-radius-tb-#{$i*5} {
+          border-radius: #{$i*5}px #{$i*5}px 0 0;
+      }
+      .border-radius-lr-#{$i*5} {
+          border-radius: 0 0 #{$i*5}px #{$i*5}px;
+      }
+  }
+  /*!
+   *   WIDTH variables
+   */
+  /*!
+  * Width in pixels e.g. w-1 to w-40
+  */
+  @for $i from 1 through 20 {
+      .w-#{$i*2} {
+          width: #{$i*2}px;
+      }
+  }
+  /*!
+  * HEIGHT in pixels e.g. h-2 to h-40
+  */
+  @for $i from 1 through 20 {
+      .h-#{$i*2} {
+          height: #{$i*2}px;
+      }
+  }
+  /*!
+    * Width and Height in pixels e.g. wh-1 to wh-24
+    * width height value like 12px 12px...
+    */
+  @for $i from 1 through 24 {
+      .wh-#{$i*2} {
+          width: #{$i*2}px;
+          height: #{$i*2}px;
+      }
+  }
+  /*!
+   * Column Width in pecentage e.g. wp-1 to wp-12
+   * width value like 8.33%, 33.33%, 25%...
+  **/
+  @for $value from 1 through 12 {
+      $col: percentage($value/12);
+      .col-#{$value} {
+          width: $col;
+      }
+  }
+  /*!
+    *   Padding styles....
+    *  e.g. class="padding-0" or padding-left-15, padding-top-10 etc...
+   **/
+  @for $i from 0 through 40 {
+      .p-#{$i} {
+          padding: ($i)+px;
+      }
+      .pl-#{$i} {
+          padding-left: ($i)+px;
+      }
+      .pr-#{$i} {
+          padding-right: ($i)+px;
+      }
+      .pb-#{$i} {
+          padding-bottom: ($i)+px;
+      }
+      .pt-#{$i} {
+          padding-top: ($i)+px;
+      }
+      .ptb-#{$i} {
+        padding-top: ($i)+px;
+        padding-bottom: ($i)+px;
+      }
+      .plr-#{$i} {
+        padding-left: ($i)+px;
+        padding-right: ($i)+px;
+      }
+  }
+  /*!
+    *   Margin styles....
+    *  e.g. class="margin-0" or margin-left-15, margin-top-10 etc...
+   **/
+  @for $i from 1 through 30 {
+      .m-#{$i} {
+          margin: ($i*2)+px;
+      }
+      .ml-#{$i} {
+          margin-left: ($i*2)+px;
+      }
+      .mr-#{$i} {
+          margin-right: ($i*2)+px;
+      }
+      .mlr-#{$i} {
+          margin-left: ($i*2)+px;
+          margin-right: ($i*2)+px;
+      }
+      .mt-#{$i} {
+          margin-top: ($i*2)+px;
+      }
+      .mb-#{$i} {
+          margin-bottom: ($i*2)+px;
+      }
+      .mtb-#{$i} {
+          margin-top: ($i*2)+px;
+          margin-bottom: ($i*2)+px;
+      }
+  }
+  /*!
+   * FLOAT AND POSITION
+   */
+  .pull {
+      &-left {
+          float: left;
+      }
+      &-right {
+          float: right;
+      }
+      &-clear {
+          clear: both;
+      }
+  }
+  .text {
+      &-left {
+          text-align: left;
+      }
+      &-right {
+          text-align: right;
+      }
+      &-center {
+          text-align: center;
+      }
+      &-capitalise {
+          text-transform: capitalize;
+      }
+  }
+  .pabsoulte {
+      position: absolute;
+  }
+  .prelative {
+      position: relative;
+  }
+  .category-footer-shadow {
+      box-shadow: 0 -3px 19px -10px $black inset;
+  }
+  .margin-auto {
+      margin: auto;
+  }
+  .uppercase {
+      text-transform: uppercase;
+  }
+  .lowercase {
+      text-transform: lowercase;
+  }

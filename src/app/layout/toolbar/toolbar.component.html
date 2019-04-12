@@ -1,10 +1,29 @@
-<mat-toolbar color="primary">
 
-  <mat-toolbar-row>
-    <span>Second Line</span>
-    <span class="example-spacer"></span>
-    <mat-icon class="example-icon" aria-hidden="false" aria-label="Example user verified icon">verified_user</mat-icon>
-  </mat-toolbar-row>
+  <div fxLayout="row" fxLayoutGap="10px">
+    <span fxFlex="150px"><img src="../../../assets/images/logo.png" alt="shutter logo"></span>
+    <span  fxFlex></span>
+    <div fxFlex="350px" class="text-right">
+      <button mat-button [matMenuTriggerFor]="menu"  >
+        Mahipal Gurjala <i class="material-icons"> expand_more </i>
+      </button>
+      <button mat-button [matMenuTriggerFor]="menu"  >
+        Mahipal Gurjala <i class="material-icons"> expand_more </i>
+      </button>
+    </div>
+  </div>
 
 
-</mat-toolbar>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>dialpad</mat-icon>
+        <span>Redial</span>
+      </button>
+      <button mat-menu-item disabled>
+        <mat-icon>voicemail</mat-icon>
+        <span>Check voicemail</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>notifications_off</mat-icon>
+        <span>Disable alerts</span>
+      </button>
+    </mat-menu>

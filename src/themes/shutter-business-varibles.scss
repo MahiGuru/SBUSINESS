@@ -1,0 +1,60 @@
+/*!
+ *  COLOR Variables
+**/
+
+$primary: #005e9d;
+$danger: #fe5000;
+$blue: #247cb7;
+$black: black;
+$warm-grey: #6f6f6f;
+$warm-grey-medium: #808080;
+$warm-grey-light: #989898;
+$greyish-brown: #4a4a4a;
+$greyish: #a8a8a8;
+$grey: #ccc;
+$grey-80: rgba(165, 171, 181, .8);
+$silver-85: rgba(201, 206, 214, .85);
+$white-two: rgb(246, 246, 246);
+$white: white;
+$silver: #ebeced;
+$white-grey: #f6f6f6;
+$light-grey: rgb(216, 216, 216);
+$nice-blue: #0e7cb3;
+$peacock-blue: #005e9d;
+$pinkish-orange: #fc6a30;
+$grey-border: #d8d8d8;
+$dull-red: #be3d3d;
+$black-24: rgba($black, .24);
+$black-1: rgba($black, .1);
+$black-35: rgba($black, .35);
+$black-80: rgba($black, .8);
+$black-0: rgba($black, 0);
+$black-6: rgba($black, .06);
+$black-12: rgba($black, .12);
+$twilight-blue: #09498b;
+$soft-blue: #69bce6;
+$bright-blue: #007aff;
+$pinkish-grey: #d1c6bc;
+$mushroom: #c19090;
+$brownish-pink: #d19999;
+$blood-orange: #fe5000;
+$aqua-marine: #50e3c2;
+$light-green: #4cd964;
+$kiwi-green: #afe669;
+$light-blue: #60c9f8;
+$detail-shadow: #005590;
+$box-shadow: rgba(255, 255, 255, .8);
+$black-background: rgba($black, .35);
+$red: rgb(172, 0, 0);
+
+/*!
+  *   FONT WEIGHT variables
+ **/
+
+//FONT LOOP
+$font-class: fs !default;
+$fw-500: 500;
+$fw-600: 600;
+$fw-light: 400;
+$fw-bold: 900;
+$fw-normal: normal;
