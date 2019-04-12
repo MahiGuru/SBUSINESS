@@ -1,11 +1,21 @@
 <div class="container" fxLayout="column" fxLayoutAlign="stretch">
-  <header fxFlex="100px" class="header">
+  <header fxFlex="80px" class="header">
     <sb-toolbar></sb-toolbar>
   </header>
-  <section class="content-area" fxFlex>
-<router-outlet></router-outlet>
+  <section class="content-area  mt-10" fxFlex>
+    <mat-tab-group>
+      <mat-tab label="Inventory">
+        <sb-inventory></sb-inventory>
+      </mat-tab>
+      <mat-tab label="Print Orders">
+        <sb-print-orders></sb-print-orders>
+      </mat-tab>
+      <mat-tab label="Releases">
+        <sb-releases></sb-releases>
+      </mat-tab>
+    </mat-tab-group>
   </section>
-  <footer fxFlex="100px" class="footer">
+  <footer fxFlex="50px" class="footer">
     <sb-footer></sb-footer>
   </footer>
 </div>

@@ -6,20 +6,20 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    children: [
-      {
-        path: 'inventory',
-        loadChildren: '../inventory/inventory.module#InventoryModule'
-      },
-      {
-        path: 'print',
-        loadChildren: '../print-orders/print-orders.module#PrintOrdersModule'
-      },
-      {
-        path: 'releases',
-        loadChildren: '../releases/releases.modules#ReleasesModule'
-      }
-    ]
+    // children: [
+    //   {
+    //     path: 'inventory',
+    //     loadChildren: '../inventory/inventory.module#InventoryModule'
+    //   },
+    //   {
+    //     path: 'print',
+    //     loadChildren: '../print-orders/print-orders.module#PrintOrdersModule'
+    //   },
+    //   {
+    //     path: 'releases',
+    //     loadChildren: '../releases/releases.module#ReleasesModule'
+    //   }
+    // ]
   }
 ];
 

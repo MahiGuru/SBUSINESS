@@ -4,14 +4,14 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'sb-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.sass']
+  styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit {
 
   constructor(public router: Router) { }
 
   ngOnInit() {
-    this.router.navigate(['layout','inventory']);
+    // this.router.navigate(['layout', 'inventory']);
   }
 
 }

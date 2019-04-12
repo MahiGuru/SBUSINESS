@@ -1,0 +1,73 @@
+@import '../../themes/shutter-business-varibles';
+
+:host /deep/ {
+  .mat-flat-button.mat-primary {
+    background-color: $primary;
+  }
+
+  .mat-table {
+    background: #ffffff;
+
+    .mat-cell,
+    .mat-footer-cell,
+    .mat-header-cell {
+      color: #333333;
+    }
+
+    tr.mat-header-row {
+      background-color: #f0f0f0;
+    }
+
+    mat-footer-row,
+    mat-header-row,
+    mat-row,
+    td.mat-cell,
+    td.mat-footer-cell,
+    th.mat-header-cell {
+      border-bottom-color: rgba(47, 47, 47, 0.12);
+    }
+  }
+
+  .mat-tab-body {
+    min-height: 400px;
+  }
+
+  .mat-tab-body-content {
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .container {
+    width: 80%;
+    margin: auto;
+    min-height: 100vh;
+
+
+    .header {
+      background-color: #fff;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .footer {
+      color: #ccc;
+    }
+
+    .content-area {
+      background-color: #ffffff;
+
+      .mat-tab-list .mat-tab-labels {
+        border-bottom: 1px solid $primary;
+      }
+
+      .mat-tab-label-content {
+        font-size: 16px;
+      }
+
+      .mat-tab-group.mat-primary .mat-ink-bar {
+        height: 5px;
+        background-color: $primary;
+      }
+    }
+
+  }
+}

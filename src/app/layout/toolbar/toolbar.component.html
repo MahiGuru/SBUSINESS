@@ -1,41 +1,40 @@
-
-  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-    <span fxFlex="150px"><img src="../../../assets/images/logo2.png" alt="shutter logo" height="70px"></span>
-    <span  fxFlex>
-      <mat-form-field>
-        <mat-label>Select an option</mat-label>
-        <mat-select [(value)]="selected" >
-          <mat-option>None</mat-option>
-          <mat-option value="0">Customer: Premier/SSA</mat-option>
-          <mat-option value="1">Option 2</mat-option>
-          <mat-option value="2">Option 3</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </span>
-    <div fxFlex="350px" class="text-right">
-      <button mat-button [matMenuTriggerFor]="menu"  >
-        Mahipal Gurjala <i class="material-icons"> expand_more </i>
-      </button>
-      <button mat-button [matMenuTriggerFor]="menu"  >
-        <i class="material-icons">
-          settings
-          </i><i class="material-icons"> expand_more </i>
-      </button>
-    </div>
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+  <span fxFlex="200px" class="mr-20"><img src="../../../assets/images/logo.png" alt="shutter logo" height="50px"></span>
+  <span fxFlex>
+    <mat-form-field>
+      <mat-label>Select an option</mat-label>
+      <mat-select [(value)]="selected">
+        <mat-option>None</mat-option>
+        <mat-option value="0">Customer: Premier/SSA</mat-option>
+        <mat-option value="1">Option 2</mat-option>
+        <mat-option value="2">Option 3</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </span>
+  <div fxFlex="350px" class="text-right">
+    <button mat-button [matMenuTriggerFor]="menu">
+      Mahipal Gurjala <i class="material-icons"> expand_more </i>
+    </button>
+    <button mat-button [matMenuTriggerFor]="menu">
+      <i class="material-icons">
+        settings
+      </i><i class="material-icons"> expand_more </i>
+    </button>
   </div>
+</div>
 
 
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>dialpad</mat-icon>
-        <span>Redial</span>
-      </button>
-      <button mat-menu-item disabled>
-        <mat-icon>voicemail</mat-icon>
-        <span>Check voicemail</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>notifications_off</mat-icon>
-        <span>Disable alerts</span>
-      </button>
-    </mat-menu>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>dialpad</mat-icon>
+    <span>Redial</span>
+  </button>
+  <button mat-menu-item disabled>
+    <mat-icon>voicemail</mat-icon>
+    <span>Check voicemail</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>notifications_off</mat-icon>
+    <span>Disable alerts</span>
+  </button>
+</mat-menu>
