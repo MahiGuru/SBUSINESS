@@ -20,4 +20,29 @@
     }
   }
 
+  .newRow {
+    .mat-input-element {
+      padding: 5px;
+      background-color: #ececec;
+    }
+  }
+
+  .mat-select-placeholder {
+    color: rgb(87, 87, 87) !important;
+  }
+
+  ::placeholder {
+    color: #cccccc;
+    font-size: 0.8em;
+  }
+
+  .ngx-datatable.material .datatable-body .datatable-row-detail {
+    border-bottom: 1px solid #ccc;
+    background-color: #ffffff;
+  }
+
+  .addNewRow-actions {
+    position: absolute;
+    right: 20px;
+  }
 }
