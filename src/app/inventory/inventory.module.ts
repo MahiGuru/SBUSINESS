@@ -6,6 +6,8 @@ import { InventoryComponent } from './inventory.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../ng-material.module';
 import { InventoryDataGridComponent } from './inventory-data-grid/inventory-data-grid.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [InventoryComponent, InventoryDataGridComponent],
@@ -13,7 +15,10 @@ import { InventoryDataGridComponent } from './inventory-data-grid/inventory-data
     CommonModule,
     InventoryRoutingModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    NgxDatatableModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [InventoryComponent, InventoryDataGridComponent]
 })

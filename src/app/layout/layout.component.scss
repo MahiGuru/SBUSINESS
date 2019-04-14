@@ -1,8 +1,18 @@
 @import '../../themes/shutter-business-varibles';
 
 :host /deep/ {
+
+
+  .ngx-datatable.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell {
+    background-color: #ececec;
+  }
+
   .mat-flat-button.mat-primary {
     background-color: $primary;
+  }
+
+  .mat-raised-button.mat-accent {
+    background-color: #f0f0f0;
   }
 
   .mat-table {
@@ -14,8 +24,9 @@
       color: #333333;
     }
 
+
     tr.mat-header-row {
-      background-color: #f0f0f0;
+      background-color: #ffffff;
     }
 
     mat-footer-row,

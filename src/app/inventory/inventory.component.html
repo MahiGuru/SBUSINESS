@@ -3,4 +3,33 @@
   <button mat-flat-button color="primary" fxFlex="100px" fxFlexAlign="center">Add New</button>
 </div>
 
-<sb-inventory-data-grid></sb-inventory-data-grid>
+<div class="mtb-8" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+  <mat-form-field fxFlex="30" class="filter-input">
+    <input matInput placeholder="Search Filter By" [(ngModel)]="filterVal">
+    <mat-icon matPrefix>search</mat-icon>
+    <button mat-button *ngIf="filterVal" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <div fxFlex>
+    {{filterVal}}
+    <button mat-raised-button color="accent" (click)='updateFilter(filterVal)'>Apply</button>
+  </div>
+  <div fxFlex fxFlexAlign="center" class="text-right">
+
+    <button mat-button>
+      <i class="material-icons"> arrow_downward </i>
+      Import
+    </button>
+
+    <button mat-button>
+      <i class="material-icons"> arrow_upward </i>
+      Export
+    </button>
+  </div>
+</div>
+<!-- <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Search filter by'
+  (keyup)='updateFilter($event)' /> -->
+<ngx-datatable #table class='material' [columns]="columns" [columnMode]="'force'" [headerHeight]="50"
+  [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+</ngx-datatable>

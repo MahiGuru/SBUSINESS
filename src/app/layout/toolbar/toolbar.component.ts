@@ -6,11 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./toolbar.component.sass']
 })
 export class ToolbarComponent implements OnInit {
-  public selected: any = 0;
+  public selected: any;
   constructor() { }
 
   ngOnInit() {
-    this.selected = 0;
+    this.selected = 'premier';
   }
 
 }
