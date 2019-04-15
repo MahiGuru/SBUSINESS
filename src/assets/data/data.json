@@ -4,7 +4,7 @@
     "itemType": "Front Cover",
     "assemblyPartner": "Hess",
     "received": 1000,
-    "committed": 0,
+    "committed": 100,
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
@@ -18,7 +18,7 @@
     "itemType": "back Cover",
     "assemblyPartner": "Hess",
     "received": 1000,
-    "committed": 0,
+    "committed": 100,
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
@@ -32,7 +32,7 @@
     "itemType": "Side Cover",
     "assemblyPartner": "Hess",
     "received": 2000,
-    "committed": 0,
+    "committed": 1002,
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
@@ -46,7 +46,7 @@
     "itemType": "Top Cover",
     "assemblyPartner": "Hess",
     "received": 2000,
-    "committed": 0,
+    "committed": 1000,
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
@@ -60,6 +60,118 @@
     "itemType": "Front Cover",
     "assemblyPartner": "Hess",
     "received": 1300,
+    "committed": 1002,
+    "adjustment": 1000,
+    "shipped": 1000,
+    "onhand": 1000,
+    "updated": "10/04/16",
+    "status": "Cancelled"
+
+  },
+  {
+    "id": "PR1920001",
+    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+    "itemType": "Front Cover",
+    "assemblyPartner": "Hess",
+    "received": 1000,
+    "committed": 1002,
+    "adjustment": 1000,
+    "shipped": 1000,
+    "onhand": 1000,
+    "updated": "10/04/16",
+    "status": "Printed"
+
+  },
+  {
+    "id": "PR1920001",
+    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+    "itemType": "Front Cover",
+    "assemblyPartner": "Hess",
+    "received": 1000,
+    "committed": 1002,
+    "adjustment": 1000,
+    "shipped": 1000,
+    "onhand": 1000,
+    "updated": "10/04/16",
+    "status": "Ordered"
+
+  },
+  {
+    "id": "PR1920001",
+    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+    "itemType": "Front Cover",
+    "assemblyPartner": "Hess",
+    "received": 1000,
+    "committed": 1000,
+    "adjustment": 1000,
+    "shipped": 1000,
+    "onhand": 1000,
+    "updated": "10/04/16",
+    "status": "Printed"
+
+  },
+  {
+    "id": "PR1920001",
+    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+    "itemType": "Front Cover",
+    "assemblyPartner": "Hess",
+    "received": 1000,
+    "committed": 1002,
+    "adjustment": 1000,
+    "shipped": 1000,
+    "onhand": 1000,
+    "updated": "10/04/16",
+    "status": "Ordered"
+
+  },
+  {
+    "id": "PR1920001",
+    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+    "itemType": "Front Cover",
+    "assemblyPartner": "Hess",
+    "received": 1000,
+    "committed": 1002,
+    "adjustment": 1000,
+    "shipped": 1000,
+    "onhand": 1000,
+    "updated": "10/04/16",
+    "status": "Ordered"
+
+  },
+  {
+    "id": "PR1920001",
+    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+    "itemType": "Front Cover",
+    "assemblyPartner": "Hess",
+    "received": 1000,
+    "committed": 1002,
+    "adjustment": 1000,
+    "shipped": 1000,
+    "onhand": 1000,
+    "updated": "10/04/16",
+    "status": "Printed"
+
+  },
+  {
+    "id": "PR1920001",
+    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+    "itemType": "Front Cover",
+    "assemblyPartner": "Hess",
+    "received": 1000,
+    "committed": 1002,
+    "adjustment": 1000,
+    "shipped": 1000,
+    "onhand": 1000,
+    "updated": "10/04/16",
+    "status": "Printed"
+
+  },
+  {
+    "id": "PR1920001",
+    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+    "itemType": "Front Cover",
+    "assemblyPartner": "Hess",
+    "received": 1000,
     "committed": 0,
     "adjustment": 1000,
     "shipped": 1000,
@@ -79,20 +191,6 @@
     "shipped": 1000,
     "onhand": 1000,
     "updated": "10/04/16",
-    "status": "Printed"
-
-  },
-  {
-    "id": "PR1920001",
-    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
-    "itemType": "Front Cover",
-    "assemblyPartner": "Hess",
-    "received": 1000,
-    "committed": 0,
-    "adjustment": 1000,
-    "shipped": 1000,
-    "onhand": 1000,
-    "updated": "10/04/16",
     "status": "Ordered"
 
   },
@@ -102,105 +200,7 @@
     "itemType": "Front Cover",
     "assemblyPartner": "Hess",
     "received": 1000,
-    "committed": 0,
-    "adjustment": 1000,
-    "shipped": 1000,
-    "onhand": 1000,
-    "updated": "10/04/16",
-    "status": "Printed"
-
-  },
-  {
-    "id": "PR1920001",
-    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
-    "itemType": "Front Cover",
-    "assemblyPartner": "Hess",
-    "received": 1000,
-    "committed": 0,
-    "adjustment": 1000,
-    "shipped": 1000,
-    "onhand": 1000,
-    "updated": "10/04/16",
-    "status": "Ordered"
-
-  },
-  {
-    "id": "PR1920001",
-    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
-    "itemType": "Front Cover",
-    "assemblyPartner": "Hess",
-    "received": 1000,
-    "committed": 0,
-    "adjustment": 1000,
-    "shipped": 1000,
-    "onhand": 1000,
-    "updated": "10/04/16",
-    "status": "Ordered"
-
-  },
-  {
-    "id": "PR1920001",
-    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
-    "itemType": "Front Cover",
-    "assemblyPartner": "Hess",
-    "received": 1000,
-    "committed": 0,
-    "adjustment": 1000,
-    "shipped": 1000,
-    "onhand": 1000,
-    "updated": "10/04/16",
-    "status": "Printed"
-
-  },
-  {
-    "id": "PR1920001",
-    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
-    "itemType": "Front Cover",
-    "assemblyPartner": "Hess",
-    "received": 1000,
-    "committed": 0,
-    "adjustment": 1000,
-    "shipped": 1000,
-    "onhand": 1000,
-    "updated": "10/04/16",
-    "status": "Printed"
-
-  },
-  {
-    "id": "PR1920001",
-    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
-    "itemType": "Front Cover",
-    "assemblyPartner": "Hess",
-    "received": 1000,
-    "committed": 0,
-    "adjustment": 1000,
-    "shipped": 1000,
-    "onhand": 1000,
-    "updated": "10/04/16",
-    "status": "Cancelled"
-
-  },
-  {
-    "id": "PR1920001",
-    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
-    "itemType": "Front Cover",
-    "assemblyPartner": "Hess",
-    "received": 1000,
-    "committed": 0,
-    "adjustment": 1000,
-    "shipped": 1000,
-    "onhand": 1000,
-    "updated": "10/04/16",
-    "status": "Ordered"
-
-  },
-  {
-    "id": "PR1920001",
-    "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
-    "itemType": "Front Cover",
-    "assemblyPartner": "Hess",
-    "received": 1000,
-    "committed": 0,
+    "committed": 1002,
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,

@@ -43,7 +43,7 @@
           </i>
           <i class="material-icons done-ic" (click)="addRowsToInventory()">
             check_circle
-            </i>
+          </i>
         </span>
       </div>
       <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="5px" *ngFor="let addNewRow of addedRows">
@@ -75,10 +75,10 @@
         </span>
         <span fxFlex="50px"></span>
         <div fxFlex="140px" fxLayout="row" fxLayoutGap="20px">
-          <i class="material-icons" (click)="removeCurrentRow(addNewRow)">
+          <i class="material-icons remove-ic" (click)="removeCurrentRow(addNewRow)">
             remove_circle
           </i>
-          <i class="material-icons" (click)="addAnotherRow()">
+          <i class="material-icons plus-ic" (click)="addAnotherRow()">
             add_circle </i>
 
         </div>

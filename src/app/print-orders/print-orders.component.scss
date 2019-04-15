@@ -1,11 +1,21 @@
-.print-actions{
-  i{
+.print-actions {
+  i {
     cursor: pointer;
-    &:hover{
+
+    &:hover {
       color: #F05323;
     }
   }
-  .push-print-ic{
+
+  .remove-ic {
+    color: #333;
+  }
+
+  .plus-ic {
+    color: rgb(0, 190, 79);
+  }
+
+  .push-print-ic {
     -moz-transform: scaleX(-1);
     -o-transform: scaleX(-1);
     -webkit-transform: scaleX(-1);

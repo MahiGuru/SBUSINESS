@@ -30,19 +30,11 @@ export class InventoryComponent implements OnInit {
   names: any;
   constructor(public sharedOrderService: SharedOrdersService) {
   }
-  fetch(cb) {
-    const req = new XMLHttpRequest();
-    req.open('GET', `assets/data/data.json`);
-    req.onload = () => {
-      cb(JSON.parse(req.response));
-    };
-    req.send();
-  }
 
   updateFilter(filterVal) {
     const val = filterVal.toLowerCase();
     // filter our data
-    const temp = this.temp.filter((d) => {
+    const temp = this.rows.filter((d) => {
       return d.itemType.toLowerCase().indexOf(val) !== -1 || !val;
     });
 
@@ -78,12 +70,12 @@ export class InventoryComponent implements OnInit {
   }
   ngOnInit() {
     this.sharedOrderService.data$.subscribe((val) => {
-      console.log("SUBSCRIBE >>>> ", val);
+      console.log('SUBSCRIBE >>>> ', val);
       this.rows = val;
     });
   }
   addRowsToInventory() {
-    if(this.addedRows.length > 0){
+    if (this.addedRows.length > 0) {
       this.rows.splice(0, 1);
       this.addedRows.forEach(row => {
         this.rows.unshift(row);
@@ -93,11 +85,11 @@ export class InventoryComponent implements OnInit {
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
     }
   }
-  cancelNewInventory(){
-      this.rows.splice(0, 1);
-      this.addedRows = [];
-      this.rows = [...this.rows];
-      this.table.rowDetail.toggleExpandRow(this.rows[0]);
+  cancelNewInventory() {
+    this.rows.splice(0, 1);
+    this.addedRows = [];
+    this.rows = [...this.rows];
+    this.table.rowDetail.toggleExpandRow(this.rows[0]);
   }
 
 }

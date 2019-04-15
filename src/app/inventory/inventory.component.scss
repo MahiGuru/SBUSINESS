@@ -41,25 +41,50 @@
     background-color: #ffffff;
   }
 
+  .plus-ic,
+  .remove-ic {
+    cursor: pointer;
+    color: #008638;
+
+    &:hover {
+      color: #00ff4c;
+    }
+  }
+
+  .remove-ic {
+    color: #e21a00;
+
+    &:hover {
+      color: #ff0000;
+    }
+
+  }
+
   .row-ab-actions {
     position: absolute;
     right: 20px;
-    i{
+
+    i {
       font-size: 36px;
-      &:hover{
+
+      &:hover {
         cursor: pointer;
       }
     }
-    .cancel-ic{
-      color:#d40000;
-      &:hover{
+
+    .cancel-ic {
+      color: #353535;
+
+      &:hover {
         color: #6e0000;
       }
     }
-    .done-ic{
-      color:#00b30f;
-      &:hover{
-        color: #006e37;
+
+    .done-ic {
+      color: #f51d00;
+
+      &:hover {
+        color: #e20057;
       }
     }
   }

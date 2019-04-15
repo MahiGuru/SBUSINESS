@@ -1,109 +1,109 @@
 <div fxLayout="row" fxLayoutAlign="start center" class="border-bottom">
-    <h2 class="fw-300" fxFlex>Print Orders</h2>
-    <button mat-flat-button color="primary" fxFlex="100px" fxFlexAlign="center"
-      (click)="toggleExpandRow(this.rows[0])">Add
-      New</button>
+  <h2 class="fw-300" fxFlex>Print Orders</h2>
+  <button mat-flat-button color="primary" fxFlex="100px" fxFlexAlign="center" (click)="toggleExpandRow(this.rows[0])"
+    [disabled]="true">Add
+    New</button>
+</div>
+
+<div class="mtb-8" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+  <mat-form-field fxFlex="30" class="filter-input">
+    <input matInput placeholder="Search or filter By" [(ngModel)]="filterVal">
+    <mat-icon matPrefix>search</mat-icon>
+    <button mat-button *ngIf="filterVal" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <div fxFlex>
+    <button mat-raised-button color="accent" (click)='updateFilter(filterVal)'>Apply</button>
   </div>
+  <div fxFlex fxFlexAlign="center" class="text-right">
 
-  <div class="mtb-8" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-    <mat-form-field fxFlex="30" class="filter-input">
-      <input matInput placeholder="Search or filter By" [(ngModel)]="filterVal">
-      <mat-icon matPrefix>search</mat-icon>
-      <button mat-button *ngIf="filterVal" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-    <div fxFlex>
-      <button mat-raised-button color="accent" (click)='updateFilter(filterVal)'>Apply</button>
-    </div>
-    <div fxFlex fxFlexAlign="center" class="text-right">
+    <button mat-button>
+      <i class="material-icons"> arrow_downward </i>
+      Import
+    </button>
 
-      <button mat-button>
-        <i class="material-icons"> arrow_downward </i>
-        Import
-      </button>
-
-      <button mat-button>
-        <i class="material-icons"> arrow_upward </i>
-        Export
-      </button>
-    </div>
+    <button mat-button>
+      <i class="material-icons"> arrow_upward </i>
+      Export
+    </button>
   </div>
-  <!-- <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Search filter by'
+</div>
+<!-- <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Search filter by'
     (keyup)='updateFilter($event)' /> -->
-  <ngx-datatable #table class='material' [columns]="columns" [columnMode]="'force'" [headerHeight]="50"
-    [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+<ngx-datatable #table class='material' [columns]="columns" [columnMode]="'force'" [headerHeight]="50"
+  [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
 
-    <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow (toggle)="onDetailToggle($event)">
-      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-        <div class="row-ab-actions">
-          <span fxFlex fxLayout="row" fxLayoutGap="10px">
-            <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
-              cancel
-            </i>
-            <i class="material-icons done-ic" (click)="addRowsToInventory()">
-              check_circle
-              </i>
-          </span>
+  <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow (toggle)="onDetailToggle($event)">
+    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+      <div class="row-ab-actions">
+        <span fxFlex fxLayout="row" fxLayoutGap="10px">
+          <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
+            cancel
+          </i>
+          <i class="material-icons done-ic" (click)="addRowsToInventory()">
+            check_circle
+          </i>
+        </span>
+      </div>
+      <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="5px" *ngFor="let addNewRow of addedRows">
+        <span fxFlex="140px">
+          <mat-select [(value)]="addNewRow.id" placeholder="Item #">
+            <mat-option value="PR1920001">PR1920001</mat-option>
+            <mat-option value="PR1920003">PR1920003</mat-option>
+            <mat-option value="PR1920001">PR1920004</mat-option>
+          </mat-select>
+        </span>
+        <span fxFlex="140px"> </span>
+        <span fxFlex="140px">
+          <mat-select [(value)]="addNewRow.description" placeholder="Description">
+            <mat-option value="Signature">Signature. Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
+            <mat-option value="Planner">Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
+            <mat-option value="Core">Core HIGH.5x8.BLOCK.ENG..</mat-option>
+          </mat-select>
+        </span>
+        <span fxFlex="140px"> </span>
+        <span fxFlex="140px">
+          <input matInput placeholder="Assembly" [name]="addNewRow.assemblyPartner"
+            [(ngModel)]="addNewRow.assemblyPartner">
+        </span>
+        <span fxFlex="140px">
+          <input matInput placeholder="Received" [name]="addNewRow.received" [(ngModel)]="addNewRow.received">
+        </span>
+        <span fxFlex="140px">
+          <input matInput placeholder="Committed" [name]="addNewRow.committed" [(ngModel)]="addNewRow.committed">
+        </span>
+        <span fxFlex="50px"></span>
+        <div fxFlex="140px" fxLayout="row" fxLayoutGap="20px">
+          <i class="material-icons  remove-ic" (click)="removeCurrentRow(addNewRow)">
+            remove_circle
+          </i>
+          <i class="material-icons plus-ic" (click)="addAnotherRow()">
+            add_circle </i>
+
         </div>
-        <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="5px" *ngFor="let addNewRow of addedRows">
-          <span fxFlex="140px">
-            <mat-select [(value)]="addNewRow.id" placeholder="Item #">
-              <mat-option value="PR1920001">PR1920001</mat-option>
-              <mat-option value="PR1920003">PR1920003</mat-option>
-              <mat-option value="PR1920001">PR1920004</mat-option>
-            </mat-select>
-          </span>
-          <span fxFlex="140px"> </span>
-          <span fxFlex="140px">
-            <mat-select [(value)]="addNewRow.description" placeholder="Description">
-              <mat-option value="Signature">Signature. Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
-              <mat-option value="Planner">Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
-              <mat-option value="Core">Core HIGH.5x8.BLOCK.ENG..</mat-option>
-            </mat-select>
-          </span>
-          <span fxFlex="140px"> </span>
-          <span fxFlex="140px">
-            <input matInput placeholder="Assembly" [name]="addNewRow.assemblyPartner"
-              [(ngModel)]="addNewRow.assemblyPartner">
-          </span>
-          <span fxFlex="140px">
-            <input matInput placeholder="Received" [name]="addNewRow.received" [(ngModel)]="addNewRow.received">
-          </span>
-          <span fxFlex="140px">
-            <input matInput placeholder="Committed" [name]="addNewRow.committed" [(ngModel)]="addNewRow.committed">
-          </span>
-          <span fxFlex="50px"></span>
-          <div fxFlex="140px" fxLayout="row" fxLayoutGap="20px">
-            <i class="material-icons" (click)="removeCurrentRow(addNewRow)">
-              remove_circle
-            </i>
-            <i class="material-icons" (click)="addAnotherRow()">
-              add_circle </i>
+      </div>
+    </ng-template>
+  </ngx-datatable-row-detail>
 
-          </div>
-        </div>
-      </ng-template>
-    </ngx-datatable-row-detail>
+  <ngx-datatable-column *ngFor="let col of columns" [name]="col.prop">
+  </ngx-datatable-column>
+  <ngx-datatable-column name="" sortable="false" prop="id">
+    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+      <div fxLayout="row" fxLayoutGap="20px" class="print-actions" *ngIf="OrdersState.NEW == row.status">
+        <i class="material-icons block-ic" matTooltip="block"
+          aria-label="Button that displays a tooltip when focused or hovered over"> block </i>
+        <i class="material-icons push-print-ic" matTooltip="Push to Print"
+          aria-label="Button that displays a tooltip when focused or hovered over"> reply </i>
+      </div>
+      <div fxLayout="row" fxLayoutGap="20px" class="print-actions" *ngIf="OrdersState.NEW != row.status">
+        <i class="material-icons edit-ic" matTooltip="Edit Order"
+          aria-label="Button that displays a tooltip when focused or hovered over"> edit </i>
+        <i class="material-icons delete-ic" matTooltip="Delete Order"
+          aria-label="Button that displays a tooltip when focused or hovered over"> delete </i>
+      </div>
 
-    <ngx-datatable-column *ngFor="let col of columns" [name]="col.prop">
-    </ngx-datatable-column>
-    <ngx-datatable-column name="" sortable="false" prop="id">
-        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-          <div fxLayout="row" fxLayoutGap="20px" class="print-actions" *ngIf="OrdersState.NEW == row.status">
-            <i class="material-icons block-ic" matTooltip="block"
-            aria-label="Button that displays a tooltip when focused or hovered over">   block </i>
-            <i class="material-icons push-print-ic" matTooltip="Push to Print"
-            aria-label="Button that displays a tooltip when focused or hovered over"> reply </i>
-          </div>
-          <div fxLayout="row" fxLayoutGap="20px"  class="print-actions"  *ngIf="OrdersState.NEW != row.status">
-              <i class="material-icons edit-ic" matTooltip="Edit Order"
-              aria-label="Button that displays a tooltip when focused or hovered over">   edit </i>
-              <i class="material-icons delete-ic" matTooltip="Delete Order" (click)="deleteOrder()"
-              aria-label="Button that displays a tooltip when focused or hovered over"> delete </i>
-          </div>
-
-        </ng-template>
+    </ng-template>
   </ngx-datatable-column>
 
-  </ngx-datatable>
+</ngx-datatable>
