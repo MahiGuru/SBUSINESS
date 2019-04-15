@@ -41,8 +41,26 @@
     background-color: #ffffff;
   }
 
-  .addNewRow-actions {
+  .row-ab-actions {
     position: absolute;
     right: 20px;
+    i{
+      font-size: 36px;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+    .cancel-ic{
+      color:#d40000;
+      &:hover{
+        color: #6e0000;
+      }
+    }
+    .done-ic{
+      color:#00b30f;
+      &:hover{
+        color: #006e37;
+      }
+    }
   }
 }

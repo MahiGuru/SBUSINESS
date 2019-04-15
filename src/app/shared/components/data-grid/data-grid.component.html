@@ -1,13 +1,7 @@
-<div fxLayout="row" fxLayoutAlign="start center" class="border-bottom">
-    <h2 class="fw-300" fxFlex>Print Orders</h2>
-    <button mat-flat-button color="primary" fxFlex="100px" fxFlexAlign="center"
-      (click)="toggleExpandRow(this.rows[0])">Add
-      New</button>
-  </div>
 
-  <div class="mtb-8" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+<div class="mtb-8" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
     <mat-form-field fxFlex="30" class="filter-input">
-      <input matInput placeholder="Search or filter By" [(ngModel)]="filterVal">
+      <input matInput placeholder="Search Filter By" [(ngModel)]="filterVal">
       <mat-icon matPrefix>search</mat-icon>
       <button mat-button *ngIf="filterVal" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
         <mat-icon>close</mat-icon>
@@ -34,7 +28,7 @@
   <ngx-datatable #table class='material' [columns]="columns" [columnMode]="'force'" [headerHeight]="50"
     [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
 
-    <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow (toggle)="onDetailToggle($event)">
+    <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow >
       <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
         <div class="row-ab-actions">
           <span fxFlex fxLayout="row" fxLayoutGap="10px">
@@ -47,6 +41,7 @@
           </span>
         </div>
         <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="5px" *ngFor="let addNewRow of addedRows">
+
           <span fxFlex="140px">
             <mat-select [(value)]="addNewRow.id" placeholder="Item #">
               <mat-option value="PR1920001">PR1920001</mat-option>
@@ -88,22 +83,5 @@
 
     <ngx-datatable-column *ngFor="let col of columns" [name]="col.prop">
     </ngx-datatable-column>
-    <ngx-datatable-column name="" sortable="false" prop="id">
-        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-          <div fxLayout="row" fxLayoutGap="20px" class="print-actions" *ngIf="OrdersState.NEW == row.status">
-            <i class="material-icons block-ic" matTooltip="block"
-            aria-label="Button that displays a tooltip when focused or hovered over">   block </i>
-            <i class="material-icons push-print-ic" matTooltip="Push to Print"
-            aria-label="Button that displays a tooltip when focused or hovered over"> reply </i>
-          </div>
-          <div fxLayout="row" fxLayoutGap="20px"  class="print-actions"  *ngIf="OrdersState.NEW != row.status">
-              <i class="material-icons edit-ic" matTooltip="Edit Order"
-              aria-label="Button that displays a tooltip when focused or hovered over">   edit </i>
-              <i class="material-icons delete-ic" matTooltip="Delete Order"
-              aria-label="Button that displays a tooltip when focused or hovered over"> delete </i>
-          </div>
-
-        </ng-template>
-  </ngx-datatable-column>
 
   </ngx-datatable>

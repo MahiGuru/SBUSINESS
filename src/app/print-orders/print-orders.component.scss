@@ -1,0 +1,15 @@
+.print-actions{
+  i{
+    cursor: pointer;
+    &:hover{
+      color: #F05323;
+    }
+  }
+  .push-print-ic{
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+
+  }
+}

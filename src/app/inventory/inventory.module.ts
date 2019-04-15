@@ -5,12 +5,12 @@ import { InventoryRoutingModule } from './inventory-routing.module';
 import { InventoryComponent } from './inventory.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../ng-material.module';
-import { InventoryDataGridComponent } from './inventory-data-grid/inventory-data-grid.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [InventoryComponent, InventoryDataGridComponent],
+  declarations: [InventoryComponent],
   imports: [
     CommonModule,
     InventoryRoutingModule,
@@ -18,8 +18,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FlexLayoutModule,
     NgxDatatableModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
-  exports: [InventoryComponent, InventoryDataGridComponent]
+  exports: [InventoryComponent]
 })
 export class InventoryModule { }

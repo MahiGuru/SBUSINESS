@@ -10,6 +10,7 @@ import { ReleasesModule } from './releases/releases.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './ng-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

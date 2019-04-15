@@ -8,7 +8,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "New"
 
   },
   {
@@ -21,7 +22,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "New"
 
   },
   {
@@ -34,7 +36,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "Ordered"
 
   },
   {
@@ -47,7 +50,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "Ordered"
 
   },
   {
@@ -60,7 +64,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "Cancelled"
 
   },
   {
@@ -73,7 +78,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "Printed"
 
   },
   {
@@ -86,7 +92,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "Ordered"
 
   },
   {
@@ -99,7 +106,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "Printed"
 
   },
   {
@@ -112,7 +120,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "Ordered"
 
   },
   {
@@ -125,7 +134,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "Ordered"
 
   },
   {
@@ -138,7 +148,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "Printed"
 
   },
   {
@@ -151,7 +162,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "Printed"
 
   },
   {
@@ -164,7 +176,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "Cancelled"
 
   },
   {
@@ -177,7 +190,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "Ordered"
 
   },
   {
@@ -190,7 +204,8 @@
     "adjustment": 1000,
     "shipped": 1000,
     "onhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "status": "Ordered"
 
   }
 ]

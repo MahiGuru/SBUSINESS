@@ -7,7 +7,7 @@
 
 <div class="mtb-8" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
   <mat-form-field fxFlex="30" class="filter-input">
-    <input matInput placeholder="Search Filter By" [(ngModel)]="filterVal">
+    <input matInput placeholder="Search or filter By" [(ngModel)]="filterVal">
     <mat-icon matPrefix>search</mat-icon>
     <button mat-button *ngIf="filterVal" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
       <mat-icon>close</mat-icon>
@@ -36,14 +36,14 @@
 
   <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow (toggle)="onDetailToggle($event)">
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <div class="addNewRow-actions">
-        <span fxFlex fxLayout="row" fxLayoutGap="20px">
-          <i class="material-icons">
+      <div class="row-ab-actions">
+        <span fxFlex fxLayout="row" fxLayoutGap="10px">
+          <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
             cancel
           </i>
-          <i class="material-icons">
-            done
-          </i>
+          <i class="material-icons done-ic" (click)="addRowsToInventory()">
+            check_circle
+            </i>
         </span>
       </div>
       <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="5px" *ngFor="let addNewRow of addedRows">

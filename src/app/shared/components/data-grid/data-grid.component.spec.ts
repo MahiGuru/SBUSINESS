@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InventoryDataGridComponent } from './inventory-data-grid.component';
+import { DataGridComponent } from './data-grid.component';
 
-describe('InventoryDataGridComponent', () => {
-  let component: InventoryDataGridComponent;
-  let fixture: ComponentFixture<InventoryDataGridComponent>;
+describe('DataGridComponent', () => {
+  let component: DataGridComponent;
+  let fixture: ComponentFixture<DataGridComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InventoryDataGridComponent ]
+      declarations: [ DataGridComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InventoryDataGridComponent);
+    fixture = TestBed.createComponent(DataGridComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
