@@ -3,6 +3,8 @@ import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { Inventory } from '../core/models/inventory';
 import { ORDERS } from '../core/models/order-state';
 import { SharedOrdersService } from '../shared/services/shared-orders.service';
+import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'sb-print-orders',
@@ -31,7 +33,7 @@ export class PrintOrdersComponent implements OnInit {
   ];
   @ViewChild(DatatableComponent) table: DatatableComponent;
   names: any;
-  constructor(public sharedOrderService: SharedOrdersService) {
+  constructor(public sharedOrderService: SharedOrdersService, public dialog: MatDialog) {
 
   }
 
@@ -94,5 +96,19 @@ export class PrintOrdersComponent implements OnInit {
       this.rows = [...this.rows];
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
   }
+
+  deleteOrder(){
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      width: '350px',
+      height:'350px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // this.animal = result;
+    });
+  }
+
 
 }

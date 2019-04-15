@@ -5,9 +5,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../ng-material.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 
 @NgModule({
-  declarations: [DataGridComponent],
+  declarations: [DataGridComponent, DeleteDialogComponent],
   imports: [
     CommonModule,
     FlexLayoutModule,
@@ -16,6 +17,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     MaterialModule,
     NgxDatatableModule,
   ],
-  exports: [DataGridComponent]
+  exports: [DataGridComponent, DeleteDialogComponent]
 })
 export class SharedModule { }

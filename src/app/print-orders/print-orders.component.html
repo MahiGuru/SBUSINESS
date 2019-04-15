@@ -99,7 +99,7 @@
           <div fxLayout="row" fxLayoutGap="20px"  class="print-actions"  *ngIf="OrdersState.NEW != row.status">
               <i class="material-icons edit-ic" matTooltip="Edit Order"
               aria-label="Button that displays a tooltip when focused or hovered over">   edit </i>
-              <i class="material-icons delete-ic" matTooltip="Delete Order"
+              <i class="material-icons delete-ic" matTooltip="Delete Order" (click)="deleteOrder()"
               aria-label="Button that displays a tooltip when focused or hovered over"> delete </i>
           </div>
 
