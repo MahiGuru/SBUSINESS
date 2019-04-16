@@ -51,7 +51,7 @@
     "shipped": 1000,
     "onhand": 1000,
     "updated": "10/04/16",
-    "status": "Ordered"
+    "status": "Pending"
 
   },
   {
@@ -79,7 +79,7 @@
     "shipped": 1000,
     "onhand": 1000,
     "updated": "10/04/16",
-    "status": "Printed"
+    "status": "Released"
 
   },
   {
@@ -93,7 +93,7 @@
     "shipped": 1000,
     "onhand": 1000,
     "updated": "10/04/16",
-    "status": "Ordered"
+    "status": "Released"
 
   },
   {
@@ -107,7 +107,7 @@
     "shipped": 400,
     "onhand": 400,
     "updated": "10/04/16",
-    "status": "Printed"
+    "status": "Pending"
 
   },
   {
