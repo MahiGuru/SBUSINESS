@@ -2,7 +2,18 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "types": []
+    "types": [],
+    "paths": {
+      "@app/*": [
+        "app/*"
+      ],
+      "@shutterfly/*": [
+        "src/app/shutter-fly"
+      ],
+      "@env/*": [
+        "environments/*"
+      ]
+    },
   },
   "exclude": [
     "test.ts",

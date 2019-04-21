@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Inventory } from 'src/app/core/models/inventory';
+import { Inventory } from '../../core/models/inventory';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class SharedOrdersService {
     };
     req.send();
   }
-  public changeData(){
+  public changeData() {
     this.fetch((data) => {
       // push our inital complete list
       console.log(data);
@@ -33,7 +33,7 @@ export class SharedOrdersService {
       // this.rows = data;
     });
   }
-  public updateOrders(rows){
+  public updateOrders(rows) {
     this.data.next(rows);
   }
 

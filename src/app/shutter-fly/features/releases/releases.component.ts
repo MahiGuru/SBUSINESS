@@ -1,23 +1,22 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ORDERS } from '../../core/models/order-state';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
-import { Inventory } from '../core/models/inventory';
-import { ORDERS } from '../core/models/order-state';
-import { SharedOrdersService } from '../shared/services/shared-orders.service';
-import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
+import { SharedOrdersService } from '../../shared/services/shared-orders.service';
 import { MatDialog } from '@angular/material';
+import { Inventory } from '../../core/models/inventory';
 
 @Component({
-  selector: 'sb-print-orders',
-  templateUrl: './print-orders.component.html',
-  styleUrls: ['./print-orders.component.scss']
+  selector: 'sb-releases',
+  templateUrl: './releases.component.html',
+  styleUrls: ['./releases.component.scss']
 })
-export class PrintOrdersComponent implements OnInit {
+export class ReleasesComponent implements OnInit {
   rows = [];
   filterVal: any;
   temp = [];
   public newRowHeight: any = 100;
   public addedRows = [];
-  public OrdersState= ORDERS;
+  public OrdersState = ORDERS;
   columns = [
     { prop: 'id', name: 'Item #', width: 100 },
     { name: 'Description', width: 250 },
@@ -76,12 +75,12 @@ export class PrintOrdersComponent implements OnInit {
   }
   ngOnInit() {
     this.sharedOrderService.data$.subscribe((val) => {
-      console.log("PRINT ORDER >>> SUBSCRIBE >>>> ", val);
+      console.log('PRINT ORDER >>> SUBSCRIBE >>>> ', val);
       this.rows = val;
     });
   }
   addRowsToInventory() {
-    if(this.addedRows.length > 0){
+    if (this.addedRows.length > 0) {
       this.rows.splice(0, 1);
       this.addedRows.forEach(row => {
         this.rows.unshift(row);
@@ -90,25 +89,13 @@ export class PrintOrdersComponent implements OnInit {
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
     }
   }
-  cancelNewInventory(){
-      this.rows.splice(0, 1);
-      this.addedRows = [];
-      this.rows = [...this.rows];
-      this.table.rowDetail.toggleExpandRow(this.rows[0]);
+  cancelNewInventory() {
+    this.rows.splice(0, 1);
+    this.addedRows = [];
+    this.rows = [...this.rows];
+    this.table.rowDetail.toggleExpandRow(this.rows[0]);
   }
 
-  deleteOrder(){
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      width: '350px',
-      height:'350px',
-      data: {}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      // this.animal = result;
-    });
-  }
 
 
 }

@@ -1,22 +1,33 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ORDERS } from '../core/models/order-state';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild, Output, EventEmitter } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
-import { SharedOrdersService } from '../shared/services/shared-orders.service';
-import { MatDialog } from '@angular/material';
-import { Inventory } from '../core/models/inventory';
-
+import { Inventory } from 'src/app/shutter-fly/core/models/inventory';
 @Component({
-  selector: 'sb-releases',
-  templateUrl: './releases.component.html',
-  styleUrls: ['./releases.component.scss']
+  selector: 'sb-data-grid',
+  templateUrl: './data-grid.component.html',
+  styleUrls: ['./data-grid.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ReleasesComponent implements OnInit {
+export class DataGridComponent implements OnInit {
   rows = [];
   filterVal: any;
   temp = [];
+  @Output() totalRows: EventEmitter<any> = new EventEmitter();
   public newRowHeight: any = 100;
+  public newRow = {
+    id: 0,
+    description: '',
+    itemType: '',
+    assemblyPartner: '',
+    received: '',
+    committed: '',
+    adjustment: '',
+    shipped: '',
+    onhand: '',
+    updated: ''
+
+  };
+
   public addedRows = [];
-  public OrdersState = ORDERS;
   columns = [
     { prop: 'id', name: 'Item #', width: 100 },
     { name: 'Description', width: 250 },
@@ -27,13 +38,32 @@ export class ReleasesComponent implements OnInit {
     { name: 'Adjustment', width: 100 },
     { name: 'Shipped', width: 100 },
     { name: 'On-hand', prop: 'onhand', width: 100 },
-    { name: 'Updated', width: 100 },
-    { name: 'Status', prop: 'status', width: 100 }
+    { name: 'Updated', width: 100 }
   ];
   @ViewChild(DatatableComponent) table: DatatableComponent;
   names: any;
-  constructor(public sharedOrderService: SharedOrdersService, public dialog: MatDialog) {
+  constructor() {
+    this.fetch((data) => {
 
+      // push our inital complete list
+      console.log(data);
+      data.forEach(item => {
+        console.log(item);
+        const itemRow = new Inventory(item);
+        this.temp.push(itemRow);
+      });
+      this.rows = this.temp;
+      // this.rows = data;
+    });
+
+  }
+  fetch(cb) {
+    const req = new XMLHttpRequest();
+    req.open('GET', `assets/data/data.json`);
+    req.onload = () => {
+      cb(JSON.parse(req.response));
+    };
+    req.send();
   }
 
   updateFilter(filterVal) {
@@ -42,14 +72,12 @@ export class ReleasesComponent implements OnInit {
     const temp = this.temp.filter((d) => {
       return d.itemType.toLowerCase().indexOf(val) !== -1 || !val;
     });
-
-    // update the rows
     this.rows = temp;
-    // Whenever the filter changes, always go back to the first page
+    this.totalRows.emit(this.rows);
     this.table.offset = 0;
   }
   toggleExpandRow(row) {
-    this.rows.unshift(new Inventory());
+    this.rows.unshift(this.newRow);
     this.rows = [...this.rows];
 
     const addRow = new Inventory();
@@ -70,15 +98,7 @@ export class ReleasesComponent implements OnInit {
     this.addedRows.splice(this.addedRows.indexOf(currentRow), 1);
     this.newRowHeight -= 30;
   }
-  onDetailToggle(event) {
-    console.log('Detail Toggled', event);
-  }
-  ngOnInit() {
-    this.sharedOrderService.data$.subscribe((val) => {
-      console.log('PRINT ORDER >>> SUBSCRIBE >>>> ', val);
-      this.rows = val;
-    });
-  }
+
   addRowsToInventory() {
     if (this.addedRows.length > 0) {
       this.rows.splice(0, 1);
@@ -86,6 +106,7 @@ export class ReleasesComponent implements OnInit {
         this.rows.unshift(row);
       });
       this.rows = [...this.rows];
+      this.totalRows.emit(this.rows);
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
     }
   }
@@ -93,9 +114,10 @@ export class ReleasesComponent implements OnInit {
     this.rows.splice(0, 1);
     this.addedRows = [];
     this.rows = [...this.rows];
+    this.totalRows.emit(this.rows);
     this.table.rowDetail.toggleExpandRow(this.rows[0]);
   }
+  ngOnInit() {
 
-
-
+  }
 }

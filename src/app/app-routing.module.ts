@@ -3,12 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'layout',
-    loadChildren: './layout/layout.module#LayoutModule'
+    path: 'shutterfly',
+    loadChildren: './shutter-fly/shutter-fly.module#ShutterFlyModule'
   },
   {
     path: '',
-    redirectTo: 'layout',
+    redirectTo: 'shutterfly',
     pathMatch: 'full'
   }
 ];

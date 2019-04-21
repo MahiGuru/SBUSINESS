@@ -1,19 +1,23 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
-import { Inventory } from '../core/models/inventory';
-import { SharedOrdersService } from '../shared/services/shared-orders.service';
+import { MatDialog } from '@angular/material';
+import { ORDERS } from '../../core/models/order-state';
+import { SharedOrdersService } from '../../shared/services/shared-orders.service';
+import { Inventory } from '../../core/models/inventory';
+import { DeleteDialogComponent } from '../../shared/components/delete-dialog/delete-dialog.component';
 
 @Component({
-  selector: 'sb-inventory',
-  templateUrl: './inventory.component.html',
-  styleUrls: ['./inventory.component.scss']
+  selector: 'sb-print-orders',
+  templateUrl: './print-orders.component.html',
+  styleUrls: ['./print-orders.component.scss']
 })
-export class InventoryComponent implements OnInit {
+export class PrintOrdersComponent implements OnInit {
   rows = [];
   filterVal: any;
   temp = [];
   public newRowHeight: any = 100;
   public addedRows = [];
+  public OrdersState = ORDERS;
   columns = [
     { prop: 'id', name: 'Item #', width: 100 },
     { name: 'Description', width: 250 },
@@ -24,17 +28,19 @@ export class InventoryComponent implements OnInit {
     { name: 'Adjustment', width: 100 },
     { name: 'Shipped', width: 100 },
     { name: 'On-hand', prop: 'onhand', width: 100 },
-    { name: 'Updated', width: 100 }
+    { name: 'Updated', width: 100 },
+    { name: 'Status', prop: 'status', width: 100 }
   ];
   @ViewChild(DatatableComponent) table: DatatableComponent;
   names: any;
-  constructor(public sharedOrderService: SharedOrdersService) {
+  constructor(public sharedOrderService: SharedOrdersService, public dialog: MatDialog) {
+
   }
 
   updateFilter(filterVal) {
     const val = filterVal.toLowerCase();
     // filter our data
-    const temp = this.rows.filter((d) => {
+    const temp = this.temp.filter((d) => {
       return d.itemType.toLowerCase().indexOf(val) !== -1 || !val;
     });
 
@@ -70,7 +76,7 @@ export class InventoryComponent implements OnInit {
   }
   ngOnInit() {
     this.sharedOrderService.data$.subscribe((val) => {
-      console.log('SUBSCRIBE >>>> ', val);
+      console.log('PRINT ORDER >>> SUBSCRIBE >>>> ', val);
       this.rows = val;
     });
   }
@@ -81,7 +87,6 @@ export class InventoryComponent implements OnInit {
         this.rows.unshift(row);
       });
       this.rows = [...this.rows];
-      this.sharedOrderService.updateOrders(this.rows);
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
     }
   }
@@ -91,5 +96,19 @@ export class InventoryComponent implements OnInit {
     this.rows = [...this.rows];
     this.table.rowDetail.toggleExpandRow(this.rows[0]);
   }
+
+  deleteOrder() {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      width: '350px',
+      height: '350px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // this.animal = result;
+    });
+  }
+
 
 }
