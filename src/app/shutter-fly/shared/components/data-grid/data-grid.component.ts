@@ -1,94 +1,68 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild, Output, EventEmitter } from '@angular/core';
+import {
+  Component, OnInit, ChangeDetectionStrategy, ViewChild, Output, EventEmitter,
+  Input, SimpleChanges, OnChanges
+} from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
-import { Inventory } from 'src/app/shutter-fly/core/models/inventory';
+import { SharedOrdersService } from '../../services/shared-orders.service';
+import { Inventory } from '../../../core/models/inventory';
+
+
 @Component({
   selector: 'sb-data-grid',
   templateUrl: './data-grid.component.html',
   styleUrls: ['./data-grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DataGridComponent implements OnInit {
-  rows = [];
+export class DataGridComponent implements OnInit, OnChanges {
+  @Input() cols: any;
+  @Input() rows: any;
+  @Input() newBtnClicked: boolean;
+  public originalRows: any;
+  @Output() isAddBtnClicked: EventEmitter<any> = new EventEmitter();
   filterVal: any;
-  temp = [];
-  @Output() totalRows: EventEmitter<any> = new EventEmitter();
-  public newRowHeight: any = 100;
-  public newRow = {
-    id: 0,
-    description: '',
-    itemType: '',
-    assemblyPartner: '',
-    received: '',
-    committed: '',
-    adjustment: '',
-    shipped: '',
-    onhand: '',
-    updated: ''
-
-  };
-
   public addedRows = [];
-  columns = [
-    { prop: 'id', name: 'Item #', width: 100 },
-    { name: 'Description', width: 250 },
-    { prop: 'itemType', name: 'Item Type', width: 100 },
-    { prop: 'assemblyPartner', name: 'Assembly Partner', width: 100 },
-    { name: 'Received', width: 100 },
-    { name: 'Committed', width: 100 },
-    { name: 'Adjustment', width: 100 },
-    { name: 'Shipped', width: 100 },
-    { name: 'On-hand', prop: 'onhand', width: 100 },
-    { name: 'Updated', width: 100 }
-  ];
+  public newRowHeight: any = 100;
+
   @ViewChild(DatatableComponent) table: DatatableComponent;
-  names: any;
-  constructor() {
-    this.fetch((data) => {
-
-      // push our inital complete list
-      console.log(data);
-      data.forEach(item => {
-        console.log(item);
-        const itemRow = new Inventory(item);
-        this.temp.push(itemRow);
-      });
-      this.rows = this.temp;
-      // this.rows = data;
-    });
-
-  }
-  fetch(cb) {
-    const req = new XMLHttpRequest();
-    req.open('GET', `assets/data/data.json`);
-    req.onload = () => {
-      cb(JSON.parse(req.response));
-    };
-    req.send();
+  constructor(public sharedOrderService: SharedOrdersService) {
   }
 
-  updateFilter(filterVal) {
-    const val = filterVal.toLowerCase();
-    // filter our data
-    const temp = this.temp.filter((d) => {
-      return d.itemType.toLowerCase().indexOf(val) !== -1 || !val;
-    });
-    this.rows = temp;
-    this.totalRows.emit(this.rows);
-    this.table.offset = 0;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.newBtnClicked && changes.newBtnClicked.currentValue) {
+      this.newBtnClicked = changes.newBtnClicked.currentValue;
+      this.addNewBtnClicked();
+    }
   }
-  toggleExpandRow(row) {
-    this.rows.unshift(this.newRow);
+
+  ngOnInit() {
+    this.originalRows = this.rows;
+  }
+
+  addNewBtnClicked() {
+    this.rows.unshift(new Inventory());
     this.rows = [...this.rows];
-
     const addRow = new Inventory();
     this.addedRows = [
       ...this.addedRows, addRow
     ];
-
     setTimeout(() => {
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
     }, 100);
   }
+
+  updateFilter(filterVal) {
+    if (filterVal === '') { this.rows = this.originalRows; }
+    const val = filterVal.toLowerCase();
+    // filter our data
+    const temp = this.rows.filter((d) => {
+      return d.itemType.toLowerCase().indexOf(val) !== -1 || !val;
+    });
+    // update the rows
+    this.rows = temp;
+    // Whenever the filter changes, always go back to the first page
+    this.table.offset = 0;
+  }
+
   addAnotherRow() {
     const addRow = new Inventory();
     this.addedRows.push(addRow);
@@ -98,7 +72,9 @@ export class DataGridComponent implements OnInit {
     this.addedRows.splice(this.addedRows.indexOf(currentRow), 1);
     this.newRowHeight -= 30;
   }
-
+  onDetailToggle(event) {
+    console.log('Detail Toggled', event);
+  }
   addRowsToInventory() {
     if (this.addedRows.length > 0) {
       this.rows.splice(0, 1);
@@ -106,7 +82,7 @@ export class DataGridComponent implements OnInit {
         this.rows.unshift(row);
       });
       this.rows = [...this.rows];
-      this.totalRows.emit(this.rows);
+      this.sharedOrderService.updateOrders(this.rows);
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
     }
   }
@@ -114,10 +90,7 @@ export class DataGridComponent implements OnInit {
     this.rows.splice(0, 1);
     this.addedRows = [];
     this.rows = [...this.rows];
-    this.totalRows.emit(this.rows);
     this.table.rowDetail.toggleExpandRow(this.rows[0]);
-  }
-  ngOnInit() {
-
+    this.isAddBtnClicked.emit(false);
   }
 }

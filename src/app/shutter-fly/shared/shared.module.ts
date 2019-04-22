@@ -11,11 +11,11 @@ import { MaterialModule } from 'src/app/ng-material.module';
   declarations: [DataGridComponent, DeleteDialogComponent],
   imports: [
     CommonModule,
-    FlexLayoutModule,
-    FormsModule,
-    ReactiveFormsModule,
     MaterialModule,
+    FlexLayoutModule,
     NgxDatatableModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [DataGridComponent, DeleteDialogComponent]
 })
