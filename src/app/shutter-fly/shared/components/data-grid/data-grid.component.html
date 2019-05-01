@@ -1,13 +1,16 @@
 <div class="mtb-8" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-  <mat-form-field fxFlex="30" class="filter-input">
+
+
+  <mat-form-field fxFlex="30" class="filter-input" [floatLabel]="'never'">
     <input matInput placeholder="Search Filter By" [(ngModel)]="filterVal">
-    <mat-icon matPrefix>search</mat-icon>
+
+    <mat-icon matPrefix class="search-icon">search</mat-icon>
     <button mat-button *ngIf="filterVal" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
   <div fxFlex>
-    <button mat-raised-button color="accent" (click)='updateFilter(filterVal)'>Apply</button>
+    <button class="apply-btn" mat-raised-button color="accent" (click)='updateFilter(filterVal)'>Apply</button>
   </div>
   <div fxFlex fxFlexAlign="center" class="text-right">
 
@@ -25,7 +28,7 @@
 <!-- <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Search filter by'
     (keyup)='updateFilter($event)' /> -->
 <ngx-datatable #table class='material' [columns]="cols" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
-  [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+  [rowHeight]="'auto'" [limit]="10" [rows]='rows' [columnMode]="force">
 
   <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
@@ -80,7 +83,7 @@
     </ng-template>
   </ngx-datatable-row-detail>
 
-  <ngx-datatable-column *ngFor="let col of cols" [name]="col.prop">
+  <ngx-datatable-column *ngFor="let col of cols" [name]="col.prop" [resizeable]="false">
   </ngx-datatable-column>
 
 </ngx-datatable>

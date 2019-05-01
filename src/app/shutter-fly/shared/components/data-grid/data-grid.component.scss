@@ -1,0 +1,30 @@
+:host /deep/{
+  .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-icon-button .mat-icon{
+    margin-top: -15px;
+  }
+  .search-icon{
+    top: -5px;
+    position: relative;
+  }
+  .mat-form-field-appearance-legacy .mat-form-field-infix{
+    padding:3px 0px;
+    padding-bottom: 0px;
+  }
+  .mat-input-element{
+    position: relative;
+    top:-5px;
+  }
+  .mat-form-field-label{
+    color: #333333;
+    margin-top:-10px;
+  }
+  .apply-btn{
+    border-radius: 4px;
+    border: solid 1px #c6c7c9;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    box-shadow: none;
+    &:hover{
+      background-color: #c6c7c9 !important;
+    }
+  }
+}

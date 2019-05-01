@@ -3,6 +3,7 @@
 :host /deep/ {
 
 
+  .datatable-header{ height: 50px !important; display: flex !important; }
   .ngx-datatable.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell {
     background-color: #ececec;
   }

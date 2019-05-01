@@ -3,6 +3,7 @@
 @import '~@swimlane/ngx-datatable/release/index.css';
 @import '~@swimlane/ngx-datatable/release/themes/material.css';
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
+@import './themes/font-face.scss';
 
 @mixin font-size($size) {
   font-size: $size;
@@ -16,9 +17,10 @@ body {
 
 body {
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
 }
-
+body *{
+  font-family: "Avenir-Roman",  sans-serif;
+}
 .text {
   &-right {
     text-align: right;
