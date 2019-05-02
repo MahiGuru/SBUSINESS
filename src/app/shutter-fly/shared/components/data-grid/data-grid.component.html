@@ -27,8 +27,8 @@
 </div>
 <!-- <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Search filter by'
     (keyup)='updateFilter($event)' /> -->
-<ngx-datatable #table class='material' [columns]="cols" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
-  [rowHeight]="'auto'" [limit]="10" [rows]='rows' [columnMode]="force">
+<ngx-datatable #table class='material expandable' [columns]="cols" [columnMode]="'force'" [headerHeight]="50"
+  [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
 
   <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
@@ -42,14 +42,52 @@
           </i>
         </span>
       </div>
-      <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="5px" *ngFor="let addNewRow of addedRows">
+
+
+      <ngx-datatable-column prop="id">
+        <ng-template let-column="column" ngx-datatable-header-template>
+          <mat-select placeholder="Description">
+            <mat-option value="Signature">Signature. Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
+            <mat-option value="Planner">Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
+            <mat-option value="Core">Core HIGH.5x8.BLOCK.ENG..</mat-option>
+          </mat-select>
+        </ng-template>
+
+      </ngx-datatable-column>
+
+      <ngx-datatable-column prop="description" editable="true">
+        <mat-select placeholder="Description">
+          <mat-option value="Signature">Signature. Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
+          <mat-option value="Planner">Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
+          <mat-option value="Core">Core HIGH.5x8.BLOCK.ENG..</mat-option>
+        </mat-select>
+      </ngx-datatable-column>
+      <ngx-datatable-column prop="type" editable="true">
+        <mat-select placeholder="Description">
+          <mat-option value="Signature">Signature. Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
+          <mat-option value="Planner">Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
+          <mat-option value="Core">Core HIGH.5x8.BLOCK.ENG..</mat-option>
+        </mat-select>
+      </ngx-datatable-column>
+      <ngx-datatable-column prop="partner" editable="true"></ngx-datatable-column>
+      <ngx-datatable-column prop="received" editable="true"></ngx-datatable-column>
+      <ngx-datatable-column prop="sflywip" editable="true"></ngx-datatable-column>
+      <ngx-datatable-column prop="collated" editable="true"></ngx-datatable-column>
+      <ngx-datatable-column prop="waste" editable="true"></ngx-datatable-column>
+      <ngx-datatable-column prop="average" editable="true"></ngx-datatable-column>
+      <ngx-datatable-column prop="completed" editable="true"></ngx-datatable-column>
+      <ngx-datatable-column prop="sfonhand" editable="true"></ngx-datatable-column>
+      <ngx-datatable-column prop="ponhand" editable="true"></ngx-datatable-column>
+      <ngx-datatable-column prop="updated" editable="true"></ngx-datatable-column>
+
+    </ng-template>
+  </ngx-datatable-row-detail>
+
+
+  <!-- <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="5px" *ngFor="let addNewRow of addedRows">
 
         <span fxFlex="140px">
-          <mat-select [(value)]="addNewRow.id" placeholder="Item #">
-            <mat-option value="PR1920001">PR1920001</mat-option>
-            <mat-option value="PR1920003">PR1920003</mat-option>
-            <mat-option value="PR1920001">PR1920004</mat-option>
-          </mat-select>
+
         </span>
         <span fxFlex="140px"> </span>
         <span fxFlex="140px">
@@ -79,11 +117,9 @@
             add_circle </i>
 
         </div>
-      </div>
-    </ng-template>
-  </ngx-datatable-row-detail>
+      </div> -->
 
-  <ngx-datatable-column *ngFor="let col of cols" [name]="col.prop" [resizeable]="false">
+  <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop">
   </ngx-datatable-column>
 
 </ngx-datatable>

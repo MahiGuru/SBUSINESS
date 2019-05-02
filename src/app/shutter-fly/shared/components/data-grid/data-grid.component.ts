@@ -5,6 +5,7 @@ import {
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { SharedOrdersService } from '../../services/shared-orders.service';
 import { Inventory } from '../../../core/models/inventory';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -18,13 +19,14 @@ export class DataGridComponent implements OnInit, OnChanges {
   @Input() rows: any;
   @Input() newBtnClicked: boolean;
   public originalRows: any;
+  public newAddedRow: any = [];
   @Output() isAddBtnClicked: EventEmitter<any> = new EventEmitter();
   filterVal: any;
   public addedRows = [];
   public newRowHeight: any = 100;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
-  constructor(public sharedOrderService: SharedOrdersService) {
+  constructor(public sharedOrderService: SharedOrdersService, public http: HttpClient) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -36,6 +38,7 @@ export class DataGridComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.originalRows = this.rows;
+
   }
 
   addNewBtnClicked() {
@@ -45,6 +48,7 @@ export class DataGridComponent implements OnInit, OnChanges {
     this.addedRows = [
       ...this.addedRows, addRow
     ];
+    console.log('addedRows >>> ', this.addedRows);
     setTimeout(() => {
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
     }, 100);

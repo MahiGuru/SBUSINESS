@@ -19,7 +19,7 @@ export class InventoryComponent implements OnInit {
 
   columns = [
     { prop: 'id', name: 'Item #', width: 100 },
-    { name: 'Description', width: '350' },
+    { name: 'Description', width: 350 },
     { prop: 'type', name: 'Type', width: 100 },
     { prop: 'partner', name: 'Partner', width: 100 },
     { name: 'Received', width: 100 },

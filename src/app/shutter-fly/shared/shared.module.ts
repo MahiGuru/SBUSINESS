@@ -7,16 +7,20 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { MaterialModule } from 'src/app/ng-material.module';
 
+import { AgGridModule } from 'ag-grid-angular';
+import { DataTableComponent } from './components/data-table/data-table.component';
+
+
 @NgModule({
-  declarations: [DataGridComponent, DeleteDialogComponent],
+  declarations: [DataGridComponent, DeleteDialogComponent, DataTableComponent],
   imports: [
     CommonModule,
     MaterialModule,
     FlexLayoutModule,
     NgxDatatableModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule, AgGridModule.withComponents([])
   ],
-  exports: [DataGridComponent, DeleteDialogComponent]
+  exports: [DataGridComponent, DeleteDialogComponent, DataTableComponent]
 })
 export class SharedModule { }
