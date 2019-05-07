@@ -97,4 +97,18 @@ export class DataGridComponent implements OnInit, OnChanges {
     this.table.rowDetail.toggleExpandRow(this.rows[0]);
     this.isAddBtnClicked.emit(false);
   }
+  getRowClass(row) {
+    return 'header-row';
+    // return {
+    //   'age-is-ten': (row.age % 10) === 0
+    // };
+  }
+
+  getCellClass({ row, column, value }): any {
+
+    return 'my-custom-class-cell';
+    // return {
+    //   'is-female': value === 'female'
+    // };
+  }
 }

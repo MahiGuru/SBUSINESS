@@ -2,6 +2,20 @@
   .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-icon-button .mat-icon{
     margin-top: -15px;
   }
+
+  /** cell styling **/
+  .ngx-datatable.material .datatable-body {
+      .datatable-body-cell.description{
+        width: 250px !important;
+      }
+  }
+  .ngx-datatable.material .datatable-header {
+    .datatable-header-cell:nth-child(2){
+      width:250px !important;
+    }
+  }
+
+
   .search-icon{
     top: -5px;
     position: relative;
