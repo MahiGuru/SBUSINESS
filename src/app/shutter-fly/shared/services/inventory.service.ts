@@ -13,4 +13,10 @@ export class InventoryService {
   getInventoryItems() {
     return this.http.get(`assets/data/inventory.json`);
   }
+  addedInventoryItems() {
+    return this.http.get(`assets/data/addedInventory.json`);
+  }
+  calculatedInventoryItems() {
+    return this.http.get(`assets/data/calculateInventory.json`);
+  }
 }

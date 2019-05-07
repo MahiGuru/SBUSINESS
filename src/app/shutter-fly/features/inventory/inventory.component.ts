@@ -3,7 +3,7 @@ import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { SharedOrdersService } from '../../shared/services/shared-orders.service';
 import { Inventory } from '../../core/models/inventory';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
-
+import * as _ from 'lodash';
 @Component({
   selector: 'sb-inventory',
   templateUrl: './inventory.component.html',
@@ -54,7 +54,7 @@ export class InventoryComponent implements OnInit {
     //   this.table.rowDetail.toggleExpandRow(this.rows[0]);
     // }, 100);
   }
-  ngOnInit() {
+  async ngOnInit() {
     // this.sharedOrderService.data$.subscribe((val) => {
     //   console.log('SUBSCRIBE >>>> ', val);
     //   this.rows = val;
@@ -63,6 +63,17 @@ export class InventoryComponent implements OnInit {
       this.rows = rows;
       console.log(this.rows);
     });
+    let addedRows = [];
+    let calculatedRows = [];
+    await this.inventoryService.addedInventoryItems().subscribe((rows: any) => {
+      addedRows = rows;
+      console.log(addedRows);
+    });
+    await this.inventoryService.calculatedInventoryItems().subscribe((rows: any) => {
+      calculatedRows = rows;
+      console.log(calculatedRows);
+    });
+    // this.rows = _.merge(addedRows, calculatedRows);
   }
   isAddBtnClicked(event) {
     this.isAddNewBtnClicked = event;
