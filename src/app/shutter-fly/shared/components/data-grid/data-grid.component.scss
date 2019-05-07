@@ -2,7 +2,16 @@
   .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-icon-button .mat-icon{
     margin-top: -15px;
   }
-
+  .sortable .sort-btn:before {
+    font-family: data-table;
+        content: "c";
+    }
+    .sortable .sort-btn.datatable-icon-down:before {
+        content: "f";
+    }
+    .sortable .sort-btn.datatable-icon-up:before {
+        content: "e";
+    }
   /** cell styling **/
   .ngx-datatable.material .datatable-body {
       .datatable-body-cell.description{
