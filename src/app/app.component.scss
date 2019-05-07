@@ -8,7 +8,7 @@
   .container .content-area .mat-tab-label-content{
     font-weight: 600;
   }
-  .datatable-body-cell-label {
+  .datatable-body-cell-label, .ellipsis {
     text-overflow: ellipsis;
 
     /* Required for text-overflow to do anything */

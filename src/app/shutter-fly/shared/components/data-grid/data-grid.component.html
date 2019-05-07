@@ -13,16 +13,8 @@
     <button class="apply-btn" mat-raised-button color="accent" (click)='updateFilter(filterVal)'>Apply</button>
   </div>
   <div fxFlex fxFlexAlign="center" class="text-right">
-
-    <button mat-button>
-      <i class="material-icons"> arrow_downward </i>
-      Import
-    </button>
-
-    <button mat-button>
-      <i class="material-icons"> arrow_upward </i>
-      Export
-    </button>
+    <button mat-button> <i class="material-icons"> arrow_downward </i> Import</button>
+    <button mat-button> <i class="material-icons"> arrow_upward </i> Export </button>
   </div>
 </div>
 <!-- <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Search filter by'
@@ -32,48 +24,88 @@
 
   <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <div class="row-ab-actions">
-        <span fxFlex fxLayout="row" fxLayoutGap="10px">
-          <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
-            cancel
-          </i>
-          <i class="material-icons done-ic" (click)="addRowsToInventory()">
-            check_circle
-          </i>
-        </span>
-      </div>
-      <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="5px" *ngFor="let addNewRow of addedRows">
-
-        <span fxFlex="112px"> </span>
-        <span fxFlex="112px">
-          <mat-select [(value)]="addNewRow.description" placeholder="Description">
-            <mat-option value="Signature">Signature. Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
-            <mat-option value="Planner">Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
-            <mat-option value="Core">Core HIGH.5x8.BLOCK.ENG..</mat-option>
-          </mat-select>
-        </span>
-        <span fxFlex="112px">
-          <input matInput placeholder="Assembly" [name]="addNewRow.assemblyPartner"
-            [(ngModel)]="addNewRow.assemblyPartner">
-        </span>
-        <span fxFlex="112px">
-          <input matInput placeholder="Received" [name]="addNewRow.received" [(ngModel)]="addNewRow.received">
-        </span>
-        <span fxFlex="112px">
-          <input matInput placeholder="Committed" [name]="addNewRow.committed" [(ngModel)]="addNewRow.committed">
-        </span>
-        <div fxFlex="112px" fxLayout="row" fxLayoutGap="20px">
-          <i class="material-icons" (click)="removeCurrentRow(addNewRow)">
-            remove_circle
-          </i>
-          <i class="material-icons" (click)="addAnotherRow()">
-            add_circle </i>
-
+      <section *ngIf="row.children && row.children.length > 0">
+        <div>
+          <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let row of row.children">
+            <span> </span>
+            <span> {{row.id}}
+            </span>
+            <span class="ellipsis">{{row.description}}
+            </span>
+            <span>{{row.type}}
+            </span>
+            <span>{{row.partner}}
+            </span>
+            <span>{{row.nns}} </span>
+            <span>{{row.ss}}</span>
+            <span>{{row.dssd}} </span>
+            <span>{{row.partner}} </span>
+            <span>{{row.partner}} </span>
+            <span> {{row.partner}}</span>
+            <span> {{row.partner}}</span>
+            <span> </span>
+            <span> </span>
+          </div>
         </div>
-        <span fxFlex="112px"> </span>
-      </div>
+        <!-- <ngx-datatable-column>
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+            <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded"
+              title="Expand/Collapse Row" (click)="toggleExpandRow(row)"
+              *ngIf="row.children && row.children.length > 0">
+            </a>
+          </ng-template>
+        </ngx-datatable-column> -->
 
-      <!-- <ngx-datatable-column prop="id">
+      </section>
+      <section class="new_section" *ngIf="!row.children">
+        <div class="row-ab-actions">
+          <span fxFlex fxLayout="row" fxLayoutGap="10px">
+            <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
+              cancel
+            </i>
+            <i class="material-icons done-ic" (click)="addRowsToInventory()">
+              check_circle
+            </i>
+          </span>
+        </div>
+        <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="5px" *ngFor="let addNewRow of addedRows">
+          <span fxFlex="112px">
+            <mat-select [(value)]="addNewRow.description" placeholder="Item#">
+              <mat-option value="PR1920001">PR1920001</mat-option>
+              <mat-option value="PR1920002">PR1920001</mat-option>
+              <mat-option value="PR1920003">PR1920003</mat-option>
+            </mat-select>
+          </span>
+          <span fxFlex="220px">
+            <mat-select [(value)]="addNewRow.description" placeholder="Description">
+              <mat-option value="Signature">Signature. Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
+              <mat-option value="Planner">Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
+              <mat-option value="Core">Core HIGH.5x8.BLOCK.ENG..</mat-option>
+            </mat-select>
+          </span>
+          <span fxFlex="100px">
+            EN
+          </span>
+          <span fxFlex="100px">
+            <mat-select [(value)]="addNewRow.description" placeholder="Partner">
+              <mat-option value="HEU">HEU</mat-option>
+              <mat-option value="BNG">BNG</mat-option>
+              <mat-option value="LTX">LTX</mat-option>
+            </mat-select>
+          </span>
+          <span fxFlex="50px"> </span>
+          <div fxFlex="112px" fxLayout="row" fxLayoutGap="10px">
+            <i class="material-icons red" (click)="removeCurrentRow(addNewRow)">
+              remove_circle
+            </i>
+            <i class="material-icons green" (click)="addAnotherRow()">
+              add_circle </i>
+
+          </div>
+          <span fxFlex="112px"> </span>
+        </div>
+
+        <!-- <ngx-datatable-column prop="id">
         <ng-template let-column="column" ngx-datatable-header-template>
           <mat-select placeholder="Description">
             <mat-option value="Signature">Signature. Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
@@ -108,14 +140,20 @@
       <ngx-datatable-column prop="sfonhand" editable="true"></ngx-datatable-column>
       <ngx-datatable-column prop="ponhand" editable="true"></ngx-datatable-column>
       <ngx-datatable-column prop="updated" editable="true"></ngx-datatable-column> -->
-
+      </section>
     </ng-template>
   </ngx-datatable-row-detail>
 
 
-
-
-  <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false" [cellClass]="col.prop" >
+  <ngx-datatable-column>
+    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+      <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded"
+        title="Expand/Collapse Row" (click)="toggleExpandRow(row)" *ngIf="row.children && row.children.length > 0">
+      </a>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
+    [cellClass]="col.prop">
   </ngx-datatable-column>
 
 </ngx-datatable>

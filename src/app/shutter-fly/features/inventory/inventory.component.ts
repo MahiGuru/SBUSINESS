@@ -60,20 +60,20 @@ export class InventoryComponent implements OnInit {
     //   this.rows = val;
     // });
     this.inventoryService.getInventoryItems().subscribe((rows: any) => {
-      // this.rows = rows;
+      this.rows = rows;
       console.log(this.rows);
     });
-    let addedRows = [];
-    let calculatedRows = [];
-    this.inventoryService.addedInventoryItems().subscribe((rows: any) => {
-      addedRows = rows;
-      this.inventoryService.calculatedInventoryItems().subscribe((rows: any) => {
-        calculatedRows = rows;
-        this.rows = _.merge(addedRows, calculatedRows);
-        console.log("ROWS 2222 ", this.rows);
-      });
-    });
-    console.log("ROWS ", this.rows);
+    const addedRows = [];
+    const calculatedRows = [];
+    // this.inventoryService.addedInventoryItems().subscribe((rows: any) => {
+    //   addedRows = rows;
+    //   this.inventoryService.calculatedInventoryItems().subscribe((rows: any) => {
+    //     calculatedRows = rows;
+    //     this.rows = _.merge(addedRows, calculatedRows);
+    //     console.log("ROWS 2222 ", this.rows);
+    //   });
+    // });
+    console.log('ROWS ', this.rows);
   }
   isAddBtnClicked(event) {
     this.isAddNewBtnClicked = event;

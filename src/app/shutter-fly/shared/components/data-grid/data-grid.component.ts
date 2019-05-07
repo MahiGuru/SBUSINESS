@@ -26,6 +26,7 @@ export class DataGridComponent implements OnInit, OnChanges {
   public newRowHeight: any = 100;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
+
   constructor(public sharedOrderService: SharedOrdersService, public http: HttpClient) {
   }
 
@@ -110,5 +111,9 @@ export class DataGridComponent implements OnInit, OnChanges {
     // return {
     //   'is-female': value === 'female'
     // };
+  }
+  toggleExpandRow(row) {
+    console.log('Toggled Expand Row!', row);
+    this.table.rowDetail.toggleExpandRow(row);
   }
 }

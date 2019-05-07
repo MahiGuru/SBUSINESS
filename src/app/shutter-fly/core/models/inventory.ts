@@ -1,5 +1,5 @@
 export class Inventory {
-  public id: any = '33';
+  public id: any = '';
   public description = '';
   public type = '';
   public partner = '';

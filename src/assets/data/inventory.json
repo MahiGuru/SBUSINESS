@@ -12,7 +12,39 @@
     "completed": 300,
     "sfonhand": 1000,
     "ponhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "children": [
+      {
+        "id": "PR1920001",
+        "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+        "type": "FC",
+        "partner": "BNG",
+        "received": 500,
+        "sflywip": 500,
+        "collated": 200,
+        "waste": 10,
+        "average": 300,
+        "completed": 300,
+        "sfonhand": 1000,
+        "ponhand": 1000,
+        "updated": "10/04/16"
+      },
+      {
+        "id": "PR1920001",
+        "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+        "type": "FC",
+        "partner": "BNG",
+        "received": 500,
+        "sflywip": 500,
+        "collated": 200,
+        "waste": 10,
+        "average": 300,
+        "completed": 300,
+        "sfonhand": 1000,
+        "ponhand": 1000,
+        "updated": "10/04/16"
+      }
+    ]
   },
   {
     "id": "PR1920001",
@@ -27,7 +59,8 @@
     "completed": 300,
     "sfonhand": 1000,
     "ponhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "children": []
   },
   {
     "id": "PR1920001",
@@ -42,7 +75,39 @@
     "completed": 300,
     "sfonhand": 1000,
     "ponhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "children": [
+      {
+        "id": "PR1920001",
+        "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+        "type": "FC",
+        "partner": "BNG",
+        "received": 500,
+        "sflywip": 500,
+        "collated": 200,
+        "waste": 10,
+        "average": 300,
+        "completed": 300,
+        "sfonhand": 1000,
+        "ponhand": 1000,
+        "updated": "10/04/16"
+      },
+      {
+        "id": "PR1920001",
+        "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+        "type": "FC",
+        "partner": "BNG",
+        "received": 500,
+        "sflywip": 500,
+        "collated": 200,
+        "waste": 10,
+        "average": 300,
+        "completed": 300,
+        "sfonhand": 1000,
+        "ponhand": 1000,
+        "updated": "10/04/16"
+      }
+    ]
   },
   {
     "id": "PR1920001",
@@ -57,7 +122,8 @@
     "completed": 300,
     "sfonhand": 1000,
     "ponhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "children": []
   },
   {
     "id": "PR1920001",
@@ -72,7 +138,39 @@
     "completed": 300,
     "sfonhand": 1000,
     "ponhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "children": [
+      {
+        "id": "PR1920001",
+        "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+        "type": "FC",
+        "partner": "BNG",
+        "received": 500,
+        "sflywip": 500,
+        "collated": 200,
+        "waste": 10,
+        "average": 300,
+        "completed": 300,
+        "sfonhand": 1000,
+        "ponhand": 1000,
+        "updated": "10/04/16"
+      },
+      {
+        "id": "PR1920001",
+        "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+        "type": "FC",
+        "partner": "BNG",
+        "received": 500,
+        "sflywip": 500,
+        "collated": 200,
+        "waste": 10,
+        "average": 300,
+        "completed": 300,
+        "sfonhand": 1000,
+        "ponhand": 1000,
+        "updated": "10/04/16"
+      }
+    ]
   },
   {
     "id": "PR1920001",
@@ -87,7 +185,8 @@
     "completed": 300,
     "sfonhand": 1000,
     "ponhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "children": []
   },
   {
     "id": "PR1920001",
@@ -102,6 +201,38 @@
     "completed": 300,
     "sfonhand": 1000,
     "ponhand": 1000,
-    "updated": "10/04/16"
+    "updated": "10/04/16",
+    "children": [
+      {
+        "id": "PR1920001",
+        "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+        "type": "FC",
+        "partner": "BNG",
+        "received": 500,
+        "sflywip": 500,
+        "collated": 200,
+        "waste": 10,
+        "average": 300,
+        "completed": 300,
+        "sfonhand": 1000,
+        "ponhand": 1000,
+        "updated": "10/04/16"
+      },
+      {
+        "id": "PR1920001",
+        "description": "Signature. Planner Core HIGH.5x8.BLOCK.ENG..",
+        "type": "FC",
+        "partner": "BNG",
+        "received": 500,
+        "sflywip": 500,
+        "collated": 200,
+        "waste": 10,
+        "average": 300,
+        "completed": 300,
+        "sfonhand": 1000,
+        "ponhand": 1000,
+        "updated": "10/04/16"
+      }
+    ]
   }
 ]
