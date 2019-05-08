@@ -7,6 +7,10 @@ import { SharedOrdersService } from '../../services/shared-orders.service';
 import { Inventory } from '../../../core/models/inventory';
 import { HttpClient } from '@angular/common/http';
 
+import {
+  faCaretRight, faCaretDown, faWindowClose, faCheckSquare,
+  faPencilAlt, faTrashAlt
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'sb-data-grid',
@@ -20,10 +24,20 @@ export class DataGridComponent implements OnInit, OnChanges {
   @Input() newBtnClicked: boolean;
   public originalRows: any;
   public newAddedRow: any = [];
+
+  faCaretRight = faCaretRight;
+  faCaretDown = faCaretDown;
+  faWindowClose = faWindowClose;
+  faCheckSquare = faCheckSquare;
+  faPencilAlt = faPencilAlt;
+  faTrashAlt = faTrashAlt;
+
+
   @Output() isAddBtnClicked: EventEmitter<any> = new EventEmitter();
   filterVal: any;
   public addedRows = [];
   public newRowHeight: any = 100;
+  isEditable = {};
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
 
@@ -113,7 +127,17 @@ export class DataGridComponent implements OnInit, OnChanges {
     // };
   }
   toggleExpandRow(row) {
+    this.newRowHeight = 0;
     console.log('Toggled Expand Row!', row);
     this.table.rowDetail.toggleExpandRow(row);
+    this.newRowHeight += row.children ? row.children.length * 60 : this.newRowHeight;
+  }
+
+  updateRowValue(event, rowIndex) {
+    console.log('inline editing rowIndex', rowIndex, event);
+    this.isEditable[rowIndex] = !this.isEditable[rowIndex];
+    // this.rows[rowIndex][cell] = event.target.value;
+    // this.rows = [...this.rows];
+    // console.log('UPDATED!', this.rows[rowIndex][cell]);
   }
 }

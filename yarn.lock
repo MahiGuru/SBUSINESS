@@ -107,7 +107,7 @@
   dependencies:
     tslib "^1.9.0"
 
-"@angular/cdk@~7.3.7":
+"@angular/cdk@^7.3.7":
   version "7.3.7"
   resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-7.3.7.tgz#ce1ad53ba04beb9c8e950acc5691ea0143753764"
   integrity sha512-xbXxhHHKGkVuW6K7pzPmvpJXIwpl0ykBnvA2g+/7Sgy5Pd35wCC+UtHD9RYczDM/mkygNxMQtagyCErwFnDtQA==
@@ -172,6 +172,13 @@
   integrity sha512-E5BtJPL4Fz1xyGTsoE4LELoZ33x0S0lJ0iUKqLRFeKKYM/fJ8l8mVNSZ7LnURTwpcjCiHcCRMcaCfuXWj7Kqhw==
   dependencies:
     tslib "^1.9.0"
+
+"@angular/flex-layout@^7.0.0-beta.24":
+  version "7.0.0-beta.24"
+  resolved "https://registry.yarnpkg.com/@angular/flex-layout/-/flex-layout-7.0.0-beta.24.tgz#ad2fd2b0ff5e49119a6e0bc2052256967ad749af"
+  integrity sha512-ll6sK0nLGxqI/f5+z4jbd+pve1QITzgehv2AuGvfSDgIjPMeqUDB5YZqQmIGM/dQRk/vIio5KCW5LQPJWzMMYQ==
+  dependencies:
+    tslib "^1.7.1"
 
 "@angular/forms@~7.2.0":
   version "7.2.12"
@@ -301,6 +308,32 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
+"@fortawesome/angular-fontawesome@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@fortawesome/angular-fontawesome/-/angular-fontawesome-0.3.0.tgz#380492f186469ce03d6fdbb3ec719810f771bf62"
+  integrity sha512-wXvyPI7GidoNiqeMz2re9iemUMFH4zBmuv94CfXlaanQ8+kMP/fYs/k69PLVN1KsebQY4kRA9GHmc1U1ndBkJg==
+  dependencies:
+    tslib "^1.9.0"
+
+"@fortawesome/fontawesome-common-types@^0.2.18":
+  version "0.2.18"
+  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.18.tgz#c0d8f073a5116b2de0a2c8a7aba66093a6956ce7"
+  integrity sha512-834DrzO2Ne3upCW+mJJPC/E6BsFcj+2Z1HmPIhbpbj8UaKmXWum4NClqLpUiMetugRlHuG4jbIHNdv2/lc3c1Q==
+
+"@fortawesome/fontawesome-svg-core@^1.2.18":
+  version "1.2.18"
+  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-svg-core/-/fontawesome-svg-core-1.2.18.tgz#c26cbded461895ebe260f0dea771ca29d8cb3517"
+  integrity sha512-1vyLWVQqxQ8q8bA2zgZcljk3RkeELlDJ757ymLk+ebK019AFgEFH5kTnR5OMN1SFsTwW1OHlFQO3VufdeCg/Gg==
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "^0.2.18"
+
+"@fortawesome/free-solid-svg-icons@^5.8.2":
+  version "5.8.2"
+  resolved "https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.8.2.tgz#aa2f042f73aca43eb4a26149907e63bf26d2e31c"
+  integrity sha512-5tF6WOFlqqO95zY5ukSB6jliDa3jnk1p5L4K/a58ccDFsbjSkhfGuvZkRkeWxH8uMms81pZd6yQTwQrkedeJmg==
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "^0.2.18"
+
 "@ngtools/webpack@7.3.8":
   version "7.3.8"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-7.3.8.tgz#c8761d0f6959682e03032f8d3de718d1f811410e"
@@ -334,6 +367,11 @@
     rxjs "6.3.3"
     semver "5.6.0"
     semver-intersect "1.4.0"
+
+"@swimlane/ngx-datatable@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-14.0.0.tgz#6227625e2ce2e9143735d4deeb3ab34b88745c26"
+  integrity sha512-zgRY58MzTpg9Jb575cg0O87mLtXYi6fx7NLRPRHdQ/FqH9mKjZ3i7+OjqtR8/w3KRmFP2Hnkmx52VzldZIKspg==
 
 "@types/jasmine@*":
   version "3.3.12"
@@ -584,6 +622,21 @@ after@0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
   integrity sha1-/ts5T58OAqqXaOcCvaI7UF+ufh8=
+
+ag-grid-angular@^20.2.0:
+  version "20.2.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-angular/-/ag-grid-angular-20.2.0.tgz#7ac37ccbe170420c264d3500c0ee5b3a440f7480"
+  integrity sha512-Rh7CKTXz7PvAddbwCP92oRx0Ng60eU6ybDa+qnPijC/MPv0VvNW89JjgxVQp0EVBn6GRnezrHGIVOi6uzyiSqQ==
+
+ag-grid-community@^20.2.0:
+  version "20.2.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-20.2.0.tgz#22f26d53e309b51a156878d180c9ec6f16bc6403"
+  integrity sha512-3oAzg58lenhpyIfZ6dBp6cCE+PEoh0N+OSci2+k5fHROn8PMrginAkygONDd068E2NC+qfmDNRkU2WjPgiH/BA==
+
+ag-grid-enterprise@^20.2.0:
+  version "20.2.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-enterprise/-/ag-grid-enterprise-20.2.0.tgz#dbc2c4f6d3c097661911fe40c18dcac775dac04d"
+  integrity sha512-3Nd2RPjK1/HKAQ6/4TO7ZgoW0bGWsKmp03tfqO1uT4WMn6VeNBTcALdSMfkzuvEfcDbmLzTSuguxDyOJbJ7q5w==
 
 agent-base@4, agent-base@^4.1.0, agent-base@~4.2.1:
   version "4.2.1"

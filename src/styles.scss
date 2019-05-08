@@ -292,7 +292,26 @@ $fw-normal: normal; //FONT WEIGHT CLASSES (e.g. class="fw-light")
     border-right: 1px solid #CCC;
   }
 }
-
+.text{
+  &-red{
+    &:hover{
+      color:rgb(146, 0, 0);
+    }
+    color:red;
+  }
+  &-green{
+    &:hover{
+      color:rgb(0, 92, 31);
+    }
+    color:rgb(0, 170, 65);
+  }
+  &-blue{
+    &:hover{
+      color:rgb(2, 0, 107);
+    }
+    color:rgb(0, 109, 233);
+  }
+}
 .pabsoulte {
   position: absolute;
 }
@@ -340,3 +359,4 @@ $fw-normal: normal; //FONT WEIGHT CLASSES (e.g. class="fw-light")
 .mat-tab-link {
   color: #333333;
 }
+

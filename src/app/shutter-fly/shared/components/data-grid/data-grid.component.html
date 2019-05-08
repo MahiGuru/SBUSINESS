@@ -30,7 +30,7 @@
             <span> </span>
             <span> {{row.id}}
             </span>
-            <span class="ellipsis">{{row.description}}
+            <span class="ellipsis description">{{row.description}}
             </span>
             <span>{{row.type}}
             </span>
@@ -76,7 +76,7 @@
               <mat-option value="PR1920003">PR1920003</mat-option>
             </mat-select>
           </span>
-          <span fxFlex="220px">
+          <span fxFlex="220px" class="description">
             <mat-select [(value)]="addNewRow.description" placeholder="Description">
               <mat-option value="Signature">Signature. Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
               <mat-option value="Planner">Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
@@ -103,43 +103,10 @@
 
           </div>
           <span fxFlex="112px"> </span>
+          <span fxFlex="112px"> </span>
+          <span fxFlex="112px"> </span>
         </div>
 
-        <!-- <ngx-datatable-column prop="id">
-        <ng-template let-column="column" ngx-datatable-header-template>
-          <mat-select placeholder="Description">
-            <mat-option value="Signature">Signature. Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
-            <mat-option value="Planner">Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
-            <mat-option value="Core">Core HIGH.5x8.BLOCK.ENG..</mat-option>
-          </mat-select>
-        </ng-template>
-
-      </ngx-datatable-column>
-
-      <ngx-datatable-column prop="description" editable="true">
-        <mat-select placeholder="Description">
-          <mat-option value="Signature">Signature. Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
-          <mat-option value="Planner">Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
-          <mat-option value="Core">Core HIGH.5x8.BLOCK.ENG..</mat-option>
-        </mat-select>
-      </ngx-datatable-column>
-      <ngx-datatable-column prop="type" editable="true">
-        <mat-select placeholder="Description">
-          <mat-option value="Signature">Signature. Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
-          <mat-option value="Planner">Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
-          <mat-option value="Core">Core HIGH.5x8.BLOCK.ENG..</mat-option>
-        </mat-select>
-      </ngx-datatable-column>
-      <ngx-datatable-column prop="partner" editable="true"></ngx-datatable-column>
-      <ngx-datatable-column prop="received" editable="true"></ngx-datatable-column>
-      <ngx-datatable-column prop="sflywip" editable="true"></ngx-datatable-column>
-      <ngx-datatable-column prop="collated" editable="true"></ngx-datatable-column>
-      <ngx-datatable-column prop="waste" editable="true"></ngx-datatable-column>
-      <ngx-datatable-column prop="average" editable="true"></ngx-datatable-column>
-      <ngx-datatable-column prop="completed" editable="true"></ngx-datatable-column>
-      <ngx-datatable-column prop="sfonhand" editable="true"></ngx-datatable-column>
-      <ngx-datatable-column prop="ponhand" editable="true"></ngx-datatable-column>
-      <ngx-datatable-column prop="updated" editable="true"></ngx-datatable-column> -->
       </section>
     </ng-template>
   </ngx-datatable-row-detail>
@@ -147,13 +114,54 @@
 
   <ngx-datatable-column>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-      <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded"
-        title="Expand/Collapse Row" (click)="toggleExpandRow(row)" *ngIf="row.children && row.children.length > 0">
+      <a href="javascript:void(0)" class="dt-arrow" title="Expand/Collapse Row" (click)="toggleExpandRow(row)"
+        *ngIf="row.children && row.children.length > 0">
+        <fa-icon [icon]="!expanded ? faCaretRight: faCaretDown"></fa-icon>
       </a>
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
+  <ngx-datatable-column prop="id"></ngx-datatable-column>
+  <ngx-datatable-column prop="description" editable="true" headerClass="description"
+    [cellClass]="'description ellipsis'">
+  </ngx-datatable-column>
+  <ngx-datatable-column prop="type" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column prop="partner" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column prop="received" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column prop="sflywip" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column prop="collated" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column name="waste" prop="waste" [resizeable]="false">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <input autofocus *ngIf="isEditable[rowIndex]" type="text" [value]="value" />
+      <span *ngIf="!isEditable[rowIndex]">{{row.waste}}</span>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column prop="average" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column prop="completed" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column prop="sfonhand" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column prop="ponhand" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column prop="updated" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <!-- <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
     [cellClass]="col.prop">
+  </ngx-datatable-column> -->
+  <ngx-datatable-column>
+    <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+      <div class="row-action-btn">
+        <span *ngIf="!isEditable[rowIndex]" fxLayout="row" fxLayoutGap="20px">
+          <span (click)="updateRowValue($event, rowIndex)">
+            <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
+          </span>
+          <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
+        </span>
+        <span *ngIf="isEditable[rowIndex]" fxLayout="row" fxLayoutGap="10px">
+          <span (click)="this.isEditable[rowIndex] = !this.isEditable[rowIndex]">
+            <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
+          </span>
+          <span (click)="this.isEditable[rowIndex] = !this.isEditable[rowIndex]">
+            <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
+          </span>
+        </span>
+      </div>
+    </ng-template>
   </ngx-datatable-column>
 
 </ngx-datatable>

@@ -18,46 +18,70 @@
     .sortable .sort-btn.datatable-icon-up:before {
         content: "e";
     }
+    .description .datatable-body-cell-label{
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .ngx-datatable .datatable-header .datatable-header-cell{
+      &:nth-child(1) .sort-btn{
+        &:before{
+          content: ''
+        }
+        &:after{
+          content: ''
+        }
+      }
+    }
+
   /** cell styling **/
   .newRow {
     span {
-      width:115px !important;
+      width:95px !important;
       font-size: 14px !important;
       box-sizing: border-box !important;
     }
     span:nth-child(1) {
-      width:60px !important;
-    }span:nth-child(2) {
-      width:100px !important;
-    }span:nth-child(3) {
-      width:188px !important;
+      width:50px !important;
+    }
+    span.description{
+      width:227px !important;
     }
   }
   .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell,
   .ngx-datatable.material .datatable-header .datatable-header-cell{
-    width:150px !important;
+    width:100px !important;
   }
   .ngx-datatable.material .datatable-body {
     .datatable-body-cell:nth-child(1){
-      width:70px !important;
-    }
-    .datatable-body-cell:nth-child(2){
-      width:150px !important;
+      width:50px !important;
     }
     .datatable-body-cell.description{
-      width: 250px !important;
+      width:250px !important
     }
+    // .datatable-body-cell:nth-child(2){
+    //   width:150px !important;
+    // }
+    // .datatable-body-cell.description{
+    //   width: 250px !important;
+    // }
   }
   .ngx-datatable.material .datatable-header {
     .datatable-header-cell:nth-child(1){
-      width:70px !important;
+      width:50px !important;
     }
-    .datatable-header-cell:nth-child(2){
-      width:150px !important;
+    .datatable-header-cell.description{
+      width:250px !important
     }
-    .datatable-header-cell:nth-child(3){
-      width:250px !important;
-    }
+    // .datatable-header-cell:nth-child(2){
+    //   width:150px !important;
+    // }
+    // .datatable-header-cell:nth-child(3){
+    //   width:250px !important;
+    // }
+  }
+  .dt-arrow{
+    color: #333333;;
   }
   .newRow{
     span{
@@ -92,6 +116,18 @@
     box-shadow: none;
     &:hover{
       background-color: #c6c7c9 !important;
+    }
+  }
+
+  .row-action-btn{
+    position: relative;
+    top: -4px;
+    .fa-icon{
+      &:hover{
+        color:rgb(167, 167, 167);
+      }
+      margin-bottom: -10px;
+      cursor: pointer;
     }
   }
 }

@@ -9,7 +9,7 @@ import { MaterialModule } from 'src/app/ng-material.module';
 
 import { AgGridModule } from 'ag-grid-angular';
 import { DataTableComponent } from './components/data-table/data-table.component';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [DataGridComponent, DeleteDialogComponent, DataTableComponent],
@@ -19,6 +19,7 @@ import { DataTableComponent } from './components/data-table/data-table.component
     FlexLayoutModule,
     NgxDatatableModule,
     FormsModule,
+    FontAwesomeModule,
     ReactiveFormsModule, AgGridModule.withComponents([])
   ],
   exports: [DataGridComponent, DeleteDialogComponent, DataTableComponent]
