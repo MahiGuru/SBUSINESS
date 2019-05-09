@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  baseUrl: 'http://hxserver2019.southindia.cloudapp.azure.com/vendorinventory/api/inventory/',
+  partner: 'partners',
+  inventoryItems: 'items',
+  inventoryList: 'onhand'
 };
 
 /*

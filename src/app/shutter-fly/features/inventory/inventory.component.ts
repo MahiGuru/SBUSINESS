@@ -18,7 +18,7 @@ export class InventoryComponent implements OnInit {
   public isAddNewBtnClicked = false;
 
   columns = [
-    { prop: 'id', name: 'Item #', width: 100 },
+    { prop: 'itemNo', name: 'Item #', width: 100 },
     { name: 'Description', width: 850 },
     { prop: 'type', name: 'Type', width: 100 },
     { prop: 'partner', name: 'Partner', width: 100 },
@@ -60,8 +60,15 @@ export class InventoryComponent implements OnInit {
     //   this.rows = val;
     // });
     this.inventoryService.getInventoryItems().subscribe((rows: any) => {
-      this.rows = rows;
-      console.log(this.rows);
+      console.log('ROWS, ', rows);
+      const tempRows = [];
+      _.each(rows, (row) => {
+        const inventory = new Inventory(row);
+        tempRows.push(inventory);
+      });
+
+      this.rows = tempRows;
+      console.log(this.rows, tempRows);
     });
     const addedRows = [];
     const calculatedRows = [];
@@ -73,7 +80,6 @@ export class InventoryComponent implements OnInit {
     //     console.log("ROWS 2222 ", this.rows);
     //   });
     // });
-    console.log('ROWS ', this.rows);
   }
   isAddBtnClicked(event) {
     this.isAddNewBtnClicked = event;
