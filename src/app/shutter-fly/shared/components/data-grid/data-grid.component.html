@@ -22,96 +22,6 @@
 <ngx-datatable #table class='material expandable' [columns]="cols" [columnMode]="'force'" [headerHeight]="50"
   [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows' [rowClass]="getRowClass">
 
-  <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
-    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <section *ngIf="row.children && row.children.length > 0">
-        <div>
-          <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let row of row.children">
-            <span> </span>
-            <span> {{row.id}}
-            </span>
-            <span class="ellipsis description">{{row.description}}
-            </span>
-            <span>{{row.type}}
-            </span>
-            <span>{{row.partner}}
-            </span>
-            <span>{{row.nns}} </span>
-            <span>{{row.ss}}</span>
-            <span>{{row.dssd}} </span>
-            <span>{{row.partner}} </span>
-            <span>{{row.partner}} </span>
-            <span> {{row.partner}}</span>
-            <span> {{row.partner}}</span>
-            <span> </span>
-            <span> </span>
-          </div>
-        </div>
-        <!-- <ngx-datatable-column>
-          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-            <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded"
-              title="Expand/Collapse Row" (click)="toggleExpandRow(row)"
-              *ngIf="row.children && row.children.length > 0">
-            </a>
-          </ng-template>
-        </ngx-datatable-column> -->
-
-      </section>
-      <section class="new_section" *ngIf="!row.children">
-        <div class="row-ab-actions">
-          <span fxFlex fxLayout="row" fxLayoutGap="10px">
-            <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
-              cancel
-            </i>
-            <i class="material-icons done-ic" (click)="addRowsToInventory()">
-              check_circle
-            </i>
-          </span>
-        </div>
-        <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="5px" *ngFor="let addNewRow of addedRows">
-          <span fxFlex="112px">
-            <mat-select [(value)]="addNewRow.description" placeholder="Item#">
-              <mat-option value="PR1920001">PR1920001</mat-option>
-              <mat-option value="PR1920002">PR1920001</mat-option>
-              <mat-option value="PR1920003">PR1920003</mat-option>
-            </mat-select>
-          </span>
-          <span fxFlex="220px" class="description">
-            <mat-select [(value)]="addNewRow.description" placeholder="Description">
-              <mat-option value="Signature">Signature. Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
-              <mat-option value="Planner">Planner Core HIGH.5x8.BLOCK.ENG..</mat-option>
-              <mat-option value="Core">Core HIGH.5x8.BLOCK.ENG..</mat-option>
-            </mat-select>
-          </span>
-          <span fxFlex="100px">
-            EN
-          </span>
-          <span fxFlex="100px">
-            <mat-select [(value)]="addNewRow.description" placeholder="Partner">
-              <mat-option value="HEU">HEU</mat-option>
-              <mat-option value="BNG">BNG</mat-option>
-              <mat-option value="LTX">LTX</mat-option>
-            </mat-select>
-          </span>
-          <span fxFlex="50px"> </span>
-          <div fxFlex="112px" fxLayout="row" fxLayoutGap="10px">
-            <i class="material-icons red" (click)="removeCurrentRow(addNewRow)">
-              remove_circle
-            </i>
-            <i class="material-icons green" (click)="addAnotherRow()">
-              add_circle </i>
-
-          </div>
-          <span fxFlex="112px"> </span>
-          <span fxFlex="112px"> </span>
-          <span fxFlex="112px"> </span>
-        </div>
-
-      </section>
-    </ng-template>
-  </ngx-datatable-row-detail>
-
-
   <ngx-datatable-column>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
       <a href="javascript:void(0)" class="dt-arrow" title="Expand/Collapse Row" (click)="toggleExpandRow(row)"
@@ -120,14 +30,16 @@
       </a>
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column prop="itemNo"></ngx-datatable-column>
-  <ngx-datatable-column prop="description" editable="true" headerClass="description"
-    [cellClass]="'description ellipsis'">
+  <ngx-datatable-column name="ItemNo#" prop="itemPartner.item.itemNo"></ngx-datatable-column>
+  <ngx-datatable-column name="description" prop="itemPartner.item.itemDescription" editable="true"
+    headerClass="description" [cellClass]="'description ellipsis'">
   </ngx-datatable-column>
-  <ngx-datatable-column prop="type" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column prop="partnerType" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column prop="received" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column prop="sflywip" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column name="Type" prop="itemPartner.item.itemType" editable="true" [resizeable]="false">
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Partner" prop="itemPartner.partner.partnerType" editable="true" [resizeable]="false">
+  </ngx-datatable-column>
+  <ngx-datatable-column prop="recieved" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column prop="sflyWip" editable="true" [resizeable]="false"></ngx-datatable-column>
   <ngx-datatable-column prop="collated" editable="true" [resizeable]="false"></ngx-datatable-column>
   <ngx-datatable-column name="waste" prop="waste" [resizeable]="false">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
@@ -135,11 +47,11 @@
       <span *ngIf="!isEditable[rowIndex]">{{row.waste}}</span>
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column prop="average" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column prop="overAge" editable="true" [resizeable]="false"></ngx-datatable-column>
   <ngx-datatable-column prop="completed" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column prop="sfonhand" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column prop="ponhand" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column prop="updated" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column prop="sfOnHand" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column prop="pOnHand" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column prop="updatedAt" editable="true" [resizeable]="false"></ngx-datatable-column>
   <!-- <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
     [cellClass]="col.prop">
   </ngx-datatable-column> -->
@@ -163,5 +75,101 @@
       </div>
     </ng-template>
   </ngx-datatable-column>
+
+
+  <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
+    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+      <section *ngIf="row.children && row.children.length > 0">
+        <div>
+          <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let nrow of row.children">
+
+            <span> </span>
+            <span> {{nrow.itemPartner.item.itemNo}}
+            </span>
+            <span class="ellipsis description">{{nrow.itemPartner.item.itemDescription}}
+            </span>
+            <span>{{nrow.itemPartner.item.itemType}}
+            </span>
+            <span>{{nrow.itemPartner.partner.partnerType}}
+            </span>
+            <span>{{nrow.recieved}} </span>
+            <span>{{nrow.sflyWip}}</span>
+            <span>{{nrow.collated}} </span>
+            <span>{{nrow.waste}} </span>
+            <span>{{nrow.overAge}} </span>
+            <span>{{nrow.completed}} </span>
+            <span> {{nrow.sfOnHand}}</span>
+            <span> {{nrow.pOnHand}}</span>
+            <span class="ellipsis"> {{nrow.updatedAt}}</span>
+            <span></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="new_section" *ngIf="row.children.length == 0">
+        <form [formGroup]="myForm">
+          <div formArrayName="addRows">
+            <div class="row-ab-actions">
+              <span fxFlex fxLayout="row" fxLayoutGap="10px">
+                <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
+                  cancel
+                </i>
+                <i class="material-icons done-ic" (click)="addRowsToInventory()">
+                  check_circle
+                </i>
+              </span>
+            </div>
+            <div fxLayout="row" class="newRow add-row-section mtb-5" fxLayoutGap="0px"
+              *ngFor="let comp of myForm.get('addRows').controls; let i=index">
+              <div [formGroupName]="i">
+                <span fxFlex="70px"></span>
+                <span fxFlex="100px">
+                  <mat-select [placeholder]="'Item No'" formControlName="itemNo"
+                    (selectionChange)="onItemChange($event, i)">
+                    <mat-option *ngFor="let option of inventoryItems" [value]="option.itemId">{{ option.itemNo }}
+                    </mat-option>
+                  </mat-select>
+                </span>
+                <span fxFlex="220px" class="description">
+                  <mat-select [placeholder]="'Item Desc'" formControlName="itemDesc"
+                    (selectionChange)="onItemChange($event, i)">
+                    <mat-option *ngFor="let option of inventoryItems" [value]="option.itemId">
+                      {{ option.itemDescription }}
+                    </mat-option>
+                  </mat-select>
+                </span>
+                <span fxFlex="95px">
+                  {{comp.get('itemType').value}}
+                </span>
+                <span fxFlex="100px">
+                  <mat-select formControlName="partner" (selectionChange)="onPartnerChange($event, i)">
+                    <mat-option *ngFor="let partner of partners" [value]="partner.partnerId">{{ partner.partnerCode }}
+                    </mat-option>
+                  </mat-select>
+                </span>
+                <span fxFlex="50px"> </span>
+                <div fxFlex="112px" fxLayout="row" fxLayoutGap="10px">
+                  <i class="material-icons red" (click)="removeCurrentRow(i)">
+                    remove_circle
+                  </i>
+                  <i class="material-icons green" (click)="addAnotherRow()">
+                    add_circle </i>
+
+                </div>
+                <span fxFlex="112px"> </span>
+                <span fxFlex="112px"> </span>
+                <span fxFlex="112px"> </span>
+              </div>
+            </div>
+          </div>
+        </form>
+
+
+      </section>
+    </ng-template>
+  </ngx-datatable-row-detail>
+
+
+
 
 </ngx-datatable>

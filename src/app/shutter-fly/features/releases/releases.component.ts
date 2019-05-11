@@ -3,7 +3,7 @@ import { ORDERS } from '../../core/models/order-state';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { SharedOrdersService } from '../../shared/services/shared-orders.service';
 import { MatDialog } from '@angular/material';
-import { Inventory } from '../../core/models/inventory';
+import { Inventory } from '../../core/models/inventory-old';
 
 @Component({
   selector: 'sb-releases',

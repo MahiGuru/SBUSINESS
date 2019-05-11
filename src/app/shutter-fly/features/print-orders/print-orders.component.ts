@@ -3,7 +3,7 @@ import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { MatDialog } from '@angular/material';
 import { ORDERS } from '../../core/models/order-state';
 import { SharedOrdersService } from '../../shared/services/shared-orders.service';
-import { Inventory } from '../../core/models/inventory';
+import { Inventory } from '../../core/models/inventory-old';
 import { DeleteDialogComponent } from '../../shared/components/delete-dialog/delete-dialog.component';
 
 @Component({

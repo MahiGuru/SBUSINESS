@@ -35,18 +35,16 @@
     }
 
   /** cell styling **/
-  .newRow {
-    span {
+  .newRow > span{
       width:95px !important;
       font-size: 14px !important;
       box-sizing: border-box !important;
-    }
-    span:nth-child(1) {
+    &:nth-child(1) {
       width:50px !important;
     }
-    span.description{
-      width:227px !important;
-    }
+  }
+  .newRow > span.description{
+    width:227px !important;
   }
   .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell,
   .ngx-datatable.material .datatable-header .datatable-header-cell{
@@ -80,19 +78,26 @@
     //   width:250px !important;
     // }
   }
+  .form-control{
+    width:80%;
+    box-sizing: border-box;
+  }
   .dt-arrow{
     color: #333333;;
   }
-  .newRow{
-    span{
+  .newRow > span{
       padding:.9rem 1.2rem;
       box-sizing: content-box;
     }
-  }
   .ngx-datatable.material .datatable-body .datatable-row-detail{
     padding: 0px;
   }
-
+  .add-row-section > span{
+    padding: .2rem 5px .2rem 0rem;
+  }
+  .add-row-section .mat-select{
+    width: 90%;
+  }
   .search-icon{
     top: -5px;
     position: relative;

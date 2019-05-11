@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { SharedOrdersService } from '../../shared/services/shared-orders.service';
-import { Inventory } from '../../core/models/inventory';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
 import * as _ from 'lodash';
+import { Inventory } from '../../core/models/newInventory';
 @Component({
   selector: 'sb-inventory',
   templateUrl: './inventory.component.html',

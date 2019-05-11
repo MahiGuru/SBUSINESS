@@ -358,5 +358,29 @@ $fw-normal: normal; //FONT WEIGHT CLASSES (e.g. class="fw-light")
 .mat-tab-label,
 .mat-tab-link {
   color: #333333;
+  text-overflow: initial;
+}
+.selectbox1 {
+  border: 1px solid #ccc;
+  width: 100%;
+  border-radius: 3px;
+  overflow: hidden;
+  background: #fafafa url("http://2.bp.blogspot.com/-T3aZyed1Ql8/VFHNFmecaTI/AAAAAAAACqI/BlgRLXWKvPs/s1600/ic_arrow_drop_down_48px-32.png") no-repeat 90% 50%;
+box-shadow:0px 0px 5px #ccc;
+}
+
+.selectbox1 select {
+  padding: 5px 8px;
+  width: 100%;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  background-image: none;
+  -webkit-appearance: none;
+
+}
+
+.selectbox1 select:focus {
+  outline: none;
 }
 
