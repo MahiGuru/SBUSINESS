@@ -11,9 +11,10 @@ import { AgGridModule } from 'ag-grid-angular';
 import { DataTableComponent } from './components/data-table/data-table.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
+import { DateFormatPipe } from '../shared/pipes/date-format.pipe';
 
 @NgModule({
-  declarations: [DataGridComponent, DeleteDialogComponent, DataTableComponent],
+  declarations: [DataGridComponent, DeleteDialogComponent, DataTableComponent, DateFormatPipe],
   imports: [
     CommonModule,
     MaterialModule,
@@ -24,6 +25,6 @@ import { HttpClientModule } from '@angular/common/http';
     FontAwesomeModule,
     ReactiveFormsModule, AgGridModule.withComponents([])
   ],
-  exports: [DataGridComponent, DeleteDialogComponent, DataTableComponent]
+  exports: [DataGridComponent, DeleteDialogComponent, DataTableComponent, DateFormatPipe]
 })
 export class SharedModule { }

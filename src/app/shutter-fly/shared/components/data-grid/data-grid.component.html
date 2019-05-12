@@ -43,7 +43,7 @@
   <ngx-datatable-column prop="collated" editable="true" [resizeable]="false"></ngx-datatable-column>
   <ngx-datatable-column name="waste" prop="waste" [resizeable]="false">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <input autofocus *ngIf="isEditable[rowIndex]" type="text" [value]="value" />
+      <input autofocus (input)="editValUpdate($event, row)" *ngIf="isEditable[rowIndex]" type="text" [value]="value" />
       <span *ngIf="!isEditable[rowIndex]">{{row.waste}}</span>
     </ng-template>
   </ngx-datatable-column>
@@ -51,11 +51,16 @@
   <ngx-datatable-column prop="completed" editable="true" [resizeable]="false"></ngx-datatable-column>
   <ngx-datatable-column prop="sfOnHand" editable="true" [resizeable]="false"></ngx-datatable-column>
   <ngx-datatable-column prop="pOnHand" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column prop="updatedAt" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column name="Updated At" editable="true" [resizeable]="false">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <span *ngIf="!isNewRowEnabled">{{ row.updatedAt | dateFormat}}</span>
+      <span *ngIf="isNewRowEnabled">{{ row.updatedAt }}</span>
+    </ng-template>
+  </ngx-datatable-column>
   <!-- <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
     [cellClass]="col.prop">
   </ngx-datatable-column> -->
-  <ngx-datatable-column>
+  <ngx-datatable-column *ngIf="!isNewRowEnabled">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
       <div class="row-action-btn">
         <span *ngIf="!isEditable[rowIndex]" fxLayout="row" fxLayoutGap="20px">
@@ -68,7 +73,7 @@
           <span (click)="this.isEditable[rowIndex] = !this.isEditable[rowIndex]">
             <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
           </span>
-          <span (click)="this.isEditable[rowIndex] = !this.isEditable[rowIndex]">
+          <span (click)="updateEditedValue(rowIndex, row.waste)">
             <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
           </span>
         </span>
@@ -119,7 +124,7 @@
                 </i>
               </span>
             </div>
-            <div fxLayout="row" class="newRow add-row-section mtb-5" fxLayoutGap="0px"
+            <div fxLayout="row" class="newRow add-row-section mtb-10" fxLayoutGap="0px"
               *ngFor="let comp of myForm.get('addRows').controls; let i=index">
               <div [formGroupName]="i">
                 <span fxFlex="70px"></span>
@@ -152,7 +157,7 @@
                   <i class="material-icons red" (click)="removeCurrentRow(i)">
                     remove_circle
                   </i>
-                  <i class="material-icons green" (click)="addAnotherRow()">
+                  <i class="material-icons green" (click)="addAnotherRow()" *ngIf="i == 0">
                     add_circle </i>
 
                 </div>

@@ -35,6 +35,7 @@ export class DataGridComponent implements OnInit, OnChanges {
   faCheckSquare = faCheckSquare;
   faPencilAlt = faPencilAlt;
   faTrashAlt = faTrashAlt;
+  isNewRowEnabled: boolean;
   public inventoryItems: any;
   public partners: any;
   public defaultItemNo: any = 1;
@@ -85,6 +86,7 @@ export class DataGridComponent implements OnInit, OnChanges {
       this.inventoryItems = res;
       console.log('INV ITEMS >>>> ', res, this.inventoryItems);
       this.selectedItemType = res[0].itemType;
+      this.selectedItem = res[0];
     });
     this.inventoryService.getPartners().subscribe(partners => {
       this.partners = partners;
@@ -103,6 +105,12 @@ export class DataGridComponent implements OnInit, OnChanges {
       itemType: [''],
       partner: [1]
     }));
+
+    control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
+    control.controls[0].get('itemDesc').setValue(this.selectedItem.itemId);
+    control.controls[0].get('itemType').setValue(this.selectedItem.itemType);
+    this.isNewRowEnabled = true;
+    this.newRowHeight = 100;
     console.log('addedRows >>> ', this.addedRows);
     setTimeout(() => {
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
@@ -154,19 +162,17 @@ export class DataGridComponent implements OnInit, OnChanges {
     }
   }
   cancelNewInventory() {
+
+    const control = this.myForm.controls.addRows as FormArray;
+    control.controls = [];
+    this.newRowHeight = 100;
     this.rows.splice(0, 1);
-    this.addedRows = [];
     this.rows = [...this.rows];
     this.table.rowDetail.toggleExpandRow(this.rows[0]);
     this.isAddBtnClicked.emit(false);
-  }
-  getRowClass(row) {
-    return 'header-row';
+    this.isNewRowEnabled = false;
   }
 
-  getCellClass({ row, column, value }): any {
-    return 'my-custom-class-cell';
-  }
   toggleExpandRow(row) {
     this.newRowHeight = 0;
     console.log('Toggled Expand Row!', row);
@@ -201,5 +207,11 @@ export class DataGridComponent implements OnInit, OnChanges {
     control.controls[index].get('itemType').setValue(selectedItem[0].itemType);
     console.log('INDEX', index, item);
 
+  }
+  updateEditedValue(rowIndex, waste) {
+    this.isEditable[rowIndex] = !this.isEditable[rowIndex];
+  }
+  editValUpdate(event, row) {
+    row.waste = event.target.value;
   }
 }
