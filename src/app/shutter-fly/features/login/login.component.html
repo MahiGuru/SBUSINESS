@@ -1,0 +1,31 @@
+<div class="container" fxLayout="row" fxLayout.xs="column" fxFlexFill fxLayoutAlign="center center" class="row-height">
+  <div class="login-container">
+    <div class="login-header">
+      <span class="mr-20"><img src="../../../../assets/images/logo.png" alt="shutter logo" height="60"></span>
+    </div>
+    <div class="login-content">
+      <mat-card>
+        <mat-card-title class="text-center mb-10 title">Login</mat-card-title>
+
+        <mat-card-content>
+          <form [formGroup]="loginForm" (ngSubmit)="submit()">
+            <p>
+              <mat-form-field>
+                <input type="text" matInput placeholder="Username" formControlName="username">
+              </mat-form-field>
+            </p>
+            <p>
+              <mat-form-field>
+                <input type="password" matInput placeholder="Password" formControlName="password">
+              </mat-form-field>
+            </p>
+            <br />
+            <div class="button text-center">
+              <button mat-raised-button color="accent" type="submit">Login</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
