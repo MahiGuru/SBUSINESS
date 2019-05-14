@@ -60,9 +60,10 @@
   <!-- <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
     [cellClass]="col.prop">
   </ngx-datatable-column> -->
-  <ngx-datatable-column *ngIf="!isNewRowEnabled">
+  <ngx-datatable-column>
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-      <div class="row-action-btn">
+      <div class="row-action-btn"
+        *ngIf="(row.children && row.children.length < 1) && !(isNewRowEnabled && rowIndex == 0)">
         <span *ngIf="!isEditable[rowIndex]" fxLayout="row" fxLayoutGap="20px">
           <span (click)="updateRowValue($event, rowIndex)">
             <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
@@ -86,9 +87,9 @@
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
       <section *ngIf="row.children && row.children.length > 0">
         <div>
-          <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let nrow of row.children">
+          <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
 
-            <span> </span>
+            <span>{{ i }}</span>
             <span> {{nrow.itemPartner.item.itemNo}}
             </span>
             <span class="ellipsis description">{{nrow.itemPartner.item.itemDescription}}
@@ -100,13 +101,33 @@
             <span>{{nrow.recieved}} </span>
             <span>{{nrow.sflyWip}}</span>
             <span>{{nrow.collated}} </span>
-            <span>{{nrow.waste}} </span>
+            <span>
+              <input autofocus (input)="editValUpdate($event, nrow)" *ngIf="i == editChildRowIndex" type="text" />
+              <span *ngIf="i !== editChildRowIndex">{{nrow.waste}} </span></span>
             <span>{{nrow.overAge}} </span>
             <span>{{nrow.completed}} </span>
             <span> {{nrow.sfOnHand}}</span>
             <span> {{nrow.pOnHand}}</span>
             <span class="ellipsis"> {{nrow.updatedAt}}</span>
-            <span></span>
+            <span>
+              <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
+                <span (click)="editChildrenRowClick(getRowIndex(row), i)">
+                  <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
+                </span>
+                <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
+              </span>
+              <!-- *ngIf="isEditable[getRowIndex(row)].children[i]"
+              isEditable[getRowIndex(row)].children[i] = !isEditable[getRowIndex(row)].children[i]-->
+              <span fxLayout="row" fxLayoutGap="10px" *ngIf="i == editChildRowIndex">
+                <span (click)="cancelChildRowClick(getRowIndex(row), i, nrow)">
+                  <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
+                </span>
+                <span (click)="updateEditedChildRowValue(getRowIndex(row), i, nrow.waste)">
+                  <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
+                </span>
+              </span>
+
+            </span>
           </div>
         </div>
       </section>
