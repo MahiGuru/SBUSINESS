@@ -124,7 +124,7 @@ export class DataGridComponent implements OnInit, OnChanges {
     const val = filterVal.toLowerCase();
     // filter our data
     const temp = this.rows.filter((d) => {
-      return d.itemType.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.itemPartner.item.itemNo.toLowerCase().indexOf(val) !== -1 || !val;
     });
     // update the rows
     this.rows = temp;
@@ -153,15 +153,47 @@ export class DataGridComponent implements OnInit, OnChanges {
     console.log('Detail Toggled', event);
   }
   addRowsToInventory() {
-    if (this.addedRows.length > 0) {
-      this.rows.splice(0, 1);
-      this.addedRows.forEach(row => {
-        this.rows.unshift(row);
+    const control = this.myForm.controls.addRows as FormArray;
+    console.log(control.value);
+    const newRecord = [];
+    _.each(control.value, (val) => {
+      newRecord.push({
+        Item: {
+          ItemId: val.itemNo
+        },
+        Partner: {
+          PartnerId: val.partner
+        }
       });
-      this.rows = [...this.rows];
-      this.sharedOrderService.updateOrders(this.rows);
-      this.table.rowDetail.toggleExpandRow(this.rows[0]);
-    }
+    });
+
+    this.inventoryService.saveNewInventory(newRecord).subscribe(newRecords => {
+      console.log('SAVEDDDDD >>>> ', newRecords);
+      const tempArr = [];
+      _.each(newRecords, (record, index) => {
+        const tempChildArr = [];
+        _.each(record.children, (child) => {
+          tempChildArr.push(new Inventory(child));
+        });
+        record.children = tempChildArr;
+        tempArr.push(new Inventory(record));
+      });
+      console.log('TEMP ARRRRRRRR', tempArr);
+      const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
+      this.rows = _.values(merged);
+      // console.log(values);
+
+    });
+    console.log(newRecord);
+    // if (this.addedRows.length > 0) {
+    //   this.rows.splice(0, 1);
+    //   this.addedRows.forEach(row => {
+    //     this.rows.unshift(row);
+    //   });
+    //   this.rows = [...this.rows];
+    //   this.sharedOrderService.updateOrders(this.rows);
+    //   this.table.rowDetail.toggleExpandRow(this.rows[0]);
+    // }
   }
   cancelNewInventory() {
 

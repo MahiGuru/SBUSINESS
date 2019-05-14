@@ -43,7 +43,8 @@
   <ngx-datatable-column prop="collated" editable="true" [resizeable]="false"></ngx-datatable-column>
   <ngx-datatable-column name="waste" prop="waste" [resizeable]="false">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <input autofocus (input)="editValUpdate($event, row)" *ngIf="isEditable[rowIndex]" type="text" [value]="value" />
+      <input class="form-control" autofocus (input)="editValUpdate($event, row)" *ngIf="isEditable[rowIndex]"
+        type="text" [value]="value" />
       <span *ngIf="!isEditable[rowIndex]">{{row.waste}}</span>
     </ng-template>
   </ngx-datatable-column>
@@ -89,7 +90,7 @@
         <div>
           <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
 
-            <span>{{ i }}</span>
+            <span></span>
             <span> {{nrow.itemPartner.item.itemNo}}
             </span>
             <span class="ellipsis description">{{nrow.itemPartner.item.itemDescription}}
@@ -102,7 +103,8 @@
             <span>{{nrow.sflyWip}}</span>
             <span>{{nrow.collated}} </span>
             <span>
-              <input autofocus (input)="editValUpdate($event, nrow)" *ngIf="i == editChildRowIndex" type="text" />
+              <input class="form-control" autofocus (input)="editValUpdate($event, nrow)" *ngIf="i == editChildRowIndex"
+                type="text" />
               <span *ngIf="i !== editChildRowIndex">{{nrow.waste}} </span></span>
             <span>{{nrow.overAge}} </span>
             <span>{{nrow.completed}} </span>

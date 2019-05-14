@@ -4,10 +4,11 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://hxserver2019.southindia.cloudapp.azure.com/vendorinventory/api/inventory/',
+  baseUrl: 'http://hxserver2019.southindia.cloudapp.azure.com/vendorinventory/api/',
   partner: 'partners',
   inventoryItems: 'items',
-  inventoryList: 'onhand'
+  inventoryList: 'inventory/onhand',
+  saveNewInventory: 'inventory/itempartnerupdate'
 };
 
 /*
