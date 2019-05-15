@@ -43,7 +43,7 @@
   <ngx-datatable-column prop="collated" editable="true" [resizeable]="false"></ngx-datatable-column>
   <ngx-datatable-column name="waste" prop="waste" [resizeable]="false">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <input class="form-control" autofocus (input)="editValUpdate($event, row)" *ngIf="isEditable[rowIndex]"
+      <input class="form-control" autofocus #rowWaste *ngIf="isEditable[rowIndex]"
         type="text" [value]="value" />
       <span *ngIf="!isEditable[rowIndex]">{{row.waste}}</span>
     </ng-template>
@@ -66,7 +66,7 @@
       <div class="row-action-btn"
         *ngIf="(row.children && row.children.length < 1) && !(isNewRowEnabled && rowIndex == 0)">
         <span *ngIf="!isEditable[rowIndex]" fxLayout="row" fxLayoutGap="20px">
-          <span (click)="updateRowValue($event, rowIndex)">
+          <span (click)="editParentRow(rowIndex)">
             <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
           <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
@@ -75,7 +75,7 @@
           <span (click)="this.isEditable[rowIndex] = !this.isEditable[rowIndex]">
             <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
           </span>
-          <span (click)="updateEditedValue(rowIndex, row.waste)">
+          <span (click)="updateParentRow(rowIndex, 'waste', rowWaste.value)">
             <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
           </span>
         </span>
@@ -103,7 +103,7 @@
             <span>{{nrow.sflyWip}}</span>
             <span>{{nrow.collated}} </span>
             <span>
-              <input class="form-control" autofocus (input)="editValUpdate($event, nrow)" *ngIf="i == editChildRowIndex"
+              <input class="form-control" autofocus #nwaste *ngIf="i == editChildRowIndex"
                 type="text" />
               <span *ngIf="i !== editChildRowIndex">{{nrow.waste}} </span></span>
             <span>{{nrow.overAge}} </span>
@@ -113,7 +113,7 @@
             <span class="ellipsis"> {{nrow.updatedAt}}</span>
             <span>
               <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
-                <span (click)="editChildrenRowClick(getRowIndex(row), i)">
+                <span (click)="editChildrenRow(i)">
                   <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
                 </span>
                 <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
@@ -121,10 +121,10 @@
               <!-- *ngIf="isEditable[getRowIndex(row)].children[i]"
               isEditable[getRowIndex(row)].children[i] = !isEditable[getRowIndex(row)].children[i]-->
               <span fxLayout="row" fxLayoutGap="10px" *ngIf="i == editChildRowIndex">
-                <span (click)="cancelChildRowClick(getRowIndex(row), i, nrow)">
+                <span (click)="cancelChildRow()">
                   <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
                 </span>
-                <span (click)="updateEditedChildRowValue(getRowIndex(row), i, nrow.waste)">
+                <span (click)="updateEditedChildRowValue(getRowIndex(row), i, 'waste', nwaste.value)">
                   <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
                 </span>
               </span>

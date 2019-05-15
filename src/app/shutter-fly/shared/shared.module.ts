@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DataGridComponent } from './components/data-grid/data-grid.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -12,9 +11,11 @@ import { DataTableComponent } from './components/data-table/data-table.component
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
 import { DateFormatPipe } from '../shared/pipes/date-format.pipe';
+import { InvenoryDataGridComponent } from './components/data-grids/invenory-data-grid/invenory-data-grid.component';
+import { NewRecordComponent } from './components/data-grids/new-record/new-record.component';
 
 @NgModule({
-  declarations: [DataGridComponent, DeleteDialogComponent, DataTableComponent, DateFormatPipe],
+  declarations: [InvenoryDataGridComponent, DeleteDialogComponent, DataTableComponent, DateFormatPipe, NewRecordComponent],
   imports: [
     CommonModule,
     MaterialModule,
@@ -25,6 +26,6 @@ import { DateFormatPipe } from '../shared/pipes/date-format.pipe';
     FontAwesomeModule,
     ReactiveFormsModule, AgGridModule.withComponents([])
   ],
-  exports: [DataGridComponent, DeleteDialogComponent, DataTableComponent, DateFormatPipe]
+  exports: [InvenoryDataGridComponent, DeleteDialogComponent, DataTableComponent, DateFormatPipe, NewRecordComponent]
 })
 export class SharedModule { }

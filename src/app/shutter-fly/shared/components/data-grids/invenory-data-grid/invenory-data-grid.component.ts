@@ -3,7 +3,7 @@ import {
   Input, SimpleChanges, OnChanges
 } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
-import { SharedOrdersService } from '../../services/shared-orders.service';
+import { SharedOrdersService } from '../../../services/shared-orders.service';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
 
@@ -11,36 +11,39 @@ import {
   faCaretRight, faCaretDown, faWindowClose, faCheckSquare,
   faPencilAlt, faTrashAlt
 } from '@fortawesome/free-solid-svg-icons';
-import { Inventory } from '../../../core/models/newInventory';
+import { Inventory } from '../../../../core/models/newInventory';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
 import { BehaviorSubject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 
 @Component({
-  selector: 'sb-data-grid',
-  templateUrl: './data-grid.component.html',
-  styleUrls: ['./data-grid.component.scss'],
+  selector: 'sb--inventory-data-grid',
+  templateUrl: './invenory-data-grid.component.html',
+  styleUrls: ['./invenory-data-grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DataGridComponent implements OnInit, OnChanges {
+export class InvenoryDataGridComponent implements OnInit, OnChanges {
+  /** INPUT AND OUTPUTS */
   @Input() cols: any;
   @Input() rows: any;
   @Input() newBtnClicked: boolean;
-  public originalRows: any;
-  public newAddedRow: any = [];
 
+  // All rows from server
+  public originalRows: any;
+
+  /** FONT AWESOME ICONS */
   faCaretRight = faCaretRight;
   faCaretDown = faCaretDown;
   faWindowClose = faWindowClose;
   faCheckSquare = faCheckSquare;
   faPencilAlt = faPencilAlt;
   faTrashAlt = faTrashAlt;
+
+  /** NEW ROW VARIABLES */
   isNewRowEnabled: boolean;
   public inventoryItems: any;
   public partners: any;
-  public defaultItemNo: any = 1;
-  public defaultItemDescription: any = 1;
-  public defaultItemType: any = 1;
+
   itemTypeCode: any = 1;
   defaultPartner: any = 1;
   public selectedPartner: any = new BehaviorSubject('');
@@ -196,7 +199,6 @@ export class DataGridComponent implements OnInit, OnChanges {
     // }
   }
   cancelNewInventory() {
-
     const control = this.myForm.controls.addRows as FormArray;
     control.controls = [];
     this.newRowHeight = 100;
@@ -219,58 +221,63 @@ export class DataGridComponent implements OnInit, OnChanges {
     this.table.rowDetail.toggleExpandRow(row);
     this.newRowHeight += row.children ? row.children.length * 60 : this.newRowHeight;
   }
-
-  updateRowValue(event, rowIndex) {
-    console.log('inline editing rowIndex', rowIndex, event);
+  /**
+   * Edit Parent Row
+   * @param rowIndex - get row index from list of inventory items
+   */
+  editParentRow(rowIndex) {
+    this.isEditable[rowIndex] = !this.isEditable[rowIndex];
+  }
+  /**
+   * Update parent row
+   * @param rowIndex - row index from inventory list
+   * @param waste - row.waste updated value
+   */
+  updateParentRow(rowIndex, waste) {
     this.isEditable[rowIndex] = !this.isEditable[rowIndex];
   }
 
-  onPartnerChange(item) {
-    const filteredPartner = (_.filter(this.partners, (partner) => {
-      return partner.partnerId === item.value;
-    }));
-    this.selectedPartner.next(filteredPartner);
-    console.log('Patner selected', this.selectedPartner);
-  }
-  onItemChange(item, index) {
-    const control = this.myForm.controls.addRows as FormArray;
-    const selectedItem = _.filter(this.inventoryItems, (iitem) => {
-      return iitem.itemId === item.value;
-    });
-    control.controls[index].get('itemNo').setValue(selectedItem[0].itemId);
-    control.controls[index].get('itemDesc').setValue(selectedItem[0].itemId);
-    control.controls[index].get('itemType').setValue(selectedItem[0].itemType);
-    console.log('INDEX', index, item);
+  // editValUpdate(event, row) {
+  //   row.waste = event.target.value;
+  // }
 
-  }
-  updateEditedValue(rowIndex, waste) {
-    this.isEditable[rowIndex] = !this.isEditable[rowIndex];
-  }
-  editValUpdate(event, row) {
-    row.waste = event.target.value;
-  }
-
+  /**
+   * GET PARENT ROW INDEX
+   * @param row - parent row
+   */
   public getRowIndex(row: any): number {
     console.log(row);
     return this.table.bodyComponent.getRowIndex(row);   // row being data object passed into the template
   }
 
-  updateChildRowValue(event, rowIndex, childIndex) {
-    console.log('inline editing rowIndex', rowIndex, event);
-    this.isEditable[rowIndex] = !this.isEditable[rowIndex];
-  }
-  updateEditedChildRowValue(rowIndex, childIndex, waste) {
-    console.log(rowIndex, childIndex, waste, this.rows[rowIndex].children[childIndex]);
-    this.rows[rowIndex].children[childIndex].waste = waste;
-    this.editChildRowIndex = null;
+  // updateChildRowValue(event, rowIndex, childIndex) {
+  //   console.log('inline editing rowIndex', rowIndex, event);
+  //   this.isEditable[rowIndex] = !this.isEditable[rowIndex];
+  // }
 
-    // this.rows[rowIndex].children[childrenIndex].waste
+  /**
+   * Update edit value
+   * @param rowIndex - row index
+   * @param childIndex - children row index
+   * @param key - row key
+   * @param value - row value
+   */
+  updateEditedChildRowValue(rowIndex, childIndex, key, value) {
+    this.rows[rowIndex].children[childIndex][key] = value;
+    this.editChildRowIndex = null;
   }
-  editChildrenRowClick(rowIndex, childrenIndex) {
+  /**
+   * edit children row item
+   * @param {*} childrenIndex - get children row index
+   */
+  editChildrenRow(childrenIndex) {
     this.editChildRowIndex = childrenIndex;
     console.log(this.editChildRowIndex);
   }
-  cancelChildRowClick(rowIndex, childrenIndex) {
+  /**
+   * cancel edit mode of children row
+   */
+  cancelChildRow() {
     this.editChildRowIndex = null;
   }
 }

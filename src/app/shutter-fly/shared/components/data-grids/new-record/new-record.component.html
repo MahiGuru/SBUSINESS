@@ -1,0 +1,56 @@
+<form [formGroup]="myForm">
+  <div formArrayName="addRows">
+    <div class="row-ab-actions">
+      <span fxFlex fxLayout="row" fxLayoutGap="10px">
+        <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
+          cancel
+        </i>
+        <i class="material-icons done-ic" (click)="saveInventory()">
+          check_circle
+        </i>
+      </span>
+    </div>
+    <div fxLayout="row" class="newRow add-row-section mtb-10" fxLayoutGap="0px"
+      *ngFor="let comp of myForm.get('addRows').controls; let i=index">
+      <div [formGroupName]="i">
+        <span fxFlex="70px"></span>
+        <span fxFlex="100px">
+          <mat-select [placeholder]="'Item No'" formControlName="itemNo"
+            (selectionChange)="onItemChange($event, i)">
+            <mat-option *ngFor="let option of inventoryItems" [value]="option.itemId">{{ option.itemNo }}
+            </mat-option>
+          </mat-select>
+        </span>
+        <span fxFlex="220px" class="description">
+          <mat-select [placeholder]="'Item Desc'" formControlName="itemDesc"
+            (selectionChange)="onItemChange($event, i)">
+            <mat-option *ngFor="let option of inventoryItems" [value]="option.itemId">
+              {{ option.itemDescription }}
+            </mat-option>
+          </mat-select>
+        </span>
+        <span fxFlex="95px">
+          {{comp.get('itemType').value}}
+        </span>
+        <span fxFlex="100px">
+          <mat-select formControlName="partner" (selectionChange)="onPartnerChange($event, i)">
+            <mat-option *ngFor="let partner of partners" [value]="partner.partnerId">{{ partner.partnerCode }}
+            </mat-option>
+          </mat-select>
+        </span>
+        <span fxFlex="50px"> </span>
+        <div fxFlex="112px" fxLayout="row" fxLayoutGap="10px">
+          <i class="material-icons red" (click)="removeCurrentRow(i)">
+            remove_circle
+          </i>
+          <i class="material-icons green" (click)="addAnotherRow()" *ngIf="i == 0">
+            add_circle </i>
+
+        </div>
+        <span fxFlex="112px"> </span>
+        <span fxFlex="112px"> </span>
+        <span fxFlex="112px"> </span>
+      </div>
+    </div>
+  </div>
+</form>
