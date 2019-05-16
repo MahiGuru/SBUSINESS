@@ -1,6 +1,16 @@
 <div fxLayout="row" fxLayoutAlign="start center" class="border-bottom">
+  <h2 class="fw-300 h-title" fxFlex>On-hand Inventory</h2>
+  <button mat-flat-button color="primary" fxFlex="100px" fxFlexAlign="center"
+    (click)="toggleExpandRow(this.rows[0])">Add New</button>
+</div>
+<sb-print-data-grid [cols]="columns" [rows]="rows" [newBtnClicked]="isAddNewBtnClicked"
+  (isAddBtnClicked)="isAddBtnClicked()">
+</sb-print-data-grid>
+
+
+<!-- <div fxLayout="row" fxLayoutAlign="start center" class="border-bottom">
   <h2 class="fw-300" fxFlex>Print Orders</h2>
-  <button mat-flat-button color="primary" fxFlex="100px" fxFlexAlign="center" (click)="toggleExpandRow(this.rows[0])"
+  <button mat-flat-button  color="primary" fxFlex="100px" fxFlexAlign="center" (click)="toggleExpandRow(this.rows[0])"
     [disabled]="true">Add
     New</button>
 </div>
@@ -29,8 +39,6 @@
     </button>
   </div>
 </div>
-<!-- <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Search filter by'
-    (keyup)='updateFilter($event)' /> -->
 <ngx-datatable #table class='material' [columns]="columns" [columnMode]="'force'" [headerHeight]="50"
   [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
 
@@ -106,4 +114,4 @@
     </ng-template>
   </ngx-datatable-column>
 
-</ngx-datatable>
+</ngx-datatable> -->

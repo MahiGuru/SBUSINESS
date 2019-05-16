@@ -6,15 +6,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { MaterialModule } from 'src/app/ng-material.module';
-
-import { AgGridModule } from 'ag-grid-angular';
-import { DataTableComponent } from './components/data-table/data-table.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
 import { DateFormatPipe } from '../shared/pipes/date-format.pipe';
+import { PrintDataGridComponent } from 'src/app/shutter-fly/shared/components/print-data-grid/print-data-grid.component';
 
 @NgModule({
-  declarations: [DataGridComponent, DeleteDialogComponent, DataTableComponent, DateFormatPipe],
+  declarations: [DataGridComponent, DeleteDialogComponent, DateFormatPipe, PrintDataGridComponent],
   imports: [
     CommonModule,
     MaterialModule,
@@ -23,8 +21,8 @@ import { DateFormatPipe } from '../shared/pipes/date-format.pipe';
     HttpClientModule,
     FormsModule,
     FontAwesomeModule,
-    ReactiveFormsModule, AgGridModule.withComponents([])
+    ReactiveFormsModule
   ],
-  exports: [DataGridComponent, DeleteDialogComponent, DataTableComponent, DateFormatPipe]
+  exports: [DataGridComponent, DeleteDialogComponent, DateFormatPipe, PrintDataGridComponent]
 })
 export class SharedModule { }

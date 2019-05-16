@@ -23,3 +23,103 @@
 
   }
 }
+:host /deep/ {
+
+  .filter-input {
+    .mat-form-field-underline {
+      display: none !important;
+    }
+
+    .mat-form-field-prefix {
+      padding-right: 20px;
+      top: 5px;
+    }
+
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
+
+    .mat-form-field-flex {
+      background-color: #f3f3f3;
+      padding: 2px 15px;
+    }
+  }
+
+  .newRow {
+    .mat-input-element {
+      padding: 5px;
+      background-color: #ececec;
+    }
+  }
+
+  .mat-select-placeholder {
+    color: rgb(87, 87, 87) !important;
+  }
+
+  ::placeholder {
+    color: #cccccc;
+    font-size: 0.8em;
+  }
+
+  .ngx-datatable.material .datatable-body .datatable-row-detail {
+    border-bottom: 1px solid #ccc;
+    background-color: #ffffff;
+  }
+
+  .plus-ic,
+  .remove-ic {
+    cursor: pointer;
+    color: #008638;
+
+    &:hover {
+      color: #00ff4c;
+    }
+  }
+
+  .remove-ic {
+    color: #e21a00;
+
+    &:hover {
+      color: #ff0000;
+    }
+
+  }
+
+  .row-ab-actions {
+    position: absolute;
+    right: 20px;
+
+    i {
+      font-size: 36px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .cancel-ic {
+      color: #353535;
+
+      &:hover {
+        color: #6e0000;
+      }
+    }
+
+    .done-ic {
+      color: #f51d00;
+
+      &:hover {
+        color: #e20057;
+      }
+    }
+  }
+  .h-title{
+    font-size: 24px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.67;
+    letter-spacing: -0.3px;
+    color: #58595b;
+  }
+}

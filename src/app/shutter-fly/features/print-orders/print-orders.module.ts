@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from 'src/app/ng-material.module';
+import { SharedModule } from 'src/app/shutter-fly/shared/shared.module';
 
 @NgModule({
   declarations: [PrintOrdersComponent],
@@ -17,7 +18,8 @@ import { MaterialModule } from 'src/app/ng-material.module';
     FormsModule,
     ReactiveFormsModule,
     NgxDatatableModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    SharedModule
   ],
   exports: [PrintOrdersComponent]
 })

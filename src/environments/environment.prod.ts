@@ -4,5 +4,8 @@ export const environment = {
   partner: 'partners',
   inventoryItems: 'items',
   inventoryList: 'inventory/onhand',
-  saveNewInventory: 'inventory/itempartnerupdate'
+  saveNewInventory: 'inventory/itempartnerupdate',
+  printList: 'print/orders',
+  printItems: 'print/items',
+  savePrintRecord: 'print/order/manage'
 };
