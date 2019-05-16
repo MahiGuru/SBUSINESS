@@ -29,4 +29,9 @@ export class InventoryService {
   calculatedInventoryItems() {
     return this.http.get(`assets/data/calculateInventory.json`);
   }
+  saveNewInventory(data) {
+    return this.http.post(`${environment.baseUrl}${environment.saveNewInventory}`, data)
+      .pipe(map((res: any) => res));
+
+  }
 }

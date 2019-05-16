@@ -1,0 +1,36 @@
+.login-container{
+  width: 500px;
+  border: 1px solid #cccccc;
+  background-color: #ff7300;
+  border-radius:5px;
+}
+.login-header{
+  background-color: #fcfcfc;
+  padding: 10px;
+  text-align: center;
+}
+:host /deep/{
+  .mat-form-field{
+    width: 100%;
+  }
+  .mat-form-field-appearance-legacy .mat-form-field-label{
+    color: #fcfcfc;
+  }
+  .title{
+    color:rgb(255, 253, 251);
+  }
+  .login-content{
+    .mat-form-field-appearance-legacy .mat-form-field-underline{
+      background-color: #ff8e71;
+    }
+    .mat-card{
+      padding: 30px;
+      background-color: #ff5b32;
+    }
+
+
+  }
+}
+.row-height {
+  height: 100%
+}
