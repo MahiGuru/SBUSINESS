@@ -56,11 +56,11 @@ export class InventoryComponent implements OnInit {
   }
   async ngOnInit() {
     // this.sharedOrderService.data$.subscribe((val) => {
-    //   console.log('SUBSCRIBE >>>> ', val);
+    //   // console.log('SUBSCRIBE >>>> ', val);
     //   this.rows = val;
     // });
     this.inventoryService.getInventoryItems().subscribe((rows: any) => {
-      console.log('ROWS, ', rows);
+      // // console.log('ROWS, ', rows);
       const tempRows = [];
       _.each(rows, (row) => {
         const inventory = new Inventory(row);
@@ -68,7 +68,7 @@ export class InventoryComponent implements OnInit {
       });
 
       this.rows = tempRows;
-      console.log(this.rows, tempRows);
+      // // console.log(this.rows, tempRows);
     });
     const addedRows = [];
     const calculatedRows = [];
@@ -77,7 +77,7 @@ export class InventoryComponent implements OnInit {
     //   this.inventoryService.calculatedInventoryItems().subscribe((rows: any) => {
     //     calculatedRows = rows;
     //     this.rows = _.merge(addedRows, calculatedRows);
-    //     console.log("ROWS 2222 ", this.rows);
+    //     // console.log("ROWS 2222 ", this.rows);
     //   });
     // });
   }

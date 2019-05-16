@@ -63,10 +63,10 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   @ViewChild(DatatableComponent) table: DatatableComponent;
 
   constructor(public sharedOrderService: SharedOrdersService,
-              public http: HttpClient,
-              public inventoryService: InventoryService,
-              public fb: FormBuilder,
-              public printerService: PrintOrderService) {
+    public http: HttpClient,
+    public inventoryService: InventoryService,
+    public fb: FormBuilder,
+    public printerService: PrintOrderService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -91,13 +91,13 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     this.originalRows = this.rows;
     this.printerService.getPrintItems().subscribe(res => {
       this.printItems = res;
-      console.log('printItems ITEMS >>>> ', res, this.printItems);
+      // console.log('printItems ITEMS >>>> ', res, this.printItems);
       this.selectedItemType = res[0].itemType;
       this.selectedItem = res[0];
     });
     // this.inventoryService.getPartners().subscribe(partners => {
     //   this.partners = partners;
-    //   console.log('partners >>>> ', partners, this.partners);
+    //   // console.log('partners >>>> ', partners, this.partners);
     // });
 
   }
@@ -121,7 +121,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     control.controls[0].get('itemType').setValue(this.selectedItem.itemType);
     this.isNewRowEnabled = true;
     this.newRowHeight = 100;
-    console.log('addedRows >>> ', this.addedRows);
+    // console.log('addedRows >>> ', this.addedRows);
     setTimeout(() => {
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
     }, 100);
@@ -160,14 +160,14 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     this.newRowHeight -= 50;
   }
   onDetailToggle(event) {
-    console.log('Detail Toggled', event);
+    // console.log('Detail Toggled', event);
   }
   addRowsToInventory() {
     const control = this.myForm.controls.addRows as FormArray;
-    console.log(control.value);
+    // console.log(control.value);
     const newRecord = [];
     _.each(control.value, (val) => {
-      console.log('SAVE ', val);
+      // console.log('SAVE ', val);
       newRecord.push({
         ItemPartner: {
           ItemPartnerId: val.partner
@@ -179,23 +179,24 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     });
 
     this.printerService.saveNewPrintItem(newRecord).subscribe(newRecords => {
-      console.log('SAVEDDDDD >>>> ', newRecords);
+      // console.log('SAVEDDDDD >>>> ', newRecords);
       const tempArr = [];
-      // _.each(newRecords, (record, index) => {
-      //   const tempChildArr = [];
-      //   _.each(record.children, (child) => {
-      //     tempChildArr.push(new Inventory(child));
-      //   });
-      //   record.children = tempChildArr;
-      //   tempArr.push(new Inventory(record));
-      // });
+      _.each(newRecords, (record, index) => {
+        const tempChildArr = [];
+        // _.each(record.children, (child) => {
+        //   tempChildArr.push(new PrintOrder(child));
+        // });
+        // record.children = tempChildArr;
+        tempArr.push(new PrintOrder(record));
+      });
       // console.log('TEMP ARRRRRRRR', tempArr);
-      // const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
-      // this.rows = _.values(merged);
+      const merged = _.merge(_.keyBy(this.rows, 'printOrderId'), _.keyBy(newRecords, 'printOrderId'));
+      this.rows = _.values(merged);
       // console.log(values);
+      console.log(this.rows);
 
     });
-    console.log(newRecord);
+    // console.log(newRecord);
 
   }
   cancelNewInventory() {
@@ -212,19 +213,19 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
 
   toggleExpandRow(row) {
     this.newRowHeight = 0;
-    console.log('Toggled Expand Row!', row);
+    // console.log('Toggled Expand Row!', row);
     const childRows = [];
     _.each(row.children, (chrow) => {
       childRows.push(new Inventory(chrow));
     });
     row.children = childRows;
-    console.log(row);
+    // console.log(row);
     this.table.rowDetail.toggleExpandRow(row);
     this.newRowHeight += row.children ? row.children.length * 60 : this.newRowHeight;
   }
 
   updateRowValue(event, rowIndex) {
-    console.log('inline editing rowIndex', rowIndex, event);
+    // console.log('inline editing rowIndex', rowIndex, event);
     this.isEditable[rowIndex] = !this.isEditable[rowIndex];
   }
 
@@ -233,7 +234,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       return partner.partnerId === item.value;
     }));
     this.selectedPartner.next(filteredPartner);
-    console.log('Patner selected', this.selectedPartner);
+    // console.log('Patner selected', this.selectedPartner);
   }
   onItemChange(item, index) {
     const control = this.myForm.controls.addRows as FormArray;
@@ -242,11 +243,11 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     });
     this.selectedItem = selectedItem[0];
     control.controls[index].get('partners').setValue(selectedItem[0].itemPartner);
-    console.log('on item change', selectedItem);
+    // console.log('on item change', selectedItem);
     control.controls[index].get('itemNo').setValue(selectedItem[0].item.itemNo);
     control.controls[index].get('itemDesc').setValue(selectedItem[0].item.itemNo);
     control.controls[index].get('itemType').setValue(selectedItem[0].item.itemTypeCode);
-    console.log('INDEX', index, item);
+    // console.log('INDEX', index, item);
 
   }
   updateEditedValue(rowIndex, waste) {
@@ -257,16 +258,16 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   }
 
   public getRowIndex(row: any): number {
-    console.log(row);
+    // console.log(row);
     return this.table.bodyComponent.getRowIndex(row);   // row being data object passed into the template
   }
 
   updateChildRowValue(event, rowIndex, childIndex) {
-    console.log('inline editing rowIndex', rowIndex, event);
+    // console.log('inline editing rowIndex', rowIndex, event);
     this.isEditable[rowIndex] = !this.isEditable[rowIndex];
   }
   updateEditedChildRowValue(rowIndex, childIndex, waste) {
-    console.log(rowIndex, childIndex, waste, this.rows[rowIndex].children[childIndex]);
+    // console.log(rowIndex, childIndex, waste, this.rows[rowIndex].children[childIndex]);
     this.rows[rowIndex].children[childIndex].waste = waste;
     this.editChildRowIndex = null;
 
@@ -274,7 +275,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   }
   editChildrenRowClick(rowIndex, childrenIndex) {
     this.editChildRowIndex = childrenIndex;
-    console.log(this.editChildRowIndex);
+    // console.log(this.editChildRowIndex);
   }
   cancelChildRowClick(rowIndex, childrenIndex) {
     this.editChildRowIndex = null;

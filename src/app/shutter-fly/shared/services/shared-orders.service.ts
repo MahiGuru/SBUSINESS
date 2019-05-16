@@ -23,9 +23,9 @@ export class SharedOrdersService {
   public changeData() {
     // this.fetch((data) => {
     //   // push our inital complete list
-    //   console.log(data);
+    //   // console.log(data);
     //   data.forEach(item => {
-    //     console.log(item);
+    //     // console.log(item);
     //     const itemRow = new Inventory(item);
     //     this.temp.push(itemRow);
     //   });

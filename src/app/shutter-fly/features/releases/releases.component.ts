@@ -71,11 +71,11 @@ export class ReleasesComponent implements OnInit {
     this.newRowHeight -= 30;
   }
   onDetailToggle(event) {
-    console.log('Detail Toggled', event);
+    // // console.log('Detail Toggled', event);
   }
   ngOnInit() {
     this.sharedOrderService.data$.subscribe((val) => {
-      console.log('PRINT ORDER >>> SUBSCRIBE >>>> ', val);
+      // // console.log('PRINT ORDER >>> SUBSCRIBE >>>> ', val);
       this.rows = val;
     });
   }

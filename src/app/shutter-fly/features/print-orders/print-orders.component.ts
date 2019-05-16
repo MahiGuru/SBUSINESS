@@ -73,15 +73,15 @@ export class PrintOrdersComponent implements OnInit {
   //   this.newRowHeight -= 30;
   // }
   // onDetailToggle(event) {
-  //   console.log('Detail Toggled', event);
+  //   // console.log('Detail Toggled', event);
   // }
   ngOnInit() {
     // this.sharedOrderService.data$.subscribe((val) => {
-    //   console.log('PRINT ORDER >>> SUBSCRIBE >>>> ', val);
+    //   // console.log('PRINT ORDER >>> SUBSCRIBE >>>> ', val);
     //   this.rows = val;
     // });
     this.printService.getAllPrintRecords().subscribe((rows: any) => {
-      console.log('ROWS, ', rows);
+      // // console.log('ROWS, ', rows);
       const tempRows = [];
       _.each(rows, (row) => {
         const inventory = new PrintOrder(row);
@@ -89,7 +89,7 @@ export class PrintOrdersComponent implements OnInit {
       });
 
       this.rows = tempRows;
-      console.log(this.rows, tempRows, '\n\n\n\n\n');
+      // // console.log(this.rows, tempRows, '\n\n\n\n\n');
     });
   }
   toggleExpandRow(row) {
@@ -120,7 +120,7 @@ export class PrintOrdersComponent implements OnInit {
   //   });
 
   //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed');
+  //     // console.log('The dialog was closed');
   //     // this.animal = result;
   //   });
   // }
