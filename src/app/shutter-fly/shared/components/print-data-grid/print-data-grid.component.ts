@@ -186,15 +186,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
 
     });
     console.log(newRecord);
-    // if (this.addedRows.length > 0) {
-    //   this.rows.splice(0, 1);
-    //   this.addedRows.forEach(row => {
-    //     this.rows.unshift(row);
-    //   });
-    //   this.rows = [...this.rows];
-    //   this.sharedOrderService.updateOrders(this.rows);
-    //   this.table.rowDetail.toggleExpandRow(this.rows[0]);
-    // }
+
   }
   cancelNewInventory() {
 

@@ -29,9 +29,11 @@ export class PrintOrdersComponent implements OnInit {
     { prop: 'partner', name: 'Partner', width: 100 },
     { prop: 'quantity', name: 'Quantity', width: 100 },
     { prop: 'poNum', name: 'PO #', width: 100 },
+    { prop: 'quantity', name: 'Quantity', width: 100 },
+    { prop: 'poNum', name: 'PO #', width: 100 },
     { prop: 'jobNum', name: 'Job #', width: 100 },
     { prop: 'createdAt', name: 'Created', width: 100 },
-    { prop: 'status', name: 'Status', width: 100 }
+    { prop: 'status', name: 'Status'}
   ];
   @ViewChild(DatatableComponent) table: DatatableComponent;
   names: any;

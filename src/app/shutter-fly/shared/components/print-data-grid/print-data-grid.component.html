@@ -19,10 +19,10 @@
 </div>
 <!-- <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Search filter by'
     (keyup)='updateFilter($event)' /> -->
-<ngx-datatable #table class='material expandable' [columns]="cols" [columnMode]="'force'" [headerHeight]="50"
+<ngx-datatable #table class='material' [columns]="cols" [columnMode]="'flex'" [headerHeight]="50"
   [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
 
-  <ngx-datatable-column>
+  <ngx-datatable-column [sortable]="false"  [flexGrow]="0.5">
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
       <a href="javascript:void(0)" class="dt-arrow" title="Expand/Collapse Row" (click)="toggleExpandRow(row)"
         *ngIf="row.children && row.children.length > 0">
@@ -30,20 +30,22 @@
       </a>
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column name="Item #" prop="itemPartner.item.itemNo"></ngx-datatable-column>
+  <ngx-datatable-column name="Item #" prop="itemPartner.item.itemNo" [flexGrow]="1"></ngx-datatable-column>
   <ngx-datatable-column name="Description" prop="itemPartner.item.itemDescription" editable="true"
-    headerClass="description" [cellClass]="'description ellipsis'">
+     [cellClass]="'ellipsis'" [flexGrow]="2">
   </ngx-datatable-column>
-  <ngx-datatable-column name="Type" prop="itemPartner.item.itemType" editable="true" [resizeable]="false">
+  <ngx-datatable-column name="Type" prop="itemPartner.item.itemType" [flexGrow]="1" editable="true" >
   </ngx-datatable-column>
-  <ngx-datatable-column name="Printers" prop="itemPartner.partner.partnerType" editable="true" [resizeable]="false">
+  <ngx-datatable-column name="Printers" prop="itemPartner.partner.partnerType" [flexGrow]="1" editable="true">
   </ngx-datatable-column>
-  <ngx-datatable-column name="Quantity" prop="quantity" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column name="PO #" prop="poNum" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column name="Job #" prop="jobNum" editable="true" [resizeable]="false"></ngx-datatable-column>
+  <ngx-datatable-column name="Quantity" prop="quantity" editable="true" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column name="PO #" prop="poNum" editable="true" [flexGrow]="1" ></ngx-datatable-column>
+  <ngx-datatable-column name="Quantity" prop="quantity" editable="true" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column name="PO #" prop="poNum" editable="true" [flexGrow]="1" ></ngx-datatable-column>
+  <ngx-datatable-column name="Job #" prop="jobNum" editable="true" [flexGrow]="1"></ngx-datatable-column>
 
-  <ngx-datatable-column prop="status" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column name="createdAt" editable="true" [resizeable]="false">
+  <ngx-datatable-column prop="status" editable="true"  [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column name="createdAt" editable="true"  [flexGrow]="1">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
       <span *ngIf="!isNewRowEnabled">{{ row.createdAt | dateFormat}}</span>
       <span *ngIf="isNewRowEnabled">{{ row.createdAt }}</span>
@@ -52,7 +54,7 @@
   <!-- <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
     [cellClass]="col.prop">
   </ngx-datatable-column> -->
-  <ngx-datatable-column>
+  <ngx-datatable-column name="action" [sortable]="false"  [flexGrow]="1">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
       <div class="row-action-btn"
         *ngIf="(row.children && row.children.length < 1) && !(isNewRowEnabled && rowIndex == 0)">
@@ -71,6 +73,12 @@
           </span>
         </span>
       </div>
+      <span (click)="this.isEditable[rowIndex] = !this.isEditable[rowIndex]">
+            <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
+          </span>
+          <span (click)="updateEditedValue(rowIndex, row.waste)">
+            <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
+          </span>
     </ng-template>
   </ngx-datatable-column>
 

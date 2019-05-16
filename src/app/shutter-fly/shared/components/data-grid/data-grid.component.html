@@ -19,10 +19,10 @@
 </div>
 <!-- <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Search filter by'
     (keyup)='updateFilter($event)' /> -->
-<ngx-datatable #table class='material expandable' [columns]="cols" [columnMode]="'force'" [headerHeight]="50"
-  [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows' [rowClass]="getRowClass">
+<ngx-datatable #table class='material expandable' [columns]="cols" [columnMode]="'flex'" [headerHeight]="50"
+  [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
 
-  <ngx-datatable-column>
+  <ngx-datatable-column [sortable]="false"  [flexGrow]="0.5">
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
       <a href="javascript:void(0)" class="dt-arrow" title="Expand/Collapse Row" (click)="toggleExpandRow(row)"
         *ngIf="row.children && row.children.length > 0">
@@ -30,29 +30,29 @@
       </a>
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column name="ItemNo#" prop="itemPartner.item.itemNo"></ngx-datatable-column>
+  <ngx-datatable-column name="ItemNo#" prop="itemPartner.item.itemNo" [flexGrow]="1"></ngx-datatable-column>
   <ngx-datatable-column name="description" prop="itemPartner.item.itemDescription" editable="true"
-    headerClass="description" [cellClass]="'description ellipsis'">
+    [cellClass]="'ellipsis'" [flexGrow]="2">
   </ngx-datatable-column>
-  <ngx-datatable-column name="Type" prop="itemPartner.item.itemType" editable="true" [resizeable]="false">
+  <ngx-datatable-column name="Type" prop="itemPartner.item.itemType" editable="true" [flexGrow]="1">
   </ngx-datatable-column>
-  <ngx-datatable-column name="Partner" prop="itemPartner.partner.partnerType" editable="true" [resizeable]="false">
+  <ngx-datatable-column name="Partner" prop="itemPartner.partner.partnerType" editable="true" [flexGrow]="1">
   </ngx-datatable-column>
-  <ngx-datatable-column prop="recieved" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column prop="sflyWip" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column prop="collated" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column name="waste" prop="waste" [resizeable]="false">
+  <ngx-datatable-column prop="recieved" editable="true" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column prop="sflyWip" editable="true" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column prop="collated" editable="true" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column name="waste" prop="waste" [flexGrow]="1">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
       <input class="form-control" autofocus (input)="editValUpdate($event, row)" *ngIf="isEditable[rowIndex]"
         type="text" [value]="value" />
       <span *ngIf="!isEditable[rowIndex]">{{row.waste}}</span>
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column prop="overAge" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column prop="completed" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column prop="sfOnHand" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column prop="pOnHand" editable="true" [resizeable]="false"></ngx-datatable-column>
-  <ngx-datatable-column name="Updated At" editable="true" [resizeable]="false">
+  <ngx-datatable-column prop="overAge" editable="true" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column prop="completed" editable="true" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column prop="sfOnHand" editable="true" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column prop="pOnHand" editable="true" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column name="Updated At" editable="true" [flexGrow]="1">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
       <span *ngIf="!isNewRowEnabled">{{ row.updatedAt | dateFormat}}</span>
       <span *ngIf="isNewRowEnabled">{{ row.updatedAt }}</span>
@@ -61,7 +61,7 @@
   <!-- <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
     [cellClass]="col.prop">
   </ngx-datatable-column> -->
-  <ngx-datatable-column>
+  <ngx-datatable-column [sortable]="false"  [flexGrow]="1">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
       <div class="row-action-btn"
         *ngIf="(row.children && row.children.length < 1) && !(isNewRowEnabled && rowIndex == 0)">
