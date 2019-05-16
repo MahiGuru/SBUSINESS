@@ -22,15 +22,23 @@
 <ngx-datatable #table class='material expandable' [columns]="cols" [columnMode]="'flex'" [headerHeight]="50"
   [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
 
-  <ngx-datatable-column [sortable]="false"  [flexGrow]="0.5">
+  <!-- <ngx-datatable-column [sortable]="false" [flexGrow]="0.5">
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
       <a href="javascript:void(0)" class="dt-arrow" title="Expand/Collapse Row" (click)="toggleExpandRow(row)"
         *ngIf="row.children && row.children.length > 0">
         <fa-icon [icon]="!expanded ? faCaretRight: faCaretDown"></fa-icon>
       </a>
     </ng-template>
+  </ngx-datatable-column> -->
+  <ngx-datatable-column name="ItemNo#" [flexGrow]="1.2">
+    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+      <!-- <pre>{{row |json}}</pre> -->
+      <a href="javascript:void(0)" class="dt-arrow" title="Expand/Collapse Row" (click)="toggleExpandRow(row)"
+        *ngIf="row.children && row.children.length > 0">
+        <fa-icon [icon]="!expanded ? faCaretRight: faCaretDown"></fa-icon>
+      </a> {{row?.itemPartner?.item?.itemNo}}
+    </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column name="ItemNo#" prop="itemPartner.item.itemNo" [flexGrow]="1"></ngx-datatable-column>
   <ngx-datatable-column name="description" prop="itemPartner.item.itemDescription" editable="true"
     [cellClass]="'ellipsis'" [flexGrow]="2">
   </ngx-datatable-column>
@@ -61,7 +69,7 @@
   <!-- <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
     [cellClass]="col.prop">
   </ngx-datatable-column> -->
-  <ngx-datatable-column [sortable]="false"  [flexGrow]="1">
+  <ngx-datatable-column [sortable]="false" [flexGrow]="1">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
       <div class="row-action-btn"
         *ngIf="(row.children && row.children.length < 1) && !(isNewRowEnabled && rowIndex == 0)">
@@ -89,28 +97,27 @@
       <section *ngIf="row.children && row.children.length > 0">
         <div>
           <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
-            <span fxFlex="57px"></span>
-            <span fxFlex="100px"> {{nrow.itemPartner.item.itemNo}}
+            <span fxFlex="140px"> {{nrow.itemPartner.item.itemNo}}
             </span>
-            <span fxFlex class="ellipsis description">{{nrow.itemPartner.item.itemDescription}}
+            <span fxFlex="230px" class="ellipsis description">{{nrow.itemPartner.item.itemDescription}}
             </span>
-            <span>{{nrow.itemPartner.item.itemType}}
+            <span fxFlex="117px">{{nrow.itemPartner.item.itemType}}
             </span>
-            <span>{{nrow.itemPartner.partner.partnerType}}
+            <span fxFlex="117px">{{nrow.itemPartner.partner.partnerType}}
             </span>
-            <span>{{nrow.recieved}} </span>
-            <span>{{nrow.sflyWip}}</span>
-            <span>{{nrow.collated}} </span>
-            <span>
+            <span fxFlex="117px">{{nrow.recieved}} </span>
+            <span fxFlex="117px">{{nrow.sflyWip}}</span>
+            <span fxFlex="117px">{{nrow.collated}} </span>
+            <span fxFlex="117px">
               <input class="form-control" autofocus (input)="editValUpdate($event, nrow)" *ngIf="i == editChildRowIndex"
                 type="text" />
               <span *ngIf="i !== editChildRowIndex">{{nrow.waste}} </span></span>
-            <span>{{nrow.overAge}} </span>
-            <span>{{nrow.completed}} </span>
-            <span> {{nrow.sfOnHand}}</span>
-            <span> {{nrow.pOnHand}}</span>
-            <span class="ellipsis"> {{nrow.updatedAt}}</span>
-            <span>
+            <span fxFlex="117px">{{nrow.overAge}} </span>
+            <span fxFlex="117px">{{nrow.completed}} </span>
+            <span fxFlex="117px"> {{nrow.sfOnHand}}</span>
+            <span fxFlex="117px"> {{nrow.pOnHand}}</span>
+            <span class="ellipsis" fxFlex="117px"> {{nrow.updatedAt}}</span>
+            <span fxFlex="117px">
               <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
                 <span (click)="editChildrenRowClick(getRowIndex(row), i)">
                   <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
@@ -149,15 +156,14 @@
             <div fxLayout="row" class="newRow add-row-section mtb-10" fxLayoutGap="0px"
               *ngFor="let comp of myForm.get('addRows').controls; let i=index">
               <div [formGroupName]="i">
-                <span fxFlex="70px"></span>
-                <span fxFlex="100px">
+                <span fxFlex="155px">
                   <mat-select [placeholder]="'Item No'" formControlName="itemNo"
                     (selectionChange)="onItemChange($event, i)">
                     <mat-option *ngFor="let option of inventoryItems" [value]="option.itemId">{{ option.itemNo }}
                     </mat-option>
                   </mat-select>
                 </span>
-                <span fxFlex="220px" class="description">
+                <span fxFlex="235px" class="description">
                   <mat-select [placeholder]="'Item Desc'" formControlName="itemDesc"
                     (selectionChange)="onItemChange($event, i)">
                     <mat-option *ngFor="let option of inventoryItems" [value]="option.itemId">
@@ -165,10 +171,10 @@
                     </mat-option>
                   </mat-select>
                 </span>
-                <span fxFlex="95px">
+                <span fxFlex="120px">
                   {{comp.get('itemType').value}}
                 </span>
-                <span fxFlex="100px">
+                <span fxFlex="115px">
                   <mat-select formControlName="partner" (selectionChange)="onPartnerChange($event, i)">
                     <mat-option *ngFor="let partner of partners" [value]="partner.partnerId">{{ partner.partnerCode }}
                     </mat-option>

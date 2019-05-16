@@ -16,6 +16,7 @@ import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.
 import { BehaviorSubject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { PrintOrder } from 'src/app/shutter-fly/core/models/printOrder';
+import { PrintOrderService } from 'src/app/shutter-fly/shared/services/print-order.service';
 
 @Component({
   selector: 'sb-print-data-grid',
@@ -37,7 +38,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   faPencilAlt = faPencilAlt;
   faTrashAlt = faTrashAlt;
   isNewRowEnabled: boolean;
-  public inventoryItems: any;
+  public printItems: any;
   public partners: any;
   public defaultItemNo: any = 1;
   public defaultItemDescription: any = 1;
@@ -64,7 +65,8 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   constructor(public sharedOrderService: SharedOrdersService,
               public http: HttpClient,
               public inventoryService: InventoryService,
-              public fb: FormBuilder) {
+              public fb: FormBuilder,
+              public printerService: PrintOrderService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -82,19 +84,21 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       itemNo: [''],
       itemDesc: [''],
       itemType: [''],
-      partner: ['']
+      partner: [''],
+      quantity: [''],
+      poNum: ['']
     });
     this.originalRows = this.rows;
-    this.inventoryService.getAddItems().subscribe(res => {
-      this.inventoryItems = res;
-      console.log('INV ITEMS >>>> ', res, this.inventoryItems);
+    this.printerService.getPrintItems().subscribe(res => {
+      this.printItems = res;
+      console.log('printItems ITEMS >>>> ', res, this.printItems);
       this.selectedItemType = res[0].itemType;
       this.selectedItem = res[0];
     });
-    this.inventoryService.getPartners().subscribe(partners => {
-      this.partners = partners;
-      console.log('partners >>>> ', partners, this.partners);
-    });
+    // this.inventoryService.getPartners().subscribe(partners => {
+    //   this.partners = partners;
+    //   console.log('partners >>>> ', partners, this.partners);
+    // });
 
   }
 
@@ -105,8 +109,11 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     control.push(this.fb.group({
       itemNo: [1],
       itemDesc: [1],
+      partners: [[]],
       itemType: [''],
-      partner: [1]
+      partner: [1],
+      quantity: [1],
+      poNum: [1]
     }));
 
     control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
@@ -135,20 +142,22 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
 
   addAnotherRow() {
     const control = this.myForm.controls.addRows as FormArray;
-    const addRow = new Inventory();
     control.push(this.fb.group({
       itemNo: [1],
       itemDesc: [1],
       itemType: [''],
-      partner: [1]
+      partners: [[]],
+      partner: [1],
+      quantity: [1],
+      poNum: [1]
     }));
     // this.addedRows.push(addRow);
-    this.newRowHeight += 30;
+    this.newRowHeight += 50;
   }
   removeCurrentRow(i) {
     const control = this.myForm.controls.addRows as FormArray;
     control.removeAt(i);
-    this.newRowHeight -= 30;
+    this.newRowHeight -= 50;
   }
   onDetailToggle(event) {
     console.log('Detail Toggled', event);
@@ -158,30 +167,31 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     console.log(control.value);
     const newRecord = [];
     _.each(control.value, (val) => {
+      console.log('SAVE ', val);
       newRecord.push({
-        Item: {
-          ItemId: val.itemNo
+        ItemPartner: {
+          ItemPartnerId: val.partner
         },
-        Partner: {
-          PartnerId: val.partner
-        }
+        Quantity: val.quantity,
+        PoNum: val.poNum,
+        Status: 'New'
       });
     });
 
-    this.inventoryService.saveNewInventory(newRecord).subscribe(newRecords => {
+    this.printerService.saveNewPrintItem(newRecord).subscribe(newRecords => {
       console.log('SAVEDDDDD >>>> ', newRecords);
       const tempArr = [];
-      _.each(newRecords, (record, index) => {
-        const tempChildArr = [];
-        _.each(record.children, (child) => {
-          tempChildArr.push(new Inventory(child));
-        });
-        record.children = tempChildArr;
-        tempArr.push(new Inventory(record));
-      });
-      console.log('TEMP ARRRRRRRR', tempArr);
-      const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
-      this.rows = _.values(merged);
+      // _.each(newRecords, (record, index) => {
+      //   const tempChildArr = [];
+      //   _.each(record.children, (child) => {
+      //     tempChildArr.push(new Inventory(child));
+      //   });
+      //   record.children = tempChildArr;
+      //   tempArr.push(new Inventory(record));
+      // });
+      // console.log('TEMP ARRRRRRRR', tempArr);
+      // const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
+      // this.rows = _.values(merged);
       // console.log(values);
 
     });
@@ -227,12 +237,15 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   }
   onItemChange(item, index) {
     const control = this.myForm.controls.addRows as FormArray;
-    const selectedItem = _.filter(this.inventoryItems, (iitem) => {
-      return iitem.itemId === item.value;
+    const selectedItem = _.filter(this.printItems, (iitem) => {
+      return iitem.item.itemNo === item.value;
     });
-    control.controls[index].get('itemNo').setValue(selectedItem[0].itemId);
-    control.controls[index].get('itemDesc').setValue(selectedItem[0].itemId);
-    control.controls[index].get('itemType').setValue(selectedItem[0].itemType);
+    this.selectedItem = selectedItem[0];
+    control.controls[index].get('partners').setValue(selectedItem[0].itemPartner);
+    console.log('on item change', selectedItem);
+    control.controls[index].get('itemNo').setValue(selectedItem[0].item.itemNo);
+    control.controls[index].get('itemDesc').setValue(selectedItem[0].item.itemNo);
+    control.controls[index].get('itemType').setValue(selectedItem[0].item.itemTypeCode);
     console.log('INDEX', index, item);
 
   }

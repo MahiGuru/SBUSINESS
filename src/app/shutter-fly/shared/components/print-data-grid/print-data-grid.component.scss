@@ -77,6 +77,10 @@
     //   width:250px !important;
     // }
   }
+  .new_section{
+    position: absolute;
+    width: 100%;
+  }
   .form-control{
     width:80%;
     box-sizing: border-box;
@@ -108,6 +112,9 @@
   .mat-input-element{
     position: relative;
     top:-5px;
+  }
+  .p-new-item{
+    padding:.1rem 1.2rem;
   }
   .mat-form-field-label{
     color: #333333;

@@ -2,9 +2,6 @@ import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { MatDialog } from '@angular/material';
 import { ORDERS } from '../../core/models/order-state';
-import { SharedOrdersService } from '../../shared/services/shared-orders.service';
-import { Inventory } from '../../core/models/inventory-old';
-import { DeleteDialogComponent } from '../../shared/components/delete-dialog/delete-dialog.component';
 import { PrintOrderService } from './../../shared/services/print-order.service';
 import * as _ from 'lodash';
 import { PrintOrder } from 'src/app/shutter-fly/core/models/printOrder';
@@ -33,7 +30,7 @@ export class PrintOrdersComponent implements OnInit {
     { prop: 'poNum', name: 'PO #', width: 100 },
     { prop: 'jobNum', name: 'Job #', width: 100 },
     { prop: 'createdAt', name: 'Created', width: 100 },
-    { prop: 'status', name: 'Status'}
+    { prop: 'status', name: 'Status' }
   ];
   @ViewChild(DatatableComponent) table: DatatableComponent;
   names: any;

@@ -36,10 +36,6 @@
     font-size: 0.8em;
   }
 
-  .ngx-datatable.material .datatable-body .datatable-row-detail {
-    border-bottom: 1px solid #ccc;
-    background-color: #ffffff;
-  }
 
   .plus-ic,
   .remove-ic {
@@ -96,5 +92,7 @@
     line-height: 1.67;
     letter-spacing: -0.3px;
     color: #58595b;
+    margin-top:0px;
+    margin-bottom:10px;
   }
 }

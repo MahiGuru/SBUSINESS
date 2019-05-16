@@ -5,9 +5,15 @@
 
   .datatable-header{ height: 50px !important; display: flex !important; }
   .ngx-datatable.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell {
-    background-color: #ececec;
+    background-color: #EBEDF0;
   }
-
+  .ngx-datatable .datatable-header .datatable-row-center {
+    border-bottom: 1px solid #929497;
+    border-top: 1px solid #929497;
+  }
+  .ngx-datatable.material{
+    box-shadow: none;
+  }
   .mat-flat-button.mat-primary {
     background-color: $primary;
   }
@@ -45,14 +51,15 @@
   }
 
   .mat-tab-body-content {
-    padding: 20px;
+    padding: 10px;
     box-sizing: border-box;
   }
 
   .container {
-    width: 95%;
+    width: 1800px;
     margin: auto;
     min-height: 100%;
+    overflow: auto;
 
 
     .header {
