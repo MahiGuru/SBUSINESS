@@ -89,11 +89,10 @@
       <section *ngIf="row.children && row.children.length > 0">
         <div>
           <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
-
-            <span></span>
-            <span> {{nrow.itemPartner.item.itemNo}}
+            <span fxFlex="57px"></span>
+            <span fxFlex="100px"> {{nrow.itemPartner.item.itemNo}}
             </span>
-            <span class="ellipsis description">{{nrow.itemPartner.item.itemDescription}}
+            <span fxFlex class="ellipsis description">{{nrow.itemPartner.item.itemDescription}}
             </span>
             <span>{{nrow.itemPartner.item.itemType}}
             </span>

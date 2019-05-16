@@ -33,9 +33,12 @@
         }
       }
     }
+    .newRow{
+      width: 99%;
+    }
   /** cell styling **/
   .newRow > span{
-      width:95px !important;
+      // width:95px !important;
       font-size: 14px !important;
       box-sizing: border-box !important;
     &:nth-child(1) {
