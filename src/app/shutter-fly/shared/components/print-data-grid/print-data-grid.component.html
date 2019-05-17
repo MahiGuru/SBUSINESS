@@ -80,20 +80,20 @@
         <div>
           <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
 
-            <span> {{nrow.itemPartner?.item?.itemNo}}
+            <span fxFlex="160px" class="p-new-item"> {{nrow.itemPartner?.item?.itemNo}}
             </span>
-            <span class="ellipsis description">{{nrow.itemPartner.item.itemDescription}}
+            <span  fxFlex="325px" class="p-new-item ellipsis description">{{nrow.itemPartner.item.itemDescription}}
             </span>
-            <span>{{nrow.itemPartner.item.itemType}}
+            <span fxFlex="160px" class="p-new-item">{{nrow.itemPartner.item.itemType}}
             </span>
-            <span>{{nrow.itemPartner.partner.partnerCode}}
+            <span fxFlex="160px" class="p-new-item">{{nrow.itemPartner.partner.partnerCode}}
             </span>
-            <span>{{nrow.quantity}} </span>
-            <span>{{nrow.poNum}}</span>
-            <span>{{nrow.jobNum}} </span>
+            <span fxFlex="113px" class="p-new-item">{{nrow.quantity}} </span>
+            <span fxFlex="113px" class="p-new-item">{{nrow.poNum}}</span>
+            <span fxFlex="113px" class="p-new-item">{{nrow.jobNum}} </span>
 
-            <span> {{nrow.status}}</span>
-            <span class="ellipsis"> {{nrow.createdAt}}</span>
+            <span fxFlex="113px" class="p-new-item"> {{nrow.status}}</span>
+            <span  fxFlex="113px" class="p-new-item"> {{nrow.createdAt}}</span>
             <span>
               <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
                 <span (click)="editChildrenRowClick(getRowIndex(row), i)">
