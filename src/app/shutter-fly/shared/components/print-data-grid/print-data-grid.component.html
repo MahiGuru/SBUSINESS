@@ -76,31 +76,24 @@
 
   <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <!-- <section *ngIf="row.children && row.children.length > 0">
+      <section *ngIf="row.children && row.children.length > 0">
         <div>
           <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
 
-            <span></span>
-            <span> {{nrow.itemPartner.item.itemNo}}
+            <span> {{nrow.itemPartner?.item?.itemNo}}
             </span>
             <span class="ellipsis description">{{nrow.itemPartner.item.itemDescription}}
             </span>
             <span>{{nrow.itemPartner.item.itemType}}
             </span>
-            <span>{{nrow.itemPartner.partner.partnerType}}
+            <span>{{nrow.itemPartner.partner.partnerCode}}
             </span>
-            <span>{{nrow.recieved}} </span>
-            <span>{{nrow.sflyWip}}</span>
-            <span>{{nrow.collated}} </span>
-            <span>
-              <input class="form-control" autofocus (input)="editValUpdate($event, nrow)" *ngIf="i == editChildRowIndex"
-                type="text" />
-              <span *ngIf="i !== editChildRowIndex">{{nrow.waste}} </span></span>
-            <span>{{nrow.overAge}} </span>
-            <span>{{nrow.completed}} </span>
-            <span> {{nrow.sfOnHand}}</span>
-            <span> {{nrow.pOnHand}}</span>
-            <span class="ellipsis"> {{nrow.updatedAt}}</span>
+            <span>{{nrow.quantity}} </span>
+            <span>{{nrow.poNum}}</span>
+            <span>{{nrow.jobNum}} </span>
+
+            <span> {{nrow.status}}</span>
+            <span class="ellipsis"> {{nrow.createdAt}}</span>
             <span>
               <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
                 <span (click)="editChildrenRowClick(getRowIndex(row), i)">
@@ -120,7 +113,7 @@
             </span>
           </div>
         </div>
-      </section> -->
+      </section>
 
       <section class="new_section" *ngIf="!(row.children && row.children.length > 0)">
         <form [formGroup]="myForm">
