@@ -379,7 +379,12 @@ box-shadow:0px 0px 5px #ccc;
   -webkit-appearance: none;
 
 }
-
+.icon{
+  cursor: pointer;
+  &:hover{
+    color: #F05323;
+  }
+}
 .selectbox1 select:focus {
   outline: none;
 }

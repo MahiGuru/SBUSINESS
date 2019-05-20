@@ -5,6 +5,7 @@ export const environment = {
   inventoryItems: 'items',
   inventoryList: 'inventory/onhand',
   saveNewInventory: 'inventory/itempartnerupdate',
+  deletePartner: 'inventory/itempartnerdelete',
   printList: 'print/orders',
   printItems: 'print/items',
   savePrintRecord: 'print/order/manage'

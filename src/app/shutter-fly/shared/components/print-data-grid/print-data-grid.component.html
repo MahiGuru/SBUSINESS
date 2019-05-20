@@ -41,13 +41,13 @@
   <ngx-datatable-column name="PO #" prop="poNum" editable="true" [flexGrow]="1"></ngx-datatable-column>
   <ngx-datatable-column name="Job #" prop="jobNum" editable="true" [flexGrow]="1"></ngx-datatable-column>
 
-  <ngx-datatable-column prop="status" editable="true" [flexGrow]="1"></ngx-datatable-column>
   <ngx-datatable-column name="createdAt" editable="true" [flexGrow]="1">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
       <span *ngIf="!isNewRowEnabled">{{ row.createdAt | dateFormat}}</span>
       <span *ngIf="isNewRowEnabled">{{ row.createdAt }}</span>
     </ng-template>
   </ngx-datatable-column>
+  <ngx-datatable-column prop="status" editable="true" [flexGrow]="1"></ngx-datatable-column>
   <!-- <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
     [cellClass]="col.prop">
   </ngx-datatable-column> -->
@@ -76,25 +76,33 @@
 
   <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <section *ngIf="row.children && row.children.length > 0">
+      <section *ngIf="row.children && row.children.length > 0" style="position: absolute">
         <div>
           <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
 
             <span fxFlex="160px" class="p-new-item"> {{nrow.itemPartner?.item?.itemNo}}
             </span>
-            <span  fxFlex="325px" class="p-new-item ellipsis description">{{nrow.itemPartner.item.itemDescription}}
+            <span fxFlex="325px" class="p-new-item ellipsis description">{{nrow.itemPartner.item.itemDescription}}
             </span>
             <span fxFlex="160px" class="p-new-item">{{nrow.itemPartner.item.itemType}}
             </span>
             <span fxFlex="160px" class="p-new-item">{{nrow.itemPartner.partner.partnerCode}}
             </span>
-            <span fxFlex="113px" class="p-new-item">{{nrow.quantity}} </span>
-            <span fxFlex="113px" class="p-new-item">{{nrow.poNum}}</span>
-            <span fxFlex="113px" class="p-new-item">{{nrow.jobNum}} </span>
+            <span fxFlex="160px" class="p-new-item">{{nrow.quantity}} </span>
+            <span fxFlex="160px" class="p-new-item">{{nrow.poNum}}</span>
+            <span fxFlex="160px" class="p-new-item">{{nrow.jobNum}} </span>
 
-            <span fxFlex="113px" class="p-new-item"> {{nrow.status}}</span>
-            <span  fxFlex="113px" class="p-new-item"> {{nrow.createdAt}}</span>
-            <span>
+            <span fxFlex="160px" class="p-new-item"> {{nrow.createdAt}}</span>
+            <span fxFlex="160px" class="p-new-item"> {{nrow.status}}</span>
+            <span fxFlex="160px" class="p-new-item" *ngIf="nrow.status === 'New'">
+              <span class="icon mr-8" (click)="updateOrderToCancelStatus(nrow?.printOrderId)">
+                <fa-icon [icon]="faBan" [ngClass]="'fa-icon fs-16'"></fa-icon>
+              </span>
+              <span class="icon mr-8" (click)="updateOrderToPrintStatus(nrow?.printOrderId)">
+                <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
+              </span>
+            </span>
+            <span fxHide>
               <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
                 <span (click)="editChildrenRowClick(getRowIndex(row), i)">
                   <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>

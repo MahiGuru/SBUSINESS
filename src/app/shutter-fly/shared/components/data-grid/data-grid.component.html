@@ -77,7 +77,9 @@
           <span (click)="updateRowValue($event, rowIndex)">
             <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
-          <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
+          <span (click)="trashInventoryItem(row?.itemPartner?.itemPartnerId, row)">
+            <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
+          </span>
         </span>
         <span *ngIf="isEditable[rowIndex]" fxLayout="row" fxLayoutGap="10px">
           <span (click)="this.isEditable[rowIndex] = !this.isEditable[rowIndex]">

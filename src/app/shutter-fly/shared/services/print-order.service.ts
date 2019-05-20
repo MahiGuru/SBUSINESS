@@ -28,4 +28,8 @@ export class PrintOrderService {
     return this.http.post(`${environment.baseUrl}${environment.savePrintRecord}`, data)
       .pipe(map((res: any) => res));
   }
+  updatePrintOrderStatus(data) {
+    return this.http.post(`${environment.baseUrl}${environment.savePrintRecord}`, data)
+      .pipe(map((res: any) => res));
+  }
 }

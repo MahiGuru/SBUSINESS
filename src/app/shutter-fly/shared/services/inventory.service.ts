@@ -32,6 +32,9 @@ export class InventoryService {
   saveNewInventory(data) {
     return this.http.post(`${environment.baseUrl}${environment.saveNewInventory}`, data)
       .pipe(map((res: any) => res));
-
+  }
+  deleteInventory(data) {
+    return this.http.post(`${environment.baseUrl}${environment.deletePartner}`, data)
+      .pipe(map((res: any) => res));
   }
 }

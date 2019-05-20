@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 
 import {
   faCaretRight, faCaretDown, faWindowClose, faCheckSquare,
-  faPencilAlt, faTrashAlt
+  faPencilAlt, faTrashAlt, faBan, faShare
 } from '@fortawesome/free-solid-svg-icons';
 import { Inventory } from '../../../core/models/newInventory';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
@@ -37,6 +37,10 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   faCheckSquare = faCheckSquare;
   faPencilAlt = faPencilAlt;
   faTrashAlt = faTrashAlt;
+  faShare = faShare;
+  faBan = faBan;
+
+
   isNewRowEnabled: boolean;
   public printItems: any;
   public partners: any;
@@ -63,10 +67,10 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   @ViewChild(DatatableComponent) table: DatatableComponent;
 
   constructor(public sharedOrderService: SharedOrdersService,
-    public http: HttpClient,
-    public inventoryService: InventoryService,
-    public fb: FormBuilder,
-    public printerService: PrintOrderService) {
+              public http: HttpClient,
+              public inventoryService: InventoryService,
+              public fb: FormBuilder,
+              public printerService: PrintOrderService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -152,12 +156,12 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       poNum: [1]
     }));
     // this.addedRows.push(addRow);
-    this.newRowHeight += 50;
+    this.newRowHeight += 80;
   }
   removeCurrentRow(i) {
     const control = this.myForm.controls.addRows as FormArray;
     control.removeAt(i);
-    this.newRowHeight -= 50;
+    this.newRowHeight -= 80;
   }
   onDetailToggle(event) {
     // console.log('Detail Toggled', event);
@@ -210,18 +214,66 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     this.isAddBtnClicked.emit(false);
     this.isNewRowEnabled = false;
   }
+  updateOrderToCancelStatus(id) {
+    const orderRecord = [{
+      PrintOrderId: id,
+      Status: 'Cancel'
+    }];
+    this.printerService.updatePrintOrderStatus(orderRecord).subscribe(newRecords => {
+      console.log(newRecords);
+      const tempArr = [];
+      _.each(newRecords, (record, index) => {
+        const tempChildArr = [];
+        _.each(record.children, (child) => {
+          tempChildArr.push(new PrintOrder(child));
+        });
+        record.children = tempChildArr;
+        tempArr.push(new PrintOrder(record));
+      });
+      // console.log('TEMP ARRRRRRRR', tempArr);
+      const merged = _.merge(_.keyBy(this.rows, 'printOrderId'), _.keyBy(newRecords, 'printOrderId'));
+      this.rows = _.values(merged);
+      // console.log(values);
+      console.log(merged);
+
+    });
+  }
+  updateOrderToPrintStatus(id) {
+    const orderRecord = {
+      PrintOrderId: id,
+      Status: 'Push2Print'
+    };
+    this.printerService.updatePrintOrderStatus(orderRecord).subscribe(newRecords => {
+      console.log(newRecords);
+      const tempArr = [];
+      _.each(newRecords, (record, index) => {
+        const tempChildArr = [];
+        _.each(record.children, (child) => {
+          tempChildArr.push(new PrintOrder(child));
+        });
+        record.children = tempChildArr;
+        tempArr.push(new PrintOrder(record));
+      });
+      // console.log('TEMP ARRRRRRRR', tempArr);
+      const merged = _.merge(_.keyBy(this.rows, 'printOrderId'), _.keyBy(newRecords, 'printOrderId'));
+      this.rows = _.values(merged);
+      // console.log(values);
+      console.log(this.rows);
+
+    });
+  }
 
   toggleExpandRow(row) {
     this.newRowHeight = 0;
     // console.log('Toggled Expand Row!', row);
     const childRows = [];
     _.each(row.children, (chrow) => {
-      childRows.push(new Inventory(chrow));
+      childRows.push(new PrintOrder(chrow));
     });
     row.children = childRows;
     // console.log(row);
     this.table.rowDetail.toggleExpandRow(row);
-    this.newRowHeight += row.children ? row.children.length * 60 : this.newRowHeight;
+    this.newRowHeight += row.children ? row.children.length * 80 : this.newRowHeight;
   }
 
   updateRowValue(event, rowIndex) {

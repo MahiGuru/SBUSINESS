@@ -195,6 +195,22 @@ export class DataGridComponent implements OnInit, OnChanges {
     //   this.table.rowDetail.toggleExpandRow(this.rows[0]);
     // }
   }
+  trashInventoryItem(id, row) {
+    const record = {
+      ItemPartner: {
+        ItemPartnerId: id
+      }
+    };
+    this.inventoryService.deleteInventory(record).subscribe(newRecords => {
+      console.log('DELETED >>>> ', newRecords);
+
+      this.rows = _.filter(this.rows, (n) => {
+        return n.itemPartner.item.itemNo !== row.itemPartner.item.itemNo;
+      });
+      console.log('arrr', this.rows);
+
+    });
+  }
   cancelNewInventory() {
 
     const control = this.myForm.controls.addRows as FormArray;
