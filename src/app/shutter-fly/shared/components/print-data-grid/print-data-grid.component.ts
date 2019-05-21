@@ -79,6 +79,9 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       this.newBtnClicked = changes.newBtnClicked.currentValue;
       this.addNewBtnClicked();
     }
+    if (changes.rows.currentValue && changes.rows.currentValue.length > 0) {
+      this.originalRows = this.rows;
+    }
   }
 
   ngOnInit() {
@@ -284,6 +287,12 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     this.isEditable[rowIndex] = !this.isEditable[rowIndex];
   }
 
+  cleaFilterInput() {
+    console.log('clearInput');
+    this.filterVal = '';
+    this.rows = [...this.originalRows];
+    this.cdr.detectChanges();
+  }
   onPartnerChange(item) {
     const filteredPartner = (_.filter(this.partners, (partner) => {
       return partner.partnerId === item.value;

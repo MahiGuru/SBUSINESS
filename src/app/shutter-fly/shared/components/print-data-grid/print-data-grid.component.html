@@ -5,7 +5,7 @@
     <input matInput placeholder="Search Filter By" [(ngModel)]="filterVal">
 
     <mat-icon matPrefix class="search-icon">search</mat-icon>
-    <button mat-button *ngIf="filterVal" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+    <button mat-button *ngIf="filterVal" matSuffix mat-icon-button aria-label="Clear" (click)="cleaFilterInput()">
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>

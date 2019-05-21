@@ -1,6 +1,6 @@
 import {
   Component, OnInit, ChangeDetectionStrategy, ViewChild, Output, EventEmitter,
-  Input, SimpleChanges, OnChanges
+  Input, SimpleChanges, OnChanges, ChangeDetectorRef
 } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { SharedOrdersService } from '../../services/shared-orders.service';
@@ -63,7 +63,8 @@ export class DataGridComponent implements OnInit, OnChanges {
   constructor(public sharedOrderService: SharedOrdersService,
               public http: HttpClient,
               public inventoryService: InventoryService,
-              public fb: FormBuilder) {
+              public fb: FormBuilder,
+              public cdr: ChangeDetectorRef) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -71,6 +72,10 @@ export class DataGridComponent implements OnInit, OnChanges {
       this.newBtnClicked = changes.newBtnClicked.currentValue;
       this.addNewBtnClicked();
     }
+    if (changes.rows.currentValue && changes.rows.currentValue.length > 0) {
+      this.originalRows = this.rows;
+    }
+    // console.log('ORIGINAL ROWS ', this.originalRows, this.rows);
   }
 
   ngOnInit() {
@@ -83,7 +88,6 @@ export class DataGridComponent implements OnInit, OnChanges {
       itemType: [''],
       partner: ['']
     });
-    this.originalRows = this.rows;
     this.inventoryService.getAddItems().subscribe(res => {
       this.inventoryItems = res;
       // console.log('INV ITEMS >>>> ', res, this.inventoryItems);
@@ -120,12 +124,14 @@ export class DataGridComponent implements OnInit, OnChanges {
   }
 
   updateFilter(filterVal) {
+    console.log(this.originalRows);
     if (filterVal === '') { this.rows = this.originalRows; }
     const val = filterVal.toLowerCase();
     // filter our data
     const temp = this.rows.filter((d) => {
       return d.itemPartner.item.itemNo.toLowerCase().indexOf(val) !== -1 || !val;
     });
+    console.log('FILTERED >>>> ', filterVal);
     // update the rows
     this.rows = temp;
     // Whenever the filter changes, always go back to the first page
@@ -182,18 +188,8 @@ export class DataGridComponent implements OnInit, OnChanges {
       const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
       this.rows = _.values(merged);
       // // console.log(values);
-
     });
-    // console.log(newRecord);
-    // if (this.addedRows.length > 0) {
-    //   this.rows.splice(0, 1);
-    //   this.addedRows.forEach(row => {
-    //     this.rows.unshift(row);
-    //   });
-    //   this.rows = [...this.rows];
-    //   this.sharedOrderService.updateOrders(this.rows);
-    //   this.table.rowDetail.toggleExpandRow(this.rows[0]);
-    // }
+
   }
   trashInventoryItem(id, row) {
     const record = {
@@ -288,5 +284,11 @@ export class DataGridComponent implements OnInit, OnChanges {
   }
   cancelChildRowClick(rowIndex, childrenIndex) {
     this.editChildRowIndex = null;
+  }
+  cleaFilterInput() {
+    console.log('clearInput');
+    this.filterVal = '';
+    this.rows = [...this.originalRows];
+    this.cdr.detectChanges();
   }
 }
