@@ -1,6 +1,6 @@
 import {
   Component, OnInit, ChangeDetectionStrategy, ViewChild, Output, EventEmitter,
-  Input, SimpleChanges, OnChanges
+  Input, SimpleChanges, OnChanges, ChangeDetectorRef
 } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { SharedOrdersService } from '../../services/shared-orders.service';
@@ -70,7 +70,8 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
               public http: HttpClient,
               public inventoryService: InventoryService,
               public fb: FormBuilder,
-              public printerService: PrintOrderService) {
+              public printerService: PrintOrderService,
+              public cdr: ChangeDetectorRef) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -221,44 +222,46 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     }];
     this.printerService.updatePrintOrderStatus(orderRecord).subscribe(newRecords => {
       console.log(newRecords);
-      const tempArr = [];
-      _.each(newRecords, (record, index) => {
-        const tempChildArr = [];
-        _.each(record.children, (child) => {
-          tempChildArr.push(new PrintOrder(child));
-        });
-        record.children = tempChildArr;
-        tempArr.push(new PrintOrder(record));
-      });
-      // console.log('TEMP ARRRRRRRR', tempArr);
-      const merged = _.merge(_.keyBy(this.rows, 'printOrderId'), _.keyBy(newRecords, 'printOrderId'));
-      this.rows = _.values(merged);
-      // console.log(values);
-      console.log(merged);
+      // const tempArr = [];
+      // const childItem = new PrintOrder(newRecords[0]);
+      // console.log('childItem', childItem);
+      // _.each(newRecords, (record, index) => {
 
+      //   const tempChildArr = [];
+      //   _.each(record.children, (child) => {
+      //     tempChildArr.push(new PrintOrder(child));
+      //   });
+      //   record.children = tempChildArr;
+      //   tempArr.push(new PrintOrder(record));
+      // });
+      _.each(this.rows, (row, i) => {
+        _.each(row.children, (child, j) => {
+          if (child.printOrderId === newRecords[0].children[0].printOrderId) {
+            child.status = newRecords[0].children[0].status;
+          }
+        });
+      });
+      this.rows = [...this.rows];
+      this.cdr.detectChanges();
     });
   }
   updateOrderToPrintStatus(id) {
-    const orderRecord = {
+    const orderRecord = [{
       PrintOrderId: id,
       Status: 'Push2Print'
-    };
+    }];
     this.printerService.updatePrintOrderStatus(orderRecord).subscribe(newRecords => {
       console.log(newRecords);
-      const tempArr = [];
-      _.each(newRecords, (record, index) => {
-        const tempChildArr = [];
-        _.each(record.children, (child) => {
-          tempChildArr.push(new PrintOrder(child));
+      _.each(this.rows, (row, i) => {
+        _.each(row.children, (child, j) => {
+          if (child.printOrderId === newRecords[0].children[0].printOrderId) {
+            child.status = newRecords[0].children[0].status;
+          }
         });
-        record.children = tempChildArr;
-        tempArr.push(new PrintOrder(record));
       });
-      // console.log('TEMP ARRRRRRRR', tempArr);
-      const merged = _.merge(_.keyBy(this.rows, 'printOrderId'), _.keyBy(newRecords, 'printOrderId'));
-      this.rows = _.values(merged);
-      // console.log(values);
+      this.rows = [...this.rows];
       console.log(this.rows);
+      this.cdr.detectChanges();
 
     });
   }
