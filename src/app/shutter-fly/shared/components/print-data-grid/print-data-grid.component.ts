@@ -79,7 +79,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       this.newBtnClicked = changes.newBtnClicked.currentValue;
       this.addNewBtnClicked();
     }
-    if (changes.rows.currentValue && changes.rows.currentValue.length > 0) {
+    if (changes.rows && changes.rows.currentValue && changes.rows.currentValue.length > 0) {
       this.originalRows = this.rows;
     }
   }
