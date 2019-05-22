@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { MaterialModule } from 'src/app/ng-material.module';
+import { SharedModule } from 'src/app/shutter-fly/shared/shared.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { MaterialModule } from 'src/app/ng-material.module';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    SharedModule
   ],
   exports: [ReleasesComponent]
 })

@@ -9,24 +9,23 @@ import * as _ from 'lodash';
 
 import {
   faCaretRight, faCaretDown, faWindowClose, faCheckSquare,
-  faPencilAlt, faTrashAlt, faBan, faShare
+  faPencilAlt, faTrashAlt
 } from '@fortawesome/free-solid-svg-icons';
 import { Inventory } from '../../../core/models/newInventory';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
 import { BehaviorSubject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { PrintOrder } from 'src/app/shutter-fly/core/models/printOrder';
-import { PrintOrderService } from 'src/app/shutter-fly/shared/services/print-order.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material';
-import { ConfirmDialogComponent } from 'src/app/shutter-fly/shared/components/confirm-dialog/confirm-dialog.component';
+import { ReleaseOrder } from 'src/app/shutter-fly/core/models/releaseOrder';
 
 @Component({
-  selector: 'sb-print-data-grid',
-  templateUrl: './print-data-grid.component.html',
-  styleUrls: ['./print-data-grid.component.scss'],
+  selector: 'sb-release-grid',
+  templateUrl: './release-grid.component.html',
+  styleUrls: ['./release-grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PrintDataGridComponent implements OnInit, OnChanges {
+export class ReleaseGridComponent implements OnInit, OnChanges {
   @Input() cols: any;
   @Input() rows: any;
   @Input() newBtnClicked: boolean;
@@ -39,12 +38,8 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   faCheckSquare = faCheckSquare;
   faPencilAlt = faPencilAlt;
   faTrashAlt = faTrashAlt;
-  faShare = faShare;
-  faBan = faBan;
-
-
   isNewRowEnabled: boolean;
-  public printItems: any;
+  public inventoryItems: any;
   public partners: any;
   public defaultItemNo: any = 1;
   public defaultItemDescription: any = 1;
@@ -72,9 +67,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
               public http: HttpClient,
               public inventoryService: InventoryService,
               public fb: FormBuilder,
-              public printerService: PrintOrderService,
-              public cdr: ChangeDetectorRef,
-              public dialog: MatDialog) {
+              public cdr: ChangeDetectorRef, public dialog: MatDialog) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -85,6 +78,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     if (changes.rows && changes.rows.currentValue && changes.rows.currentValue.length > 0) {
       this.originalRows = this.rows;
     }
+    // console.log('ORIGINAL ROWS ', this.originalRows, this.rows);
   }
 
   ngOnInit() {
@@ -95,36 +89,30 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       itemNo: [''],
       itemDesc: [''],
       itemType: [''],
-      partner: [''],
-      quantity: [''],
-      poNum: ['']
+      partner: ['']
     });
-    this.originalRows = this.rows;
-    this.printerService.getPrintItems().subscribe(res => {
-      this.printItems = res;
-      // console.log('printItems ITEMS >>>> ', res, this.printItems);
+    this.inventoryService.getAddItems().subscribe(res => {
+      this.inventoryItems = res;
+      // console.log('INV ITEMS >>>> ', res, this.inventoryItems);
       this.selectedItemType = res[0].itemType;
       this.selectedItem = res[0];
     });
-    // this.inventoryService.getPartners().subscribe(partners => {
-    //   this.partners = partners;
-    //   // console.log('partners >>>> ', partners, this.partners);
-    // });
+    this.inventoryService.getPartners().subscribe(partners => {
+      this.partners = partners;
+      // console.log('partners >>>> ', partners, this.partners);
+    });
 
   }
 
   addNewBtnClicked() {
     const control = this.myForm.controls.addRows as FormArray;
-    this.rows.unshift(new PrintOrder());
+    this.rows.unshift(new Inventory());
     this.rows = [...this.rows];
     control.push(this.fb.group({
       itemNo: [1],
       itemDesc: [1],
-      partners: [[]],
       itemType: [''],
-      partner: [1],
-      quantity: [1],
-      poNum: [1]
+      partner: [1]
     }));
 
     control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
@@ -139,12 +127,14 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   }
 
   updateFilter(filterVal) {
+    console.log(this.originalRows);
     if (filterVal === '') { this.rows = this.originalRows; }
     const val = filterVal.toLowerCase();
     // filter our data
     const temp = this.rows.filter((d) => {
       return d.itemPartner.item.itemNo.toLowerCase().indexOf(val) !== -1 || !val;
     });
+    console.log('FILTERED >>>> ', filterVal);
     // update the rows
     this.rows = temp;
     // Whenever the filter changes, always go back to the first page
@@ -153,22 +143,20 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
 
   addAnotherRow() {
     const control = this.myForm.controls.addRows as FormArray;
+    const addRow = new Inventory();
     control.push(this.fb.group({
       itemNo: [1],
       itemDesc: [1],
       itemType: [''],
-      partners: [[]],
-      partner: [1],
-      quantity: [1],
-      poNum: [1]
+      partner: [1]
     }));
     // this.addedRows.push(addRow);
-    this.newRowHeight += 80;
+    this.newRowHeight += 30;
   }
   removeCurrentRow(i) {
     const control = this.myForm.controls.addRows as FormArray;
     control.removeAt(i);
-    this.newRowHeight -= 80;
+    this.newRowHeight -= 30;
   }
   onDetailToggle(event) {
     // console.log('Detail Toggled', event);
@@ -178,36 +166,68 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     // console.log(control.value);
     const newRecord = [];
     _.each(control.value, (val) => {
-      // console.log('SAVE ', val);
       newRecord.push({
-        ItemPartner: {
-          ItemPartnerId: val.partner
+        Item: {
+          ItemId: val.itemNo
         },
-        Quantity: val.quantity,
-        PoNum: val.poNum,
-        Status: 'New'
+        Partner: {
+          PartnerId: val.partner
+        }
       });
     });
 
-    this.printerService.saveNewPrintItem(newRecord).subscribe(newRecords => {
+    this.inventoryService.saveNewInventory(newRecord).subscribe(newRecords => {
       // console.log('SAVEDDDDD >>>> ', newRecords);
       const tempArr = [];
       _.each(newRecords, (record, index) => {
         const tempChildArr = [];
-        // _.each(record.children, (child) => {
-        //   tempChildArr.push(new PrintOrder(child));
-        // });
-        // record.children = tempChildArr;
-        tempArr.push(new PrintOrder(record));
+        _.each(record.children, (child) => {
+          tempChildArr.push(new Inventory(child));
+        });
+        record.children = tempChildArr;
+        tempArr.push(new Inventory(record));
       });
       // console.log('TEMP ARRRRRRRR', tempArr);
-      const merged = _.merge(_.keyBy(this.rows, 'printOrderId'), _.keyBy(newRecords, 'printOrderId'));
+      const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
       this.rows = _.values(merged);
-      // console.log(values);
-      console.log(this.rows);
-
+      // // console.log(values);
     });
-    // console.log(newRecord);
+
+  }
+  trashInventoryItem(row) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        row,
+        title: 'Delete Inventory Item',
+        description: 'Are you sure you want to delete this item?',
+        noLabel: 'Cancel',
+        yesLabel: 'Delete'
+      },
+      panelClass: 'confirm-dialog'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      if (result) {
+        const record = {
+          ItemPartner: {
+            ItemPartnerId: result.row.itemPartner.item.itemId
+          }
+        };
+        this.inventoryService.deleteInventory(record).subscribe(newRecords => {
+          console.log('DELETED >>>> ', newRecords);
+
+          this.rows = _.filter(this.rows, (n) => {
+            return n.itemPartner.item.itemNo !== row.itemPartner.item.itemNo;
+          });
+          console.log('arrr', this.rows);
+
+        });
+      }
+      // this.animal = result;
+    });
+
 
   }
   cancelNewInventory() {
@@ -221,82 +241,18 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     this.isAddBtnClicked.emit(false);
     this.isNewRowEnabled = false;
   }
-  updateOrderToCancelStatus(id) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '450px',
-      data: {
-        id,
-        title: 'Cancel Print Order',
-        description: 'Are you sure you want to cancel this print order?',
-        noLabel: 'Keep Order',
-        yesLabel: 'Cancel Order'
-      },
-      panelClass: 'confirm-dialog'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      const orderRecord = [{
-        PrintOrderId: result.id,
-        Status: 'Cancel'
-      }];
-      this.printerService.updatePrintOrderStatus(orderRecord).subscribe(newRecords => {
-        console.log(newRecords);
-        // const tempArr = [];
-        // const childItem = new PrintOrder(newRecords[0]);
-        // console.log('childItem', childItem);
-        // _.each(newRecords, (record, index) => {
-
-        //   const tempChildArr = [];
-        //   _.each(record.children, (child) => {
-        //     tempChildArr.push(new PrintOrder(child));
-        //   });
-        //   record.children = tempChildArr;
-        //   tempArr.push(new PrintOrder(record));
-        // });
-        _.each(this.rows, (row, i) => {
-          _.each(row.children, (child, j) => {
-            if (child.printOrderId === newRecords[0].children[0].printOrderId) {
-              child.status = newRecords[0].children[0].status;
-            }
-          });
-        });
-        this.rows = [...this.rows];
-        this.cdr.detectChanges();
-      });
-    });
-  }
-  updateOrderToPrintStatus(id) {
-    const orderRecord = [{
-      PrintOrderId: id,
-      Status: 'Push2Print'
-    }];
-    this.printerService.updatePrintOrderStatus(orderRecord).subscribe(newRecords => {
-      console.log(newRecords);
-      _.each(this.rows, (row, i) => {
-        _.each(row.children, (child, j) => {
-          if (child.printOrderId === newRecords[0].children[0].printOrderId) {
-            child.status = newRecords[0].children[0].status;
-          }
-        });
-      });
-      this.rows = [...this.rows];
-      console.log(this.rows);
-      this.cdr.detectChanges();
-
-    });
-  }
 
   toggleExpandRow(row) {
     this.newRowHeight = 0;
     // console.log('Toggled Expand Row!', row);
     const childRows = [];
     _.each(row.children, (chrow) => {
-      childRows.push(new PrintOrder(chrow));
+      childRows.push(new ReleaseOrder(chrow));
     });
     row.children = childRows;
     // console.log(row);
     this.table.rowDetail.toggleExpandRow(row);
-    this.newRowHeight += row.children ? row.children.length * 80 : this.newRowHeight;
+    this.newRowHeight += row.children ? row.children.length * 60 : this.newRowHeight;
   }
 
   updateRowValue(event, rowIndex) {
@@ -304,12 +260,6 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     this.isEditable[rowIndex] = !this.isEditable[rowIndex];
   }
 
-  cleaFilterInput() {
-    console.log('clearInput');
-    this.filterVal = '';
-    this.rows = [...this.originalRows];
-    this.cdr.detectChanges();
-  }
   onPartnerChange(item) {
     const filteredPartner = (_.filter(this.partners, (partner) => {
       return partner.partnerId === item.value;
@@ -319,15 +269,12 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   }
   onItemChange(item, index) {
     const control = this.myForm.controls.addRows as FormArray;
-    const selectedItem = _.filter(this.printItems, (iitem) => {
-      return iitem.item.itemNo === item.value;
+    const selectedItem = _.filter(this.inventoryItems, (iitem) => {
+      return iitem.itemId === item.value;
     });
-    this.selectedItem = selectedItem[0];
-    control.controls[index].get('partners').setValue(selectedItem[0].itemPartner);
-    // console.log('on item change', selectedItem);
-    control.controls[index].get('itemNo').setValue(selectedItem[0].item.itemNo);
-    control.controls[index].get('itemDesc').setValue(selectedItem[0].item.itemNo);
-    control.controls[index].get('itemType').setValue(selectedItem[0].item.itemTypeCode);
+    control.controls[index].get('itemNo').setValue(selectedItem[0].itemId);
+    control.controls[index].get('itemDesc').setValue(selectedItem[0].itemId);
+    control.controls[index].get('itemType').setValue(selectedItem[0].itemType);
     // console.log('INDEX', index, item);
 
   }
@@ -360,5 +307,11 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   }
   cancelChildRowClick(rowIndex, childrenIndex) {
     this.editChildRowIndex = null;
+  }
+  cleaFilterInput() {
+    console.log('clearInput');
+    this.filterVal = '';
+    this.rows = [...this.originalRows];
+    this.cdr.detectChanges();
   }
 }

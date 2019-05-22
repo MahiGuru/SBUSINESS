@@ -44,31 +44,22 @@
   </ngx-datatable-column>
   <ngx-datatable-column name="Type" prop="itemPartner.item.itemType" editable="true" [flexGrow]="1">
   </ngx-datatable-column>
-  <ngx-datatable-column name="Partner" prop="itemPartner.partner.partnerType" editable="true" [flexGrow]="1">
+  <ngx-datatable-column name="Assembler" prop="itemPartner.partner.partnerType" editable="true" [flexGrow]="1">
   </ngx-datatable-column>
-  <ngx-datatable-column prop="recieved" editable="true" [flexGrow]="1"></ngx-datatable-column>
-  <ngx-datatable-column prop="sflyWip" editable="true" [flexGrow]="1"></ngx-datatable-column>
-  <ngx-datatable-column prop="collated" editable="true" [flexGrow]="1"></ngx-datatable-column>
-  <ngx-datatable-column name="waste" prop="waste" [flexGrow]="1">
+  <ngx-datatable-column prop="quantity" editable="true" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column prop="release" editable="true" [flexGrow]="1"></ngx-datatable-column>
+
+  <ngx-datatable-column name="Created" editable="true" [flexGrow]="1">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <input class="form-control" autofocus (input)="editValUpdate($event, row)" *ngIf="isEditable[rowIndex]"
-        type="text" [value]="value" />
-      <span *ngIf="!isEditable[rowIndex]">{{row.waste}}</span>
-    </ng-template>
-  </ngx-datatable-column>
-  <ngx-datatable-column prop="overAge" editable="true" [flexGrow]="1"></ngx-datatable-column>
-  <ngx-datatable-column prop="completed" editable="true" [flexGrow]="1"></ngx-datatable-column>
-  <ngx-datatable-column prop="sfOnHand" editable="true" [flexGrow]="1"></ngx-datatable-column>
-  <ngx-datatable-column prop="pOnHand" editable="true" [flexGrow]="1"></ngx-datatable-column>
-  <ngx-datatable-column name="Updated At" editable="true" [flexGrow]="1">
-    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <span *ngIf="!isNewRowEnabled">{{ row.updatedAt | dateFormat}}</span>
-      <span *ngIf="isNewRowEnabled">{{ row.updatedAt }}</span>
+      <span *ngIf="!isNewRowEnabled">{{ row.createdAt | dateFormat}}</span>
+      <span *ngIf="isNewRowEnabled">{{ row.createdAt }}</span>
     </ng-template>
   </ngx-datatable-column>
   <!-- <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
     [cellClass]="col.prop">
   </ngx-datatable-column> -->
+  <ngx-datatable-column prop="status" editable="true" [flexGrow]="1"></ngx-datatable-column>
+
   <ngx-datatable-column [sortable]="false" [flexGrow]="1">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
       <div class="row-action-btn"
@@ -96,30 +87,23 @@
 
   <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <section *ngIf="row.children && row.children.length > 0">
+      <section *ngIf="row.children && row.children.length > 0" style="position: absolute">
         <div>
           <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
-            <span fxFlex="140px"> {{nrow.itemPartner.item.itemNo}}
+            <span fxFlex="210px"> {{nrow.itemPartner.item.itemNo}}
             </span>
-            <span fxFlex="230px" class="ellipsis description">{{nrow.itemPartner.item.itemDescription}}
+            <span fxFlex="350px" class="ellipsis description">{{nrow.itemPartner.item.itemDescription}}
             </span>
-            <span fxFlex="117px">{{nrow.itemPartner.item.itemType}}
+            <span fxFlex="175px">{{nrow.itemPartner.item.itemType}}
             </span>
-            <span fxFlex="117px">{{nrow.itemPartner.partner.partnerType}}
+            <span fxFlex="175px">{{nrow.itemPartner.partner.partnerType}}
             </span>
-            <span fxFlex="117px">{{nrow.recieved}} </span>
-            <span fxFlex="117px">{{nrow.sflyWip}}</span>
-            <span fxFlex="117px">{{nrow.collated}} </span>
-            <span fxFlex="117px">
-              <input class="form-control" autofocus (input)="editValUpdate($event, nrow)" *ngIf="i == editChildRowIndex"
-                type="text" />
-              <span *ngIf="i !== editChildRowIndex">{{nrow.waste}} </span></span>
-            <span fxFlex="117px">{{nrow.overAge}} </span>
-            <span fxFlex="117px">{{nrow.completed}} </span>
-            <span fxFlex="117px"> {{nrow.sfOnHand}}</span>
-            <span fxFlex="117px"> {{nrow.pOnHand}}</span>
-            <span class="ellipsis" fxFlex="117px"> {{nrow.updatedAt}}</span>
-            <span fxFlex="117px">
+            <span fxFlex="175px">{{nrow.quantity}} </span>
+            <span fxFlex="175px">{{nrow.release}}</span>
+            <span class="ellipsis" fxFlex="175px"> {{nrow.createdAt | dateFormat}}</span>
+            <span fxFlex="175px">{{nrow.status}}</span>
+
+            <span fxFlex="175px">
               <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
                 <span (click)="editChildrenRowClick(getRowIndex(row), i)">
                   <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
@@ -142,64 +126,6 @@
         </div>
       </section>
 
-      <section class="new_section" *ngIf="row.children.length == 0">
-        <form [formGroup]="myForm">
-          <div formArrayName="addRows">
-            <div class="row-ab-actions">
-              <span fxFlex fxLayout="row" fxLayoutGap="10px">
-                <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
-                  cancel
-                </i>
-                <i class="material-icons done-ic" (click)="addRowsToInventory()">
-                  check_circle
-                </i>
-              </span>
-            </div>
-            <div fxLayout="row" class="newRow add-row-section mtb-10" fxLayoutGap="0px"
-              *ngFor="let comp of myForm.get('addRows').controls; let i=index">
-              <div [formGroupName]="i">
-                <span fxFlex="155px">
-                  <mat-select [placeholder]="'Item No'" formControlName="itemNo"
-                    (selectionChange)="onItemChange($event, i)">
-                    <mat-option *ngFor="let option of inventoryItems" [value]="option.itemId">{{ option.itemNo }}
-                    </mat-option>
-                  </mat-select>
-                </span>
-                <span fxFlex="235px" class="description">
-                  <mat-select [placeholder]="'Item Desc'" formControlName="itemDesc"
-                    (selectionChange)="onItemChange($event, i)">
-                    <mat-option *ngFor="let option of inventoryItems" [value]="option.itemId">
-                      {{ option.itemDescription }}
-                    </mat-option>
-                  </mat-select>
-                </span>
-                <span fxFlex="120px">
-                  {{comp.get('itemType').value}}
-                </span>
-                <span fxFlex="115px">
-                  <mat-select formControlName="partner" (selectionChange)="onPartnerChange($event, i)">
-                    <mat-option *ngFor="let partner of partners" [value]="partner.partnerId">{{ partner.partnerCode }}
-                    </mat-option>
-                  </mat-select>
-                </span>
-                <span fxFlex="50px"> </span>
-                <div fxFlex="112px" fxLayout="row" fxLayoutGap="10px">
-                  <i class="material-icons red" (click)="removeCurrentRow(i)">
-                    remove_circle
-                  </i>
-                  <i class="material-icons green" (click)="addAnotherRow()" *ngIf="i == 0">
-                    add_circle </i>
-
-                </div>
-                <span fxFlex="112px"> </span>
-                <span fxFlex="112px"> </span>
-                <span fxFlex="112px"> </span>
-              </div>
-            </div>
-          </div>
-        </form>
-
-      </section>
     </ng-template>
   </ngx-datatable-row-detail>
 </ngx-datatable>

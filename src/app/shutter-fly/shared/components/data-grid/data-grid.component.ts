@@ -15,6 +15,8 @@ import { Inventory } from '../../../core/models/newInventory';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
 import { BehaviorSubject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'sb-data-grid',
@@ -64,7 +66,7 @@ export class DataGridComponent implements OnInit, OnChanges {
               public http: HttpClient,
               public inventoryService: InventoryService,
               public fb: FormBuilder,
-              public cdr: ChangeDetectorRef) {
+              public cdr: ChangeDetectorRef, public dialog: MatDialog) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -191,21 +193,41 @@ export class DataGridComponent implements OnInit, OnChanges {
     });
 
   }
-  trashInventoryItem(id, row) {
-    const record = {
-      ItemPartner: {
-        ItemPartnerId: id
-      }
-    };
-    this.inventoryService.deleteInventory(record).subscribe(newRecords => {
-      console.log('DELETED >>>> ', newRecords);
-
-      this.rows = _.filter(this.rows, (n) => {
-        return n.itemPartner.item.itemNo !== row.itemPartner.item.itemNo;
-      });
-      console.log('arrr', this.rows);
-
+  trashInventoryItem(row) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        row,
+        title: 'Delete Inventory Item',
+        description: 'Are you sure you want to delete this item?',
+        noLabel: 'Cancel',
+        yesLabel: 'Delete'
+      },
+      panelClass: 'confirm-dialog'
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      if (result) {
+        const record = {
+          ItemPartner: {
+            ItemPartnerId: result.row.itemPartner.item.itemId
+          }
+        };
+        this.inventoryService.deleteInventory(record).subscribe(newRecords => {
+          console.log('DELETED >>>> ', newRecords);
+
+          this.rows = _.filter(this.rows, (n) => {
+            return n.itemPartner.item.itemNo !== row.itemPartner.item.itemNo;
+          });
+          console.log('arrr', this.rows);
+
+        });
+      }
+      // this.animal = result;
+    });
+
+
   }
   cancelNewInventory() {
 

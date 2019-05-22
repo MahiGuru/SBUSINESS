@@ -1,9 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ORDERS } from '../../core/models/order-state';
-import { DatatableComponent } from '@swimlane/ngx-datatable';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { SharedOrdersService } from '../../shared/services/shared-orders.service';
 import { MatDialog } from '@angular/material';
 import { Inventory } from '../../core/models/inventory-old';
+import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
+import * as _ from 'lodash';
+import { ReleasesService } from 'src/app/shutter-fly/shared/services/releases.service';
+import { DatatableComponent } from '@swimlane/ngx-datatable';
+import { ReleaseOrder } from 'src/app/shutter-fly/core/models/releaseOrder';
+import { ORDERS } from 'src/app/shutter-fly/core/models/order-state';
 
 @Component({
   selector: 'sb-releases',
@@ -15,87 +19,78 @@ export class ReleasesComponent implements OnInit {
   filterVal: any;
   temp = [];
   public newRowHeight: any = 100;
-  public addedRows = [];
   public OrdersState = ORDERS;
+  public addedRows = [];
+  public isAddNewBtnClicked = false;
+
   columns = [
-    { prop: 'id', name: 'Item #', width: 100 },
-    { name: 'Description', width: 250 },
-    { prop: 'itemType', name: 'Item Type', width: 100 },
-    { prop: 'assemblyPartner', name: 'Assembly Partner', width: 100 },
-    { name: 'Received', width: 100 },
-    { name: 'Committed', width: 100 },
-    { name: 'Adjustment', width: 100 },
-    { name: 'Shipped', width: 100 },
-    { name: 'On-hand', prop: 'onhand', width: 100 },
-    { name: 'Updated', width: 100 },
-    { name: 'Status', prop: 'status', width: 100 }
+    { prop: 'itemNo', name: 'Item #', width: 100 },
+    { name: 'Description', width: 850 },
+    { prop: 'type', name: 'Type', width: 100 },
+    { prop: 'printer', name: 'Printers', width: 100 },
+    { prop: 'quantity', name: 'Quantity', width: 100 },
+    { prop: 'poNum', name: 'PO #', width: 100 },
+    { prop: 'jobNum', name: 'Job #', width: 100 },
+    { prop: 'createdAt', name: 'Created', width: 100 },
+    { prop: 'status', name: 'Status' }
+
+
   ];
   @ViewChild(DatatableComponent) table: DatatableComponent;
   names: any;
-  constructor(public sharedOrderService: SharedOrdersService, public dialog: MatDialog) {
+  constructor(public releaseService: ReleasesService, public dialog: MatDialog, public cdr: ChangeDetectorRef) {
 
   }
 
-  updateFilter(filterVal) {
-    const val = filterVal.toLowerCase();
-    // filter our data
-    const temp = this.temp.filter((d) => {
-      return d.itemType.toLowerCase().indexOf(val) !== -1 || !val;
-    });
+  ngOnInit() {
+    this.releaseService.getAllReleaseRecords().subscribe((rows: any) => {
+      console.log('ROWS, ', rows);
+      const tempRows = [];
+      _.each(rows, (row) => {
+        const inventory = new ReleaseOrder(row);
+        tempRows.push(inventory);
+      });
 
-    // update the rows
-    this.rows = temp;
-    // Whenever the filter changes, always go back to the first page
-    this.table.offset = 0;
+      this.rows = tempRows;
+      console.log(this.rows, tempRows, '\n\n\n\n\n');
+    });
   }
   toggleExpandRow(row) {
-    this.rows.unshift(new Inventory());
-    this.rows = [...this.rows];
+    this.isAddNewBtnClicked = true;
+  }
+  // addRowsToInventory() {
+  //   if (this.addedRows.length > 0) {
+  //     this.rows.splice(0, 1);
+  //     this.addedRows.forEach(row => {
+  //       this.rows.unshift(row);
+  //     });
+  //     this.rows = [...this.rows];
+  //     this.table.rowDetail.toggleExpandRow(this.rows[0]);
+  //   }
+  // }
+  // cancelNewInventory() {
+  //   this.rows.splice(0, 1);
+  //   this.addedRows = [];
+  //   this.rows = [...this.rows];
+  //   this.table.rowDetail.toggleExpandRow(this.rows[0]);
+  // }
 
-    const addRow = new Inventory();
-    this.addedRows = [
-      ...this.addedRows, addRow
-    ];
+  // deleteOrder() {
+  //   const dialogRef = this.dialog.open(DeleteDialogComponent, {
+  //     width: '350px',
+  //     height: '350px',
+  //     data: {}
+  //   });
 
-    setTimeout(() => {
-      this.table.rowDetail.toggleExpandRow(this.rows[0]);
-    }, 100);
-  }
-  addAnotherRow() {
-    const addRow = new Inventory();
-    this.addedRows.push(addRow);
-    this.newRowHeight += 30;
-  }
-  removeCurrentRow(currentRow) {
-    this.addedRows.splice(this.addedRows.indexOf(currentRow), 1);
-    this.newRowHeight -= 30;
-  }
-  onDetailToggle(event) {
-    // // console.log('Detail Toggled', event);
-  }
-  ngOnInit() {
-    this.sharedOrderService.data$.subscribe((val) => {
-      // // console.log('PRINT ORDER >>> SUBSCRIBE >>>> ', val);
-      this.rows = val;
-    });
-  }
-  addRowsToInventory() {
-    if (this.addedRows.length > 0) {
-      this.rows.splice(0, 1);
-      this.addedRows.forEach(row => {
-        this.rows.unshift(row);
-      });
-      this.rows = [...this.rows];
-      this.table.rowDetail.toggleExpandRow(this.rows[0]);
-    }
-  }
-  cancelNewInventory() {
-    this.rows.splice(0, 1);
-    this.addedRows = [];
-    this.rows = [...this.rows];
-    this.table.rowDetail.toggleExpandRow(this.rows[0]);
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     // console.log('The dialog was closed');
+  //     // this.animal = result;
+  //   });
+  // }
 
-
+  isAddBtnClicked(event) {
+    this.isAddNewBtnClicked = event;
+    this.cdr.detectChanges();
+  }
 
 }

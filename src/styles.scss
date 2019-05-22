@@ -389,3 +389,31 @@ box-shadow:0px 0px 5px #ccc;
   outline: none;
 }
 
+.confirm-dialog .mat-dialog-container{
+  background-color: #fff;
+  color: #333333;
+  h1{
+    color:#58595b;
+    font-family: "Avenir-Roman";
+    font-size: 20px;
+  }
+  p{
+    font-size: 14px;
+    color: #444444;
+  }
+  button{
+    text-transform: uppercase;
+  }
+  button.yes-btn{
+    background-color: #F05323;
+  }
+  button.no-btn{
+    background-color: #fafafa;
+    color: #333333;
+  }
+  .mat-dialog-actions{
+    margin-top: 10px;
+    border-top: 1px solid #ececec;
+    justify-content: flex-end;
+  }
+}
