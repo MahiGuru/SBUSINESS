@@ -14,7 +14,9 @@ export const environment = {
   printItems: 'print/items',
   savePrintRecord: 'print/order/manage',
   releasesList: 'release/orders',
-  releaseManage: 'release/order/manage'
+  releaseManage: 'release/order/manage',
+  authenticate: 'authenticate'
+
 };
 
 /*

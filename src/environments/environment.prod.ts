@@ -8,5 +8,6 @@ export const environment = {
   deletePartner: 'inventory/itempartnerdelete',
   printList: 'print/orders',
   printItems: 'print/items',
-  savePrintRecord: 'print/order/manage'
+  savePrintRecord: 'print/order/manage',
+  authenticate: 'authenticate'
 };

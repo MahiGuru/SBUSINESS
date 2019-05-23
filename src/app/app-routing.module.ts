@@ -12,7 +12,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'shutterfly',
+    redirectTo: 'login',
     pathMatch: 'full'
   }
 ];
