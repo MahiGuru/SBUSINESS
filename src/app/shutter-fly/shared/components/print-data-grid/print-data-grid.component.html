@@ -94,7 +94,7 @@
 
             <span fxFlex="160px" class="p-new-item"> {{nrow.createdAt}}</span>
             <span fxFlex="160px" class="p-new-item"> {{nrow.status}}</span>
-            <span fxFlex="160px" class="p-new-item" *ngIf="nrow.status === 'Cancel'">
+            <span fxFlex="160px" class="p-new-item" *ngIf="nrow.status === 'New'">
               <span class="icon mr-8" (click)="updateOrderToCancelStatus(nrow?.printOrderId)">
                 <fa-icon [icon]="faBan" [ngClass]="'fa-icon fs-16'"></fa-icon>
               </span>

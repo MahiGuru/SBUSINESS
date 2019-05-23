@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 
 import {
   faCaretRight, faCaretDown, faWindowClose, faCheckSquare,
-  faPencilAlt, faTrashAlt
+  faPencilAlt, faTrashAlt, faRedoAlt, faShare, faCheckCircle, faPrint
 } from '@fortawesome/free-solid-svg-icons';
 import { Inventory } from '../../../core/models/newInventory';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
@@ -18,6 +18,8 @@ import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material';
 import { ReleaseOrder } from 'src/app/shutter-fly/core/models/releaseOrder';
+import { ORDERS } from 'src/app/shutter-fly/core/models/order-state';
+import { ReleasesService } from 'src/app/shutter-fly/shared/services/releases.service';
 
 @Component({
   selector: 'sb-release-grid',
@@ -31,6 +33,7 @@ export class ReleaseGridComponent implements OnInit, OnChanges {
   @Input() newBtnClicked: boolean;
   public originalRows: any;
   public newAddedRow: any = [];
+  public OrdersState = ORDERS;
 
   faCaretRight = faCaretRight;
   faCaretDown = faCaretDown;
@@ -38,6 +41,10 @@ export class ReleaseGridComponent implements OnInit, OnChanges {
   faCheckSquare = faCheckSquare;
   faPencilAlt = faPencilAlt;
   faTrashAlt = faTrashAlt;
+  faShare = faShare;
+  faCheckCircle = faCheckCircle;
+  faPrint = faPrint;
+
   isNewRowEnabled: boolean;
   public inventoryItems: any;
   public partners: any;
@@ -67,7 +74,9 @@ export class ReleaseGridComponent implements OnInit, OnChanges {
               public http: HttpClient,
               public inventoryService: InventoryService,
               public fb: FormBuilder,
-              public cdr: ChangeDetectorRef, public dialog: MatDialog) {
+              public cdr: ChangeDetectorRef,
+              public dialog: MatDialog,
+              public releaseService: ReleasesService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -227,11 +236,19 @@ export class ReleaseGridComponent implements OnInit, OnChanges {
       }
       // this.animal = result;
     });
-
-
   }
-  cancelNewInventory() {
 
+  updateOrderStatus(id, status) {
+    const orderRecord = [{
+      PrintOrderId: id,
+      Status: status
+    }];
+    this.releaseService.updateReleaseOrderStatus(orderRecord).subscribe(newRecords => {
+      console.log(newRecords);
+    });
+  }
+
+  cancelNewInventory() {
     const control = this.myForm.controls.addRows as FormArray;
     control.controls = [];
     this.newRowHeight = 100;

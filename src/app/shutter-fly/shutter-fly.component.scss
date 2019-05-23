@@ -2,8 +2,18 @@
 
 :host /deep/ {
 
-
-
+  .ng-fa-icon{
+    cursor: pointer;
+    &:hover{
+      color: #ff4800;
+    }
+  }
+  .dt-arrow{
+    padding-right: 10px;
+  }
+  .active-green{
+    color: #00a31b;
+  }
   .datatable-header{ height: 50px !important; display: flex !important; }
   .ngx-datatable.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell {
     background-color: #EBEDF0;

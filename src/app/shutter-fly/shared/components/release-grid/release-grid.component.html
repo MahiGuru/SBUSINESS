@@ -63,30 +63,18 @@
   <ngx-datatable-column [sortable]="false" [flexGrow]="1">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
       <div class="row-action-btn"
-        *ngIf="(row.children && row.children.length < 1) && !(isNewRowEnabled && rowIndex == 0)">
-        <span *ngIf="!isEditable[rowIndex]" fxLayout="row" fxLayoutGap="20px">
-          <span (click)="updateRowValue($event, rowIndex)">
-            <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
-          </span>
-          <span (click)="trashInventoryItem(row)">
-            <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
-          </span>
+        *ngIf="row.children && row.children.length == 0 && row.status === OrdersState.MARKPRINTED">
+        <span (click)="updateRowValue($event, rowIndex)">
+          <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
         </span>
-        <span *ngIf="isEditable[rowIndex]" fxLayout="row" fxLayoutGap="10px">
-          <span (click)="this.isEditable[rowIndex] = !this.isEditable[rowIndex]">
-            <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
-          </span>
-          <span (click)="updateEditedValue(rowIndex, row.waste)">
-            <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
-          </span>
-        </span>
+
       </div>
     </ng-template>
   </ngx-datatable-column>
 
 
   <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
-    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template let-rowIndex="rowIndex">
       <section *ngIf="row.children && row.children.length > 0" style="position: absolute">
         <div>
           <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
@@ -104,21 +92,17 @@
             <span fxFlex="175px">{{nrow.status}}</span>
 
             <span fxFlex="175px">
-              <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
-                <span (click)="editChildrenRowClick(getRowIndex(row), i)">
-                  <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
-                </span>
-                <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
+              <span (click)="updateOrderStatus(nrow.itemPartner.item.itemId, 'PushPrint')"
+                *ngIf="nrow.status === OrdersState.MARKPRINTED">
+                <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
               </span>
-              <!-- *ngIf="isEditable[getRowIndex(row)].children[i]"
-              isEditable[getRowIndex(row)].children[i] = !isEditable[getRowIndex(row)].children[i]-->
-              <span fxLayout="row" fxLayoutGap="10px" *ngIf="i == editChildRowIndex">
-                <span (click)="cancelChildRowClick(getRowIndex(row), i, nrow)">
-                  <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
-                </span>
-                <span (click)="updateEditedChildRowValue(getRowIndex(row), i, nrow.waste)">
-                  <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
-                </span>
+              <span class="active-green" (click)="updateOrderStatus(nrow.itemPartner.item.itemId, 'Printed')"
+                *ngIf="nrow.status === OrdersState.PRINTED">
+                <fa-icon [icon]="faCheckCircle" [ngClass]="'fa-icon fs-16'"></fa-icon>
+              </span>
+              <span class="active-green" (click)="updateOrderStatus(nrow.itemPartner.item.itemId, 'Ordered')"
+                *ngIf="nrow.status === OrdersState.ORDERED">
+                <fa-icon [icon]="faPrint" [ngClass]="'fa-icon fs-16'"></fa-icon>
               </span>
 
             </span>
