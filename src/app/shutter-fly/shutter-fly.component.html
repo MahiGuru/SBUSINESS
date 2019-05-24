@@ -1,17 +1,23 @@
-<div class="container" fxLayout="column" fxLayoutAlign="stretch">
+<div class="container" fxLayout="column" fxLayoutAlign="stretch" [style.width.px]="windowWidth - 200">
   <header fxFlex="80px" class="header">
     <sb-toolbar></sb-toolbar>
   </header>
   <section class="content-area  mt-5" fxFlex>
-    <mat-tab-group>
+    <mat-tab-group (selectedTabChange)="selectedTab($event)">
       <mat-tab label="Inventory">
-        <sb-inventory></sb-inventory>
+        <div *ngIf="tabIndex === 0">
+          <sb-inventory></sb-inventory>
+        </div>
       </mat-tab>
       <mat-tab label="Print Orders">
-        <sb-print-orders></sb-print-orders>
+        <div *ngIf="tabIndex === 1">
+          <sb-print-orders></sb-print-orders>
+        </div>
       </mat-tab>
       <mat-tab label="Releases">
-        <sb-releases></sb-releases>
+        <div *ngIf="tabIndex === 2">
+          <sb-releases></sb-releases>
+        </div>
       </mat-tab>
     </mat-tab-group>
   </section>

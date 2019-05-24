@@ -19,10 +19,10 @@
 </div>
 <!-- <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Search filter by'
     (keyup)='updateFilter($event)' /> -->
-<ngx-datatable #table class='material' [columns]="cols" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50"
-  [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+<ngx-datatable class='material expandable' [columns]="cols" [columnMode]="'force'" [headerHeight]="50"
+  [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
 
-  <ngx-datatable-column name="Item #" [flexGrow]="1">
+  <ngx-datatable-column name="Item #">
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
       <a href="javascript:void(0)" class="dt-arrow" title="Expand/Collapse Row" (click)="toggleExpandRow(row)"
         *ngIf="row.children && row.children.length > 0">
@@ -31,29 +31,29 @@
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column name="Description" prop="itemPartner.item.itemDescription" editable="true"
-    [cellClass]="'ellipsis'" [flexGrow]="2">
+    [cellClass]="'ellipsis'" [flexGrow]="2" [ngStyle]="{width: '800px'}">
   </ngx-datatable-column>
-  <ngx-datatable-column name="Type" prop="itemPartner.item.itemType" [flexGrow]="1" editable="true">
+  <ngx-datatable-column name="Type" prop="itemPartner.item.itemType" editable="true">
   </ngx-datatable-column>
-  <ngx-datatable-column name="Printers" prop="itemPartner.partner.partnerCode" [flexGrow]="1" editable="true">
+  <ngx-datatable-column name="Printers" prop="itemPartner.partner.partnerCode" editable="true">
   </ngx-datatable-column>
-  <ngx-datatable-column name="Quantity" prop="quantity" editable="true" [flexGrow]="1"></ngx-datatable-column>
-  <ngx-datatable-column name="PO #" prop="poNum" editable="true" [flexGrow]="1"></ngx-datatable-column>
-  <ngx-datatable-column name="Job #" prop="jobNum" editable="true" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column name="Quantity" prop="quantity" editable="true"></ngx-datatable-column>
+  <ngx-datatable-column name="PO #" prop="poNum" editable="true"></ngx-datatable-column>
+  <ngx-datatable-column name="Job #" prop="jobNum" editable="true"></ngx-datatable-column>
 
-  <ngx-datatable-column name="createdAt" editable="true" [flexGrow]="1">
+  <ngx-datatable-column name="createdAt" editable="true">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
       <span *ngIf="!isNewRowEnabled">{{ row.createdAt | dateFormat}}</span>
       <span *ngIf="isNewRowEnabled">{{ row.createdAt }}</span>
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column prop="status" editable="true" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column prop="status" editable="true"></ngx-datatable-column>
   <!-- <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
     [cellClass]="col.prop">
   </ngx-datatable-column> -->
-  <ngx-datatable-column [sortable]="false" [flexGrow]="1">
+  <ngx-datatable-column [sortable]="false">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-      <div class="row-action-btn"
+      <!-- <div class="row-action-btn"
         *ngIf="(row.children && row.children.length < 1) && !(isNewRowEnabled && rowIndex == 0)">
         <span *ngIf="!isEditable[rowIndex]" fxLayout="row" fxLayoutGap="20px">
           <span (click)="updateRowValue($event, rowIndex)">
@@ -69,32 +69,32 @@
             <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
           </span>
         </span>
-      </div>
+      </div> -->
     </ng-template>
   </ngx-datatable-column>
 
 
   <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <section *ngIf="row.children && row.children.length > 0" style="position: absolute">
+      <section *ngIf="row.children && row.children.length > 0">
         <div>
           <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
 
-            <span fxFlex="160px" class="p-new-item"> {{nrow.itemPartner?.item?.itemNo}}
+            <span class="child-item"> {{nrow.itemPartner?.item?.itemNo}}
             </span>
-            <span fxFlex="325px" class="p-new-item ellipsis description">{{nrow.itemPartner.item.itemDescription}}
+            <span class="child-item ellipsis description">{{nrow.itemPartner.item.itemDescription}}
             </span>
-            <span fxFlex="160px" class="p-new-item">{{nrow.itemPartner.item.itemType}}
+            <span class="child-item">{{nrow.itemPartner.item.itemType}}
             </span>
-            <span fxFlex="160px" class="p-new-item">{{nrow.itemPartner.partner.partnerCode}}
+            <span class="child-item">{{nrow.itemPartner.partner.partnerCode}}
             </span>
-            <span fxFlex="160px" class="p-new-item">{{nrow.quantity}} </span>
-            <span fxFlex="160px" class="p-new-item">{{nrow.poNum}}</span>
-            <span fxFlex="160px" class="p-new-item">{{nrow.jobNum}} </span>
+            <span class="child-item">{{nrow.quantity}} </span>
+            <span class="child-item">{{nrow.poNum}}</span>
+            <span class="child-item">{{nrow.jobNum}} </span>
 
-            <span fxFlex="160px" class="p-new-item"> {{nrow.createdAt}}</span>
-            <span fxFlex="160px" class="p-new-item"> {{nrow.status}}</span>
-            <span fxFlex="160px" class="p-new-item" *ngIf="nrow.status === 'New'">
+            <span class="child-item"> {{nrow.createdAt}}</span>
+            <span class="child-item"> {{nrow.status}}</span>
+            <span class="child-item" *ngIf="nrow.status === 'New'">
               <span class="icon mr-8" (click)="updateOrderToCancelStatus(nrow?.printOrderId)">
                 <fa-icon [icon]="faBan" [ngClass]="'fa-icon fs-16'"></fa-icon>
               </span>
@@ -141,7 +141,7 @@
               <div class="newRow add-row-section mtb-10"
                 *ngFor="let comp of myForm.get('addRows').controls; let i=index">
                 <div [formGroupName]="i" fxLayout="row" fxLayoutGap="0px">
-                  <span fxFlex="160px" class="p-new-item">
+                  <span class="new-item">
                     <mat-select [placeholder]="'Item No'" formControlName="itemNo"
                       (selectionChange)="onItemChange($event, i)">
                       <mat-option *ngFor="let option of printItems" [value]="option.item.itemNo">
@@ -149,7 +149,7 @@
                       </mat-option>
                     </mat-select>
                   </span>
-                  <span fxFlex="325px" class="description p-new-item">
+                  <span class="new-item">
                     <mat-select [placeholder]="'Item Desc'" formControlName="itemDesc"
                       (selectionChange)="onItemChange($event, i)">
                       <mat-option *ngFor="let option of printItems" [value]="option.item.itemNo">
@@ -157,25 +157,25 @@
                       </mat-option>
                     </mat-select>
                   </span>
-                  <span fxFlex="160px" class="p-new-item">
+                  <span class="new-item">
                     {{comp.get('itemType').value}}
                   </span>
                   <!-- <input *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId" /> -->
-                  <span fxFlex="160px" class="p-new-item">
+                  <span class="new-item">
                     <mat-select formControlName="partner" (selectionChange)="onPartnerChange($event, i)">
                       <mat-option *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId">
                         {{ partner.partner.partnerCode }}
                       </mat-option>
                     </mat-select>
                   </span>
-                  <span fxFlex="113px" class="mlr-5 p-new-item">
+                  <span class="new-item">
                     <input matInput placeholder="Search Filter By" formControlName="quantity">
                   </span>
-                  <span fxFlex="113px" class="mlr-8 p-new-item">
+                  <span class="new-item">
                     <input matInput placeholder="Search Filter By" formControlName="poNum">
                   </span>
-                  <span fxFlex="50px" class="p-new-item"> </span>
-                  <div fxFlex="112px" fxLayout="row" fxLayoutGap="10px">
+                  <span class="new-item"> </span>
+                  <div class="new-item">
                     <i class="material-icons red" (click)="removeCurrentRow(i)">
                       remove_circle
                     </i>
@@ -183,8 +183,6 @@
                       add_circle </i>
 
                   </div>
-                  <span fxFlex="112px"> </span>
-                  <span fxFlex="112px"> </span>
                 </div>
               </div>
             </div>

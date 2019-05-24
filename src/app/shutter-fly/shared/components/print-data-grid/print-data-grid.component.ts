@@ -1,6 +1,6 @@
 import {
   Component, OnInit, ChangeDetectionStrategy, ViewChild, Output, EventEmitter,
-  Input, SimpleChanges, OnChanges, ChangeDetectorRef
+  Input, SimpleChanges, OnChanges, ChangeDetectorRef, HostListener, AfterViewInit, AfterViewChecked, ElementRef
 } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { SharedOrdersService } from '../../services/shared-orders.service';
@@ -26,7 +26,7 @@ import { ConfirmDialogComponent } from 'src/app/shutter-fly/shared/components/co
   styleUrls: ['./print-data-grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PrintDataGridComponent implements OnInit, OnChanges {
+export class PrintDataGridComponent implements OnInit, OnChanges, AfterViewInit, AfterViewChecked {
   @Input() cols: any;
   @Input() rows: any;
   @Input() newBtnClicked: boolean;
@@ -67,6 +67,15 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   editChildRowIndex;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
+  windowWidth: number;
+  windowHeight: number;
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event?) {
+    this.windowHeight = window.innerHeight;
+    this.windowWidth = window.innerWidth - 200;
+    console.log(this.windowHeight, this.windowWidth);
+  }
 
   constructor(public sharedOrderService: SharedOrdersService,
               public http: HttpClient,
@@ -74,7 +83,9 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
               public fb: FormBuilder,
               public printerService: PrintOrderService,
               public cdr: ChangeDetectorRef,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private elem: ElementRef) {
+    this.getScreenSize();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -85,6 +96,67 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     if (changes.rows && changes.rows.currentValue && changes.rows.currentValue.length > 0) {
       this.originalRows = this.rows;
     }
+  }
+  ngAfterViewChecked(): void {
+    // Called after every check of the component's view. Applies to components only.
+    // Add 'implements AfterViewChecked' to the class.
+    const wActiveClass = this.elem.nativeElement.querySelectorAll('.w-active');
+    const bodyCellRow = this.elem.nativeElement.querySelectorAll('.datatable-body-row');
+    if (bodyCellRow.length > wActiveClass.length) {
+      this.setBodyColWidth(bodyCellRow);
+    }
+  }
+  setBodyColWidth(bodyCellRow) {
+    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    _.each(bodyCellRow, (bodyCell, i) => {
+      bodyCell.classList.add('w-active');
+      const tblbodyCell = bodyCell.querySelectorAll('.datatable-body-cell');
+      this.setColWidth(tblbodyCell, colWidth);
+    });
+  }
+  setColWidth(tblbodyCell, colWidth) {
+    console.log('SET COL WIDTH ', tblbodyCell, colWidth);
+    _.each(tblbodyCell, (tblCell, j) => {
+      if (j === 0) {
+        tblCell.style.width = (colWidth + 100) + 'px';
+      } else if (j === 1) {
+        tblCell.style.width = (colWidth + 200) + 'px';
+      } else {
+        tblCell.style.width = colWidth - (50 / (this.cols.length + 1)) + 'px';
+      }
+    });
+  }
+  ngAfterViewInit() {
+    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    console.log('ELEMENT ', this.elem);
+    console.log('AFTER VIEW INIT');
+    setTimeout(() => {
+      const twoElem = this.elem.nativeElement.querySelectorAll('.datatable-header-cell');
+      this.setColWidth(twoElem, colWidth);
+    }, 500);
+    // twoElem[0].style.width = '500px';
+  }
+
+  toggleExpandRow(row) {
+    this.newRowHeight = 0;
+    // console.log('Toggled Expand Row!', row);
+    const childRows = [];
+    _.each(row.children, (chrow) => {
+      childRows.push(new PrintOrder(chrow));
+    });
+    row.children = childRows;
+    // console.log(row);
+    this.table.rowDetail.toggleExpandRow(row);
+    this.newRowHeight += row.children ? row.children.length * 80 : this.newRowHeight;
+    setTimeout(() => {
+      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const childRow = this.elem.nativeElement.querySelectorAll('.newRow');
+      _.each(childRow, (childCell, i) => {
+        childCell.classList.add('w-row-active');
+        const tblbodyCell = childCell.querySelectorAll('.child-item');
+        this.setColWidth(tblbodyCell, colWidth);
+      });
+    }, 500);
   }
 
   ngOnInit() {
@@ -284,19 +356,6 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       this.cdr.detectChanges();
 
     });
-  }
-
-  toggleExpandRow(row) {
-    this.newRowHeight = 0;
-    // console.log('Toggled Expand Row!', row);
-    const childRows = [];
-    _.each(row.children, (chrow) => {
-      childRows.push(new PrintOrder(chrow));
-    });
-    row.children = childRows;
-    // console.log(row);
-    this.table.rowDetail.toggleExpandRow(row);
-    this.newRowHeight += row.children ? row.children.length * 80 : this.newRowHeight;
   }
 
   updateRowValue(event, rowIndex) {

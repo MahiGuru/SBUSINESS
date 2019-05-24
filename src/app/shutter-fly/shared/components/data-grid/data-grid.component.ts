@@ -1,6 +1,6 @@
 import {
   Component, OnInit, ChangeDetectionStrategy, ViewChild, Output, EventEmitter,
-  Input, SimpleChanges, OnChanges, ChangeDetectorRef
+  Input, SimpleChanges, OnChanges, ChangeDetectorRef, HostListener, ElementRef, Renderer2, AfterViewInit, AfterContentInit, AfterViewChecked
 } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { SharedOrdersService } from '../../services/shared-orders.service';
@@ -24,7 +24,7 @@ import { MatDialog } from '@angular/material';
   styleUrls: ['./data-grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DataGridComponent implements OnInit, OnChanges {
+export class DataGridComponent implements OnInit, OnChanges, AfterViewInit, AfterViewChecked {
   @Input() cols: any;
   @Input() rows: any;
   @Input() newBtnClicked: boolean;
@@ -59,14 +59,28 @@ export class DataGridComponent implements OnInit, OnChanges {
   isEditable = {};
   isChildrenEditable = {};
   editChildRowIndex;
+  windowHeight: any;
+  windowWidth: any;
+  colWidth: any;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
+  colCount: any;
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event?) {
+    this.windowHeight = window.innerHeight;
+    this.windowWidth = window.innerWidth - 200;
+    console.log(this.windowHeight, this.windowWidth);
+  }
 
   constructor(public sharedOrderService: SharedOrdersService,
-              public http: HttpClient,
-              public inventoryService: InventoryService,
-              public fb: FormBuilder,
-              public cdr: ChangeDetectorRef, public dialog: MatDialog) {
+    public inventoryService: InventoryService,
+    public fb: FormBuilder,
+    public cdr: ChangeDetectorRef,
+    public dialog: MatDialog,
+    private renderer: Renderer2,
+    private elem: ElementRef) {
+    this.getScreenSize();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -79,8 +93,70 @@ export class DataGridComponent implements OnInit, OnChanges {
     }
     // console.log('ORIGINAL ROWS ', this.originalRows, this.rows);
   }
+  ngAfterViewChecked(): void {
+    // Called after every check of the component's view. Applies to components only.
+    // Add 'implements AfterViewChecked' to the class.
+    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    const wActiveClass = this.elem.nativeElement.querySelectorAll('.w-active');
+    const bodyCellRow = this.elem.nativeElement.querySelectorAll('.datatable-body-row');
+    if (bodyCellRow.length > wActiveClass.length) {
+      this.setBodyColWidth(bodyCellRow);
+    }
+  }
+  setBodyColWidth(bodyCellRow) {
+    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    _.each(bodyCellRow, (bodyCell, i) => {
+      bodyCell.classList.add('w-active');
+      const tblbodyCell = bodyCell.querySelectorAll('.datatable-body-cell');
+      this.setColWidth(tblbodyCell, colWidth);
+    });
+  }
+  setColWidth(tblbodyCell, colWidth) {
+    _.each(tblbodyCell, (tblCell, j) => {
+      if (j === 0) {
+        tblCell.style.width = (colWidth + 100) + 'px';
+      } else if (j === 1) {
+        tblCell.style.width = (colWidth + 200) + 'px';
+      } else {
+        tblCell.style.width = colWidth - (370 / (this.cols.length + 1)) + 'px';
+      }
+    });
+  }
+
+  toggleExpandRow(row) {
+    this.newRowHeight = 0;
+    const childRows = [];
+    _.each(row.children, (chrow) => {
+      childRows.push(new Inventory(chrow));
+    });
+    row.children = childRows;
+    this.table.rowDetail.toggleExpandRow(row);
+    this.newRowHeight += row.children ? row.children.length * 60 : this.newRowHeight;
+    setTimeout(() => {
+      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const childRow = this.elem.nativeElement.querySelectorAll('.newRow');
+      _.each(childRow, (childCell, i) => {
+        childCell.classList.add('w-row-active');
+        const tblbodyCell = childCell.querySelectorAll('.child-item');
+        this.setColWidth(tblbodyCell, colWidth);
+      });
+    }, 500);
+  }
+
+  ngAfterViewInit() {
+    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    console.log('ELEMENT ', this.elem);
+    console.log('AFTER VIEW INIT');
+    setTimeout(() => {
+      const twoElem = this.elem.nativeElement.querySelectorAll('.datatable-header-cell');
+      this.setColWidth(twoElem, colWidth);
+    }, 1000);
+    // twoElem[0].style.width = '500px';
+  }
 
   ngOnInit() {
+    console.log(this.elem.nativeElement.querySelectorAll('.datatable-header-cell'));
+    console.log(this.colCount);
     this.myForm = this.fb.group({
       addRows: this.fb.array([])
     });
@@ -122,6 +198,17 @@ export class DataGridComponent implements OnInit, OnChanges {
     // console.log('addedRows >>> ', this.addedRows);
     setTimeout(() => {
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
+      setTimeout(() => {
+        const colWidth = (this.windowWidth / (this.cols.length + 1));
+        const childRow = this.elem.nativeElement.querySelectorAll('.add-row-section');
+        console.log('CHILDDDD >>> ', childRow);
+        _.each(childRow, (childCell, i) => {
+          const tblbodyCell = childCell.querySelectorAll('.new-item');
+          console.log(tblbodyCell);
+          this.setColWidth(tblbodyCell, colWidth);
+        });
+      }, 500);
+
     }, 100);
   }
 
@@ -142,20 +229,29 @@ export class DataGridComponent implements OnInit, OnChanges {
 
   addAnotherRow() {
     const control = this.myForm.controls.addRows as FormArray;
-    const addRow = new Inventory();
     control.push(this.fb.group({
       itemNo: [1],
       itemDesc: [1],
       itemType: [''],
       partner: [1]
     }));
-    // this.addedRows.push(addRow);
-    this.newRowHeight += 30;
+    this.newRowHeight += 60;
+    setTimeout(() => {
+      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const childRow = this.elem.nativeElement.querySelectorAll('.add-row-section');
+      console.log('ADD ANOTHER CHILDDDD >>> ', childRow);
+      _.each(childRow, (childCell, i) => {
+        const tblbodyCell = childCell.querySelectorAll('.new-item');
+        console.log(tblbodyCell);
+
+        this.setColWidth(tblbodyCell, colWidth);
+      });
+    }, 500);
   }
   removeCurrentRow(i) {
     const control = this.myForm.controls.addRows as FormArray;
     control.removeAt(i);
-    this.newRowHeight -= 30;
+    this.newRowHeight -= 60;
   }
   onDetailToggle(event) {
     // console.log('Detail Toggled', event);
@@ -241,18 +337,7 @@ export class DataGridComponent implements OnInit, OnChanges {
     this.isNewRowEnabled = false;
   }
 
-  toggleExpandRow(row) {
-    this.newRowHeight = 0;
-    // console.log('Toggled Expand Row!', row);
-    const childRows = [];
-    _.each(row.children, (chrow) => {
-      childRows.push(new Inventory(chrow));
-    });
-    row.children = childRows;
-    // console.log(row);
-    this.table.rowDetail.toggleExpandRow(row);
-    this.newRowHeight += row.children ? row.children.length * 60 : this.newRowHeight;
-  }
+
 
   updateRowValue(event, rowIndex) {
     // console.log('inline editing rowIndex', rowIndex, event);

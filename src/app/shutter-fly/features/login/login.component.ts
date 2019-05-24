@@ -20,11 +20,10 @@ export class LoginComponent implements OnInit {
   }
   submit() {
     this.authenticateService.authenticate(this.loginForm.value).subscribe((res: any) => {
-      // localStorage.setItem('token', res.accessToken);
-      console.log(res);
+      localStorage.setItem('token', res);
+      this.router.navigate(['shutterfly']);
     });
 
-    this.router.navigate(['shutterfly']);
   }
 
 }
