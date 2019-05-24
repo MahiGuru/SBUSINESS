@@ -4,18 +4,18 @@
   </header>
   <section class="content-area  mt-5" fxFlex>
     <mat-tab-group (selectedTabChange)="selectedTab($event)">
-      <mat-tab label="Inventory">
+      <mat-tab label="Inventory" *ngIf="(isAdmin || isAssembler) && !isPrinter">
         <div *ngIf="tabIndex === 0">
           <sb-inventory></sb-inventory>
         </div>
       </mat-tab>
-      <mat-tab label="Print Orders">
-        <div *ngIf="tabIndex === 1">
+      <mat-tab label="Print Orders" *ngIf="(isAdmin || isPrinter) && !isAssembler">
+        <div *ngIf="tabIndex == ((isAdmin) ? 1 : 0)">
           <sb-print-orders></sb-print-orders>
         </div>
       </mat-tab>
-      <mat-tab label="Releases">
-        <div *ngIf="tabIndex === 2">
+      <mat-tab label="Releases" *ngIf="(isAdmin || isPrinter || isAssembler)">
+        <div *ngIf="tabIndex === ((isAdmin) ? 2 : 1)">
           <sb-releases></sb-releases>
         </div>
       </mat-tab>

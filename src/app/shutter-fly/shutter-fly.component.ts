@@ -10,6 +10,9 @@ export class ShutterFlyComponent implements OnInit {
   windowHeight: number;
   windowWidth: number;
   tabIndex = 0;
+  isAdmin = false;
+  isPrinter = false;
+  isAssembler = false;
 
   constructor(public router: Router) {
     this.getScreenSize();
@@ -22,6 +25,18 @@ export class ShutterFlyComponent implements OnInit {
     console.log('shutterfly ', this.windowHeight, this.windowWidth);
   }
   ngOnInit() {
+    const role = localStorage.getItem('role');
+    if (role === 'admin') {
+      this.isAdmin = true;
+    } else if (role === 'printer') {
+      this.isPrinter = true;
+      this.tabIndex = 1;
+
+    } else if (role === 'assembler') {
+      this.isAssembler = true;
+      this.tabIndex = 0;
+    }
+    this.tabIndex = 0;
     // this.router.navigate(['layout', 'inventory']);
   }
   selectedTab($event) {

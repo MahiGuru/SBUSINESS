@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   submit() {
     this.authenticateService.authenticate(this.loginForm.value).subscribe((res: any) => {
       localStorage.setItem('token', res);
+      localStorage.setItem('role', 'admin');
       this.router.navigate(['shutterfly']);
     });
 
