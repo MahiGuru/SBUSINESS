@@ -207,6 +207,17 @@ export class PrintDataGridComponent implements OnInit, OnChanges, AfterViewInit,
     // console.log('addedRows >>> ', this.addedRows);
     setTimeout(() => {
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
+      setTimeout(() => {
+        const colWidth = (this.windowWidth / (this.cols.length + 1));
+        const childRow = this.elem.nativeElement.querySelectorAll('.add-row-section');
+        console.log('ADD ANOTHER CHILDDDD >>> ', childRow);
+        _.each(childRow, (childCell, i) => {
+          const tblbodyCell = childCell.querySelectorAll('.new-item');
+          console.log(tblbodyCell);
+
+          this.setColWidth(tblbodyCell, colWidth);
+        });
+      }, 500);
     }, 100);
   }
 
@@ -236,6 +247,17 @@ export class PrintDataGridComponent implements OnInit, OnChanges, AfterViewInit,
     }));
     // this.addedRows.push(addRow);
     this.newRowHeight += 80;
+    setTimeout(() => {
+      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const childRow = this.elem.nativeElement.querySelectorAll('.add-row-section');
+      console.log('ADD ANOTHER CHILDDDD >>> ', childRow);
+      _.each(childRow, (childCell, i) => {
+        const tblbodyCell = childCell.querySelectorAll('.new-item');
+        console.log(tblbodyCell);
+
+        this.setColWidth(tblbodyCell, colWidth);
+      });
+    }, 500);
   }
   removeCurrentRow(i) {
     const control = this.myForm.controls.addRows as FormArray;

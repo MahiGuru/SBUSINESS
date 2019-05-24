@@ -138,7 +138,7 @@
             </div>
             <div class="new-rows-container">
 
-              <div class="newRow add-row-section mtb-10"
+              <div class="newRow add-row-section mtb-2"
                 *ngFor="let comp of myForm.get('addRows').controls; let i=index">
                 <div [formGroupName]="i" fxLayout="row" fxLayoutGap="0px">
                   <span class="new-item">
@@ -174,7 +174,6 @@
                   <span class="new-item">
                     <input matInput placeholder="Search Filter By" formControlName="poNum">
                   </span>
-                  <span class="new-item"> </span>
                   <div class="new-item">
                     <i class="material-icons red" (click)="removeCurrentRow(i)">
                       remove_circle

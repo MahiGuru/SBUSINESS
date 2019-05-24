@@ -15,7 +15,8 @@
     color: #00a31b;
   }
   .datatable-header{ height: 50px !important; display: flex !important; }
-  .ngx-datatable.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell {
+  .ngx-datatable.fixed-header .datatable-header .datatable-header-inner .datatable-header-cell,
+  .ngx-datatable .datatable-header .datatable-row-center {
     background-color: #EBEDF0;
   }
   .ngx-datatable .datatable-header .datatable-row-center {

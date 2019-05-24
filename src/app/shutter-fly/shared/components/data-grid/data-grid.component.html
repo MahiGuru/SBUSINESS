@@ -144,7 +144,7 @@
 
       <section class="new_section" *ngIf="row.children.length == 0">
         <form [formGroup]="myForm">
-          <div formArrayName="addRows">
+          <div formArrayName="addRows" style="position: relative">
             <div class="row-ab-actions">
               <span fxFlex fxLayout="row" fxLayoutGap="10px">
                 <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
