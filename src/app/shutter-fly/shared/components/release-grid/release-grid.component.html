@@ -75,9 +75,9 @@
 
   <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template let-rowIndex="rowIndex">
-      <section *ngIf="row.children && row.children.length > 0" style="position: absolute">
+      <section *ngIf="row.children && row.children.length > 0" class="row-detail" style="position: absolute">
         <div>
-          <div class="newRow mtb-5" *ngFor="let nrow of row.children; let i= index" fxLayout="row" fxLayoutGap="0px">
+          <div class="newRow" *ngFor="let nrow of row.children; let i= index" fxLayout="row" fxLayoutGap="0px">
             <span class="child-item"> {{nrow.itemPartner.item.itemNo}}
             </span>
             <span class="child-item ellipsis description">{{nrow.itemPartner.item.itemDescription}}
@@ -93,16 +93,13 @@
 
             <span class="child-item">
               <span (click)="updateOrderStatus(nrow.itemPartner.item.itemId, 'PushPrint')"
-                *ngIf="nrow.status === OrdersState.MARKPRINTED">
+                *ngIf="nrow.status === OrdersState.PENDINGRELEASE" matTooltip="Release to Assemblers"
+                matTooltipPosition="above" matTooltipClass="tooltip">
                 <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
               </span>
               <span class="active-green" (click)="updateOrderStatus(nrow.itemPartner.item.itemId, 'Printed')"
-                *ngIf="nrow.status === OrdersState.PRINTED">
+                *ngIf="nrow.status === OrdersState.MARKPRINTED">
                 <fa-icon [icon]="faCheckCircle" [ngClass]="'fa-icon fs-16'"></fa-icon>
-              </span>
-              <span class="active-green" (click)="updateOrderStatus(nrow.itemPartner.item.itemId, 'Ordered')"
-                *ngIf="nrow.status === OrdersState.ORDERED">
-                <fa-icon [icon]="faPrint" [ngClass]="'fa-icon fs-16'"></fa-icon>
               </span>
 
             </span>

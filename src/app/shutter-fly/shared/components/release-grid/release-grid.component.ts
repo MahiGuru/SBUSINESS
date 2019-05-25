@@ -1,6 +1,6 @@
 import {
   Component, OnInit, ChangeDetectionStrategy, ViewChild, Output, EventEmitter,
-  Input, SimpleChanges, OnChanges, ChangeDetectorRef, HostListener, ElementRef
+  Input, SimpleChanges, OnChanges, ChangeDetectorRef, HostListener, ElementRef, AfterViewInit, AfterViewChecked
 } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { SharedOrdersService } from '../../services/shared-orders.service';

@@ -154,6 +154,10 @@
   .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-icon-button .mat-icon{
     margin-top: -15px;
   }
+
+  .row-detail{
+    background-color: #f6f6f6;
+  }
   .sortable .sort-btn:before {
     font-family: data-table;
         content: "c";
@@ -178,10 +182,6 @@
           content: ''
         }
       }
-    }
-    .newRow{
-      width: 100%;
-      overflow: hidden;
     }
   /** cell styling **/
   .newRow > span, .newRow .new-item{

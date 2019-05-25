@@ -33,10 +33,6 @@
         }
       }
     }
-    .newRow{
-      width: 100%;
-      overflow: hidden;
-    }
   /** cell styling **/
   .newRow > span, .newRow .new-item{
       // width:95px !important;
@@ -48,6 +44,9 @@
     position: absolute;
     top:0px;
     width: 100%;
+  }
+  .add-row-section{
+    background-color: #fff;
   }
   // .newRow > span.description{
   //   width:227px !important;

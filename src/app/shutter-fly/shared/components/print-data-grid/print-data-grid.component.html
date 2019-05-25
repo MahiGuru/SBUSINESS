@@ -53,6 +53,23 @@
   </ngx-datatable-column> -->
   <ngx-datatable-column [sortable]="false">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+      <div *ngIf="row.children && row.children.length < 1">
+        <span class="" (click)="updateOrderStatus(row?.itemPartner?.item?.itemId, 'Ordered')"
+          *ngIf="row.status === 'Push2Print'" matTooltip="Mark as Printed" matTooltipPosition="above"
+          matTooltipClass="tooltip">
+          <fa-icon [icon]="faPrint" [ngClass]="'fa-icon fs-16'"></fa-icon>
+        </span>
+        <p *ngIf="row.status === 'Cancel'">
+          <span class="icon mr-8" (click)="updateOrderToCancelStatus(row?.printOrderId)" matTooltip="Cancel Order"
+            matTooltipPosition="above" matTooltipClass="tooltip">
+            <fa-icon [icon]="faBan" [ngClass]="'fa-icon fs-16'"></fa-icon>
+          </span>
+          <span class="icon mr-8" (click)="updateOrderToPrintStatus(row?.printOrderId)" matTooltip="Push to Printer"
+            matTooltipPosition="above" matTooltipClass="tooltip">
+            <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
+          </span>
+        </p>
+      </div>
       <!-- <div class="row-action-btn"
         *ngIf="(row.children && row.children.length < 1) && !(isNewRowEnabled && rowIndex == 0)">
         <span *ngIf="!isEditable[rowIndex]" fxLayout="row" fxLayoutGap="20px">
@@ -76,9 +93,9 @@
 
   <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <section *ngIf="row.children && row.children.length > 0">
+      <section *ngIf="row.children && row.children.length > 0" class="row-detail" style="position: absolute">
         <div>
-          <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
+          <div fxLayout="row" class="newRow" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
 
             <span class="child-item"> {{nrow.itemPartner?.item?.itemNo}}
             </span>
@@ -94,29 +111,39 @@
 
             <span class="child-item"> {{nrow.createdAt}}</span>
             <span class="child-item"> {{nrow.status}}</span>
-            <span class="child-item" *ngIf="nrow.status === 'New'">
-              <span class="icon mr-8" (click)="updateOrderToCancelStatus(nrow?.printOrderId)">
+            <span class="child-item">
+              <span class="icon mr-8" (click)="updateOrderToCancelStatus(nrow?.printOrderId)" matTooltip="Cancel Order"
+                matTooltipPosition="above" matTooltipClass="tooltip">
                 <fa-icon [icon]="faBan" [ngClass]="'fa-icon fs-16'"></fa-icon>
               </span>
-              <span class="icon mr-8" (click)="updateOrderToPrintStatus(nrow?.printOrderId)">
+              <span class="icon mr-8" (click)="updateOrderToPrintStatus(nrow?.printOrderId)" matTooltip="Delete Order"
+                matTooltipPosition="above" matTooltipClass="tooltip">
                 <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
               </span>
             </span>
-            <span fxHide>
-              <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
-                <span (click)="editChildrenRowClick(getRowIndex(row), i)">
+            <span>
+
+              <!-- <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
+                <span (click)="editChildrenRowClick(getRowIndex(row), i)" matTooltip="Edit Item"
+                  matTooltipPosition="above" matTooltipClass="tooltip">
                   <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
                 </span>
-                <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
+                <span matTooltip="Delete Item" matTooltipPosition="above" matTooltipClass="tooltip">
+                  <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
+                </span>
               </span>
-              <span fxLayout="row" fxLayoutGap="10px" *ngIf="i == editChildRowIndex">
-                <span (click)="cancelChildRowClick(getRowIndex(row), i, nrow)">
+            *ngIf="i == editChildRowIndex"
+            -->
+              <!-- <span fxLayout="row" fxLayoutGap="10px">
+                <span (click)="cancelChildRowClick(getRowIndex(row), i, nrow)" matTooltip="Cancel Order"
+                  matTooltipPosition="above" matTooltipClass="tooltip">
                   <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
                 </span>
-                <span (click)="updateEditedChildRowValue(getRowIndex(row), i, nrow.waste)">
+                <span (click)="updateEditedChildRowValue(getRowIndex(row), i, nrow.waste)" matTooltip="Push to Printer"
+                  matTooltipPosition="above" matTooltipClass="tooltip">
                   <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
                 </span>
-              </span>
+              </span> -->
 
             </span>
           </div>

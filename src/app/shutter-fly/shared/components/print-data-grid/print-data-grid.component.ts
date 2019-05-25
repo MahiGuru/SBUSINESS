@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 
 import {
   faCaretRight, faCaretDown, faWindowClose, faCheckSquare,
-  faPencilAlt, faTrashAlt, faBan, faShare
+  faPencilAlt, faTrashAlt, faBan, faShare, faPrint
 } from '@fortawesome/free-solid-svg-icons';
 import { Inventory } from '../../../core/models/newInventory';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
@@ -19,6 +19,7 @@ import { PrintOrder } from 'src/app/shutter-fly/core/models/printOrder';
 import { PrintOrderService } from 'src/app/shutter-fly/shared/services/print-order.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from 'src/app/shutter-fly/shared/components/confirm-dialog/confirm-dialog.component';
+import { ORDERS } from './../../../core/models/order-state';
 
 @Component({
   selector: 'sb-print-data-grid',
@@ -41,6 +42,8 @@ export class PrintDataGridComponent implements OnInit, OnChanges, AfterViewInit,
   faTrashAlt = faTrashAlt;
   faShare = faShare;
   faBan = faBan;
+  faPrint = faPrint;
+  OrdersState = ORDERS;
 
 
   isNewRowEnabled: boolean;
@@ -78,13 +81,13 @@ export class PrintDataGridComponent implements OnInit, OnChanges, AfterViewInit,
   }
 
   constructor(public sharedOrderService: SharedOrdersService,
-              public http: HttpClient,
-              public inventoryService: InventoryService,
-              public fb: FormBuilder,
-              public printerService: PrintOrderService,
-              public cdr: ChangeDetectorRef,
-              public dialog: MatDialog,
-              private elem: ElementRef) {
+    public http: HttpClient,
+    public inventoryService: InventoryService,
+    public fb: FormBuilder,
+    public printerService: PrintOrderService,
+    public cdr: ChangeDetectorRef,
+    public dialog: MatDialog,
+    private elem: ElementRef) {
     this.getScreenSize();
   }
 
@@ -357,6 +360,25 @@ export class PrintDataGridComponent implements OnInit, OnChanges, AfterViewInit,
         this.rows = [...this.rows];
         this.cdr.detectChanges();
       });
+    });
+  }
+  updateOrderStatus(id, status) {
+    const orderRecord = [{
+      PrintOrderId: id,
+      Status: status
+    }];
+    this.printerService.updatePrintOrderStatus(orderRecord).subscribe(newRecords => {
+      console.log(newRecords);
+      _.each(this.rows, (row, i) => {
+        _.each(row.children, (child, j) => {
+          if (child.printOrderId === newRecords[0].children[0].printOrderId) {
+            child.status = newRecords[0].children[0].status;
+          }
+        });
+      });
+      this.rows = [...this.rows];
+      console.log(this.rows);
+      this.cdr.detectChanges();
     });
   }
   updateOrderToPrintStatus(id) {

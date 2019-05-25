@@ -39,8 +39,12 @@
       </a> {{row?.itemPartner?.item?.itemNo}}
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column name="description" prop="itemPartner.item.itemDescription" editable="true"
-    [cellClass]="'ellipsis'" [flexGrow]="2" [ngStyle]="{width: '800px'}">
+  <ngx-datatable-column name="description" [cellClass]="'ellipsis'" [flexGrow]="2">
+    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+      <span [matTooltip]="row?.itemPartner?.item?.itemDescription" matTooltipPosition="above" matTooltipClass="tooltip">
+        {{row?.itemPartner?.item?.itemDescription}}
+      </span>
+    </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column name="Type" prop="itemPartner.item.itemType" editable="true" [flexGrow]="1">
   </ngx-datatable-column>
@@ -74,10 +78,12 @@
       <div class="row-action-btn"
         *ngIf="(row.children && row.children.length < 1) && !(isNewRowEnabled && rowIndex == 0)">
         <span *ngIf="!isEditable[rowIndex]" fxLayout="row" fxLayoutGap="20px">
-          <span (click)="updateRowValue($event, rowIndex)">
+          <span (click)="updateRowValue($event, rowIndex)" matTooltip="Edit Item" matTooltipPosition="above"
+            matTooltipClass="tooltip">
             <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
-          <span (click)="trashInventoryItem(row)">
+          <span (click)="trashInventoryItem(row)" matTooltip="Delete Item" matTooltipPosition="above"
+            matTooltipClass="tooltip">
             <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
           </span>
         </span>
@@ -96,9 +102,9 @@
 
   <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <section *ngIf="row.children && row.children.length > 0" style="position: absolute">
+      <section *ngIf="row.children && row.children.length > 0" class="row-detail" style="position: absolute">
         <div>
-          <div fxLayout="row" class="newRow mtb-5" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
+          <div fxLayout="row" class="newRow" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
             <span class="child-item"> {{nrow.itemPartner.item.itemNo}}
             </span>
             <span class="child-item ellipsis description">{{nrow.itemPartner.item.itemDescription}}
@@ -121,10 +127,13 @@
             <span class="child-item ellipsis"> {{nrow.updatedAt}}</span>
             <span class="child-item">
               <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
-                <span (click)="editChildrenRowClick(getRowIndex(row), i)">
+                <span (click)="editChildrenRowClick(getRowIndex(row), i)" matTooltip="Edit Item"
+                  matTooltipPosition="above" matTooltipClass="tooltip">
                   <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
                 </span>
-                <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
+                <span matTooltip="Delete Item" matTooltipPosition="above" matTooltipClass="tooltip">
+                  <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
+                </span>
               </span>
               <!-- *ngIf="isEditable[getRowIndex(row)].children[i]"
               isEditable[getRowIndex(row)].children[i] = !isEditable[getRowIndex(row)].children[i]-->
