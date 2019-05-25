@@ -27,7 +27,7 @@ import { ORDERS } from './../../../core/models/order-state';
   styleUrls: ['./print-data-grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PrintDataGridComponent implements OnInit, OnChanges, AfterViewInit, AfterViewChecked {
+export class PrintDataGridComponent implements OnInit, OnChanges {
   @Input() cols: any;
   @Input() rows: any;
   @Input() newBtnClicked: boolean;
@@ -81,13 +81,13 @@ export class PrintDataGridComponent implements OnInit, OnChanges, AfterViewInit,
   }
 
   constructor(public sharedOrderService: SharedOrdersService,
-    public http: HttpClient,
-    public inventoryService: InventoryService,
-    public fb: FormBuilder,
-    public printerService: PrintOrderService,
-    public cdr: ChangeDetectorRef,
-    public dialog: MatDialog,
-    private elem: ElementRef) {
+              public http: HttpClient,
+              public inventoryService: InventoryService,
+              public fb: FormBuilder,
+              public printerService: PrintOrderService,
+              public cdr: ChangeDetectorRef,
+              public dialog: MatDialog,
+              private elem: ElementRef) {
     this.getScreenSize();
   }
 
@@ -98,18 +98,33 @@ export class PrintDataGridComponent implements OnInit, OnChanges, AfterViewInit,
     }
     if (changes.rows && changes.rows.currentValue && changes.rows.currentValue.length > 0) {
       this.originalRows = this.rows;
+      this.setColHeaderWidth();
+      this.dataTableBodyCellWidth();
     }
   }
-  ngAfterViewChecked(): void {
-    // Called after every check of the component's view. Applies to components only.
-    // Add 'implements AfterViewChecked' to the class.
-    const wActiveClass = this.elem.nativeElement.querySelectorAll('.w-active');
-    const bodyCellRow = this.elem.nativeElement.querySelectorAll('.datatable-body-row');
-    if (bodyCellRow.length > wActiveClass.length) {
-      this.setBodyColWidth(bodyCellRow);
-    }
+  /** Datatable body column width */
+  dataTableBodyCellWidth() {
+    setTimeout(() => {
+      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const wActiveClass = this.elem.nativeElement.querySelectorAll('.w-active');
+      const bodyCellRow = this.elem.nativeElement.querySelectorAll('.datatable-body-row');
+      if (bodyCellRow.length > wActiveClass.length) {
+        this.setBodyCellWidth(bodyCellRow);
+      }
+    }, 500);
   }
-  setBodyColWidth(bodyCellRow) {
+
+  /** Data table header column width set */
+  setColHeaderWidth() {
+    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    setTimeout(() => {
+      const twoElem = this.elem.nativeElement.querySelectorAll('.datatable-header-cell');
+      this.setColWidth(twoElem, colWidth);
+    }, 500);
+  }
+
+  /** Datatable Body column width */
+  setBodyCellWidth(bodyCellRow) {
     const colWidth = (this.windowWidth / (this.cols.length + 1));
     _.each(bodyCellRow, (bodyCell, i) => {
       bodyCell.classList.add('w-active');
@@ -117,27 +132,18 @@ export class PrintDataGridComponent implements OnInit, OnChanges, AfterViewInit,
       this.setColWidth(tblbodyCell, colWidth);
     });
   }
+
+  /*** SET Column width */
   setColWidth(tblbodyCell, colWidth) {
-    console.log('SET COL WIDTH ', tblbodyCell, colWidth);
     _.each(tblbodyCell, (tblCell, j) => {
       if (j === 0) {
         tblCell.style.width = (colWidth + 100) + 'px';
       } else if (j === 1) {
         tblCell.style.width = (colWidth + 200) + 'px';
       } else {
-        tblCell.style.width = colWidth - (50 / (this.cols.length + 1)) + 'px';
+        tblCell.style.width = colWidth - (370 / (this.cols.length + 1)) + 'px';
       }
     });
-  }
-  ngAfterViewInit() {
-    const colWidth = (this.windowWidth / (this.cols.length + 1));
-    console.log('ELEMENT ', this.elem);
-    console.log('AFTER VIEW INIT');
-    setTimeout(() => {
-      const twoElem = this.elem.nativeElement.querySelectorAll('.datatable-header-cell');
-      this.setColWidth(twoElem, colWidth);
-    }, 500);
-    // twoElem[0].style.width = '500px';
   }
 
   toggleExpandRow(row) {

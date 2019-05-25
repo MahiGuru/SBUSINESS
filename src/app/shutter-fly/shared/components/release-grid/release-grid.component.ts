@@ -27,7 +27,7 @@ import { ReleasesService } from 'src/app/shutter-fly/shared/services/releases.se
   styleUrls: ['./release-grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ReleaseGridComponent implements OnInit, OnChanges, AfterViewInit, AfterViewChecked {
+export class ReleaseGridComponent implements OnInit, OnChanges {
   @Input() cols: any;
   @Input() rows: any;
   @Input() newBtnClicked: boolean;
@@ -96,17 +96,54 @@ export class ReleaseGridComponent implements OnInit, OnChanges, AfterViewInit, A
     }
     if (changes.rows && changes.rows.currentValue && changes.rows.currentValue.length > 0) {
       this.originalRows = this.rows;
+      this.setColHeaderWidth();
+      this.dataTableBodyCellWidth();
     }
     // console.log('ORIGINAL ROWS ', this.originalRows, this.rows);
   }
-  ngAfterViewChecked(): void {
-    // Called after every check of the component's view. Applies to components only.
-    // Add 'implements AfterViewChecked' to the class.
-    const wActiveClass = this.elem.nativeElement.querySelectorAll('.w-active');
-    const bodyCellRow = this.elem.nativeElement.querySelectorAll('.datatable-body-row');
-    if (bodyCellRow.length > wActiveClass.length) {
-      this.setBodyColWidth(bodyCellRow);
-    }
+
+  /** Datatable body column width */
+  dataTableBodyCellWidth() {
+    setTimeout(() => {
+      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const wActiveClass = this.elem.nativeElement.querySelectorAll('.w-active');
+      const bodyCellRow = this.elem.nativeElement.querySelectorAll('.datatable-body-row');
+      if (bodyCellRow.length > wActiveClass.length) {
+        this.setBodyCellWidth(bodyCellRow);
+      }
+    }, 500);
+  }
+
+  /** Data table header column width set */
+  setColHeaderWidth() {
+    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    setTimeout(() => {
+      const twoElem = this.elem.nativeElement.querySelectorAll('.datatable-header-cell');
+      this.setColWidth(twoElem, colWidth);
+    }, 500);
+  }
+
+  /** Datatable Body column width */
+  setBodyCellWidth(bodyCellRow) {
+    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    _.each(bodyCellRow, (bodyCell, i) => {
+      bodyCell.classList.add('w-active');
+      const tblbodyCell = bodyCell.querySelectorAll('.datatable-body-cell');
+      this.setColWidth(tblbodyCell, colWidth);
+    });
+  }
+
+  /*** SET Column width */
+  setColWidth(tblbodyCell, colWidth) {
+    _.each(tblbodyCell, (tblCell, j) => {
+      if (j === 0) {
+        tblCell.style.width = (colWidth + 100) + 'px';
+      } else if (j === 1) {
+        tblCell.style.width = (colWidth + 200) + 'px';
+      } else {
+        tblCell.style.width = colWidth - (370 / (this.cols.length + 1)) + 'px';
+      }
+    });
   }
   setBodyColWidth(bodyCellRow) {
     const colWidth = (this.windowWidth / (this.cols.length + 1));
@@ -116,28 +153,7 @@ export class ReleaseGridComponent implements OnInit, OnChanges, AfterViewInit, A
       this.setColWidth(tblbodyCell, colWidth);
     });
   }
-  setColWidth(tblbodyCell, colWidth) {
-    console.log('SET COL WIDTH ', tblbodyCell, colWidth);
-    _.each(tblbodyCell, (tblCell, j) => {
-      if (j === 0) {
-        tblCell.style.width = (colWidth + 100) + 'px';
-      } else if (j === 1) {
-        tblCell.style.width = (colWidth + 200) + 'px';
-      } else {
-        tblCell.style.width = colWidth - (300 / (this.cols.length - 1)) + 'px';
-      }
-    });
-  }
-  ngAfterViewInit() {
-    const colWidth = (this.windowWidth / (this.cols.length + 1));
-    console.log('ELEMENT ', this.elem);
-    console.log('AFTER VIEW INIT');
-    setTimeout(() => {
-      const twoElem = this.elem.nativeElement.querySelectorAll('.datatable-header-cell');
-      this.setColWidth(twoElem, colWidth);
-    }, 500);
-    // twoElem[0].style.width = '500px';
-  }
+
   ngOnInit() {
     this.myForm = this.fb.group({
       addRows: this.fb.array([])

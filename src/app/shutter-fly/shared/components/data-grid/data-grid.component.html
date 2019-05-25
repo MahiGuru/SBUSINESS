@@ -20,7 +20,7 @@
 <!-- <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Search filter by'
     (keyup)='updateFilter($event)' /> -->
 <ngx-datatable #table class='material expandable' [columns]="cols" [columnMode]="'force'" [headerHeight]="50"
-  [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+  [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows' (page)="paginationCallback($event)">
 
   <!-- <ngx-datatable-column [sortable]="false" [flexGrow]="0.5">
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>

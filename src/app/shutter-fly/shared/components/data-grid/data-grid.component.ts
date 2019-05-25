@@ -24,7 +24,7 @@ import { MatDialog } from '@angular/material';
   styleUrls: ['./data-grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DataGridComponent implements OnInit, OnChanges, AfterViewInit, AfterViewChecked {
+export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, AfterViewChecked */ {
   @Input() cols: any;
   @Input() rows: any;
   @Input() newBtnClicked: boolean;
@@ -74,12 +74,12 @@ export class DataGridComponent implements OnInit, OnChanges, AfterViewInit, Afte
   }
 
   constructor(public sharedOrderService: SharedOrdersService,
-    public inventoryService: InventoryService,
-    public fb: FormBuilder,
-    public cdr: ChangeDetectorRef,
-    public dialog: MatDialog,
-    private renderer: Renderer2,
-    private elem: ElementRef) {
+              public inventoryService: InventoryService,
+              public fb: FormBuilder,
+              public cdr: ChangeDetectorRef,
+              public dialog: MatDialog,
+              private renderer: Renderer2,
+              private elem: ElementRef) {
     this.getScreenSize();
   }
 
@@ -90,20 +90,27 @@ export class DataGridComponent implements OnInit, OnChanges, AfterViewInit, Afte
     }
     if (changes.rows && changes.rows.currentValue && changes.rows.currentValue.length > 0) {
       this.originalRows = this.rows;
+      this.setColHeaderWidth();
+      this.dataTableBodyCellWidth();
     }
     // console.log('ORIGINAL ROWS ', this.originalRows, this.rows);
   }
-  ngAfterViewChecked(): void {
-    // Called after every check of the component's view. Applies to components only.
-    // Add 'implements AfterViewChecked' to the class.
-    const colWidth = (this.windowWidth / (this.cols.length + 1));
-    const wActiveClass = this.elem.nativeElement.querySelectorAll('.w-active');
-    const bodyCellRow = this.elem.nativeElement.querySelectorAll('.datatable-body-row');
-    if (bodyCellRow.length > wActiveClass.length) {
-      this.setBodyColWidth(bodyCellRow);
-    }
+
+  /** Datatable body column width */
+  dataTableBodyCellWidth() {
+    setTimeout(() => {
+      console.log('DATA TABLE BODY CELL');
+      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const wActiveClass = this.elem.nativeElement.querySelectorAll('.w-active');
+      const bodyCellRow = this.elem.nativeElement.querySelectorAll('.datatable-body-row');
+      // if (bodyCellRow.length > wActiveClass.length) {
+      this.setBodyCellWidth(bodyCellRow);
+      // }
+    }, 300);
   }
-  setBodyColWidth(bodyCellRow) {
+
+  /** Datatable Header column width */
+  setBodyCellWidth(bodyCellRow) {
     const colWidth = (this.windowWidth / (this.cols.length + 1));
     _.each(bodyCellRow, (bodyCell, i) => {
       bodyCell.classList.add('w-active');
@@ -111,6 +118,8 @@ export class DataGridComponent implements OnInit, OnChanges, AfterViewInit, Afte
       this.setColWidth(tblbodyCell, colWidth);
     });
   }
+
+  /*** SET Column width */
   setColWidth(tblbodyCell, colWidth) {
     _.each(tblbodyCell, (tblCell, j) => {
       if (j === 0) {
@@ -123,6 +132,7 @@ export class DataGridComponent implements OnInit, OnChanges, AfterViewInit, Afte
     });
   }
 
+  /** TOGGLE EXPAND ROW  */
   toggleExpandRow(row) {
     this.newRowHeight = 0;
     const childRows = [];
@@ -143,20 +153,12 @@ export class DataGridComponent implements OnInit, OnChanges, AfterViewInit, Afte
     }, 500);
   }
 
-  ngAfterViewInit() {
-    const colWidth = (this.windowWidth / (this.cols.length + 1));
-    console.log('ELEMENT ', this.elem);
-    console.log('AFTER VIEW INIT');
-    setTimeout(() => {
-      const twoElem = this.elem.nativeElement.querySelectorAll('.datatable-header-cell');
-      this.setColWidth(twoElem, colWidth);
-    }, 1000);
-    // twoElem[0].style.width = '500px';
+  /** Pagination Callback */
+  paginationCallback(event) {
+    this.dataTableBodyCellWidth();
   }
 
   ngOnInit() {
-    console.log(this.elem.nativeElement.querySelectorAll('.datatable-header-cell'));
-    console.log(this.colCount);
     this.myForm = this.fb.group({
       addRows: this.fb.array([])
     });
@@ -178,7 +180,13 @@ export class DataGridComponent implements OnInit, OnChanges, AfterViewInit, Afte
     });
 
   }
-
+  setColHeaderWidth() {
+    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    setTimeout(() => {
+      const twoElem = this.elem.nativeElement.querySelectorAll('.datatable-header-cell');
+      this.setColWidth(twoElem, colWidth);
+    }, 500);
+  }
   addNewBtnClicked() {
     const control = this.myForm.controls.addRows as FormArray;
     this.rows.unshift(new Inventory());
@@ -207,7 +215,10 @@ export class DataGridComponent implements OnInit, OnChanges, AfterViewInit, Afte
           console.log(tblbodyCell);
           this.setColWidth(tblbodyCell, colWidth);
         });
+        this.dataTableBodyCellWidth();
+
       }, 500);
+
 
     }, 100);
   }
@@ -252,6 +263,7 @@ export class DataGridComponent implements OnInit, OnChanges, AfterViewInit, Afte
     const control = this.myForm.controls.addRows as FormArray;
     control.removeAt(i);
     this.newRowHeight -= 60;
+    this.dataTableBodyCellWidth();
   }
   onDetailToggle(event) {
     // console.log('Detail Toggled', event);
@@ -285,6 +297,7 @@ export class DataGridComponent implements OnInit, OnChanges, AfterViewInit, Afte
       // console.log('TEMP ARRRRRRRR', tempArr);
       const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
       this.rows = _.values(merged);
+      this.dataTableBodyCellWidth();
       // // console.log(values);
     });
 
@@ -335,6 +348,7 @@ export class DataGridComponent implements OnInit, OnChanges, AfterViewInit, Afte
     this.table.rowDetail.toggleExpandRow(this.rows[0]);
     this.isAddBtnClicked.emit(false);
     this.isNewRowEnabled = false;
+    this.dataTableBodyCellWidth();
   }
 
 
