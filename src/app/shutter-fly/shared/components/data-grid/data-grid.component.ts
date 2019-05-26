@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { SharedOrdersService } from '../../services/shared-orders.service';
-import { HttpClient } from '@angular/common/http';
+
 import * as _ from 'lodash';
 
 import {
@@ -13,8 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Inventory } from '../../../core/models/newInventory';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
-import { BehaviorSubject } from 'rxjs';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material';
 
@@ -39,13 +38,12 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
   faTrashAlt = faTrashAlt;
 
   isNewRowEnabled: boolean;
-  myForm: FormGroup;
-  addForm: FormGroup;
 
   @Output() isAddBtnClicked: EventEmitter<any> = new EventEmitter();
   filterVal: any;
   public addedRows = [];
   public newRowHeight: any = 100;
+
   isEditable = {};
   isChildrenEditable = {};
   editChildRowIndex;
@@ -83,19 +81,14 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
       this.setColHeaderWidth();
       this.dataTableBodyCellWidth();
     }
-    // console.log('ORIGINAL ROWS ', this.originalRows, this.rows);
   }
 
   /** Datatable body column width */
   dataTableBodyCellWidth() {
     setTimeout(() => {
       console.log('DATA TABLE BODY CELL');
-      const colWidth = (this.windowWidth / (this.cols.length + 1));
-      const wActiveClass = this.elem.nativeElement.querySelectorAll('.w-active');
       const bodyCellRow = this.elem.nativeElement.querySelectorAll('.datatable-body-row');
-      // if (bodyCellRow.length > wActiveClass.length) {
       this.setBodyCellWidth(bodyCellRow);
-      // }
     }, 300);
   }
   /** SET COLS HEADER WIDTH */
@@ -165,11 +158,6 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
     this.dataTableBodyCellWidth();
   }
 
-  ngOnInit() {
-
-
-  }
-
   addNewBtnClicked() {
     // const control = this.myForm.controls.addRows as FormArray;
     this.rows.unshift(new Inventory());
@@ -181,6 +169,10 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
       this.setNewColsWidth();
     }, 100);
   }
+
+  ngOnInit() {
+  }
+
 
   updateFilter(filterVal) {
     console.log(this.originalRows);
@@ -217,7 +209,6 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
       if (result) {
         const record = {
           ItemPartner: {
@@ -225,33 +216,11 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
           }
         };
         this.inventoryService.deleteInventory(record).subscribe(newRecords => {
-          console.log('DELETED >>>> ', newRecords);
-
-          this.rows = _.filter(this.rows, (n) => {
-            return n.itemPartner.item.itemNo !== row.itemPartner.item.itemNo;
-          });
-          console.log('arrr', this.rows);
-
+          this.rows = _.filter(this.rows, (n) => n.itemPartner.item.itemNo !== row.itemPartner.item.itemNo);
         });
       }
-      // this.animal = result;
     });
-
-
   }
-  // cancelNewInventory() {
-
-  //   const control = this.myForm.controls.addRows as FormArray;
-  //   control.controls = [];
-  //   this.newRowHeight = 100;
-  //   this.rows.splice(0, 1);
-  //   this.rows = [...this.rows];
-  //   this.table.rowDetail.toggleExpandRow(this.rows[0]);
-  //   this.isAddBtnClicked.emit(false);
-  //   this.isNewRowEnabled = false;
-  //   this.dataTableBodyCellWidth();
-  // }
-
 
 
   updateRowValue(event, rowIndex) {
