@@ -11,9 +11,11 @@ import { DateFormatPipe } from '../shared/pipes/date-format.pipe';
 import { PrintDataGridComponent } from 'src/app/shutter-fly/shared/components/print-data-grid/print-data-grid.component';
 import { ConfirmDialogComponent } from 'src/app/shutter-fly/shared/components/confirm-dialog/confirm-dialog.component';
 import { ReleaseGridComponent } from 'src/app/shutter-fly/shared/components/release-grid/release-grid.component';
+import { NewOrderComponent } from './components/new-order/new-order.component';
 
 @NgModule({
-  declarations: [DataGridComponent, ConfirmDialogComponent, DateFormatPipe, PrintDataGridComponent, ReleaseGridComponent],
+  declarations: [DataGridComponent, ConfirmDialogComponent, DateFormatPipe, 
+    PrintDataGridComponent, ReleaseGridComponent, NewOrderComponent],
   imports: [
     CommonModule,
     MaterialModule,
@@ -25,6 +27,6 @@ import { ReleaseGridComponent } from 'src/app/shutter-fly/shared/components/rele
     ReactiveFormsModule
   ],
   entryComponents: [ConfirmDialogComponent],
-  exports: [DataGridComponent, ConfirmDialogComponent, DateFormatPipe, PrintDataGridComponent, ReleaseGridComponent]
+  exports: [DataGridComponent, ConfirmDialogComponent, DateFormatPipe, PrintDataGridComponent, ReleaseGridComponent, NewOrderComponent]
 })
 export class SharedModule { }

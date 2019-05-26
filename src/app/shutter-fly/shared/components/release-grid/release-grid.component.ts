@@ -79,13 +79,13 @@ export class ReleaseGridComponent implements OnInit, OnChanges {
     console.log(this.windowHeight, this.windowWidth);
   }
   constructor(public sharedOrderService: SharedOrdersService,
-              public http: HttpClient,
-              public inventoryService: InventoryService,
-              public fb: FormBuilder,
-              public cdr: ChangeDetectorRef,
-              public dialog: MatDialog,
-              public releaseService: ReleasesService,
-              private elem: ElementRef) {
+    public http: HttpClient,
+    public inventoryService: InventoryService,
+    public fb: FormBuilder,
+    public cdr: ChangeDetectorRef,
+    public dialog: MatDialog,
+    public releaseService: ReleasesService,
+    private elem: ElementRef) {
     this.getScreenSize();
   }
 

@@ -37,18 +37,8 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
   faCheckSquare = faCheckSquare;
   faPencilAlt = faPencilAlt;
   faTrashAlt = faTrashAlt;
+
   isNewRowEnabled: boolean;
-  public inventoryItems: any;
-  public partners: any;
-  public defaultItemNo: any = 1;
-  public defaultItemDescription: any = 1;
-  public defaultItemType: any = 1;
-  itemTypeCode: any = 1;
-  defaultPartner: any = 1;
-  public selectedPartner: any = new BehaviorSubject('');
-  public selectedItem: any = new BehaviorSubject('');
-  public selectedItemType: string;
-  public defaultItemVal = 1;
   myForm: FormGroup;
   addForm: FormGroup;
 
@@ -108,7 +98,14 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
       // }
     }, 300);
   }
-
+  /** SET COLS HEADER WIDTH */
+  setColHeaderWidth() {
+    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    setTimeout(() => {
+      const twoElem = this.elem.nativeElement.querySelectorAll('.datatable-header-cell');
+      this.setColWidth(twoElem, colWidth);
+    }, 500);
+  }
   /** Datatable Header column width */
   setBodyCellWidth(bodyCellRow) {
     const colWidth = (this.windowWidth / (this.cols.length + 1));
@@ -118,7 +115,17 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
       this.setColWidth(tblbodyCell, colWidth);
     });
   }
-
+  /*** Adjust New Cols width */
+  setNewColsWidth() {
+    setTimeout(() => {
+      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const childRow = this.elem.nativeElement.querySelectorAll('.add-row-section');
+      _.each(childRow, (childCell, i) => {
+        const tblbodyCell = childCell.querySelectorAll('.new-item');
+        this.setColWidth(tblbodyCell, colWidth);
+      });
+    }, 500);
+  }
   /*** SET Column width */
   setColWidth(tblbodyCell, colWidth) {
     _.each(tblbodyCell, (tblCell, j) => {
@@ -159,67 +166,19 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
   }
 
   ngOnInit() {
-    this.myForm = this.fb.group({
-      addRows: this.fb.array([])
-    });
-    this.addForm = this.fb.group({
-      itemNo: [''],
-      itemDesc: [''],
-      itemType: [''],
-      partner: ['']
-    });
-    this.inventoryService.getAddItems().subscribe(res => {
-      this.inventoryItems = res;
-      // console.log('INV ITEMS >>>> ', res, this.inventoryItems);
-      this.selectedItemType = res[0].itemType;
-      this.selectedItem = res[0];
-    });
-    this.inventoryService.getPartners().subscribe(partners => {
-      this.partners = partners;
-      // console.log('partners >>>> ', partners, this.partners);
-    });
+
 
   }
-  setColHeaderWidth() {
-    const colWidth = (this.windowWidth / (this.cols.length + 1));
-    setTimeout(() => {
-      const twoElem = this.elem.nativeElement.querySelectorAll('.datatable-header-cell');
-      this.setColWidth(twoElem, colWidth);
-    }, 500);
-  }
+
   addNewBtnClicked() {
-    const control = this.myForm.controls.addRows as FormArray;
+    // const control = this.myForm.controls.addRows as FormArray;
     this.rows.unshift(new Inventory());
     this.rows = [...this.rows];
-    control.push(this.fb.group({
-      itemNo: [1],
-      itemDesc: [1],
-      itemType: [''],
-      partner: [1]
-    }));
-
-    control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
-    control.controls[0].get('itemDesc').setValue(this.selectedItem.itemId);
-    control.controls[0].get('itemType').setValue(this.selectedItem.itemType);
     this.isNewRowEnabled = true;
     this.newRowHeight = 100;
-    // console.log('addedRows >>> ', this.addedRows);
     setTimeout(() => {
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
-      setTimeout(() => {
-        const colWidth = (this.windowWidth / (this.cols.length + 1));
-        const childRow = this.elem.nativeElement.querySelectorAll('.add-row-section');
-        console.log('CHILDDDD >>> ', childRow);
-        _.each(childRow, (childCell, i) => {
-          const tblbodyCell = childCell.querySelectorAll('.new-item');
-          console.log(tblbodyCell);
-          this.setColWidth(tblbodyCell, colWidth);
-        });
-        this.dataTableBodyCellWidth();
-
-      }, 500);
-
-
+      this.setNewColsWidth();
     }, 100);
   }
 
@@ -238,70 +197,12 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
     this.table.offset = 0;
   }
 
-  addAnotherRow() {
-    const control = this.myForm.controls.addRows as FormArray;
-    control.push(this.fb.group({
-      itemNo: [1],
-      itemDesc: [1],
-      itemType: [''],
-      partner: [1]
-    }));
-    this.newRowHeight += 60;
-    setTimeout(() => {
-      const colWidth = (this.windowWidth / (this.cols.length + 1));
-      const childRow = this.elem.nativeElement.querySelectorAll('.add-row-section');
-      console.log('ADD ANOTHER CHILDDDD >>> ', childRow);
-      _.each(childRow, (childCell, i) => {
-        const tblbodyCell = childCell.querySelectorAll('.new-item');
-        console.log(tblbodyCell);
-
-        this.setColWidth(tblbodyCell, colWidth);
-      });
-    }, 500);
-  }
-  removeCurrentRow(i) {
-    const control = this.myForm.controls.addRows as FormArray;
-    control.removeAt(i);
-    this.newRowHeight -= 60;
+  onSaveRowsUpdate(newRecords) {
+    const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
+    this.rows = _.values(merged);
     this.dataTableBodyCellWidth();
   }
-  onDetailToggle(event) {
-    // console.log('Detail Toggled', event);
-  }
-  addRowsToInventory() {
-    const control = this.myForm.controls.addRows as FormArray;
-    // console.log(control.value);
-    const newRecord = [];
-    _.each(control.value, (val) => {
-      newRecord.push({
-        Item: {
-          ItemId: val.itemNo
-        },
-        Partner: {
-          PartnerId: val.partner
-        }
-      });
-    });
 
-    this.inventoryService.saveNewInventory(newRecord).subscribe(newRecords => {
-      // console.log('SAVEDDDDD >>>> ', newRecords);
-      const tempArr = [];
-      _.each(newRecords, (record, index) => {
-        const tempChildArr = [];
-        _.each(record.children, (child) => {
-          tempChildArr.push(new Inventory(child));
-        });
-        record.children = tempChildArr;
-        tempArr.push(new Inventory(record));
-      });
-      // console.log('TEMP ARRRRRRRR', tempArr);
-      const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
-      this.rows = _.values(merged);
-      this.dataTableBodyCellWidth();
-      // // console.log(values);
-    });
-
-  }
   trashInventoryItem(row) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
@@ -338,18 +239,18 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
 
 
   }
-  cancelNewInventory() {
+  // cancelNewInventory() {
 
-    const control = this.myForm.controls.addRows as FormArray;
-    control.controls = [];
-    this.newRowHeight = 100;
-    this.rows.splice(0, 1);
-    this.rows = [...this.rows];
-    this.table.rowDetail.toggleExpandRow(this.rows[0]);
-    this.isAddBtnClicked.emit(false);
-    this.isNewRowEnabled = false;
-    this.dataTableBodyCellWidth();
-  }
+  //   const control = this.myForm.controls.addRows as FormArray;
+  //   control.controls = [];
+  //   this.newRowHeight = 100;
+  //   this.rows.splice(0, 1);
+  //   this.rows = [...this.rows];
+  //   this.table.rowDetail.toggleExpandRow(this.rows[0]);
+  //   this.isAddBtnClicked.emit(false);
+  //   this.isNewRowEnabled = false;
+  //   this.dataTableBodyCellWidth();
+  // }
 
 
 
@@ -358,24 +259,6 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
     this.isEditable[rowIndex] = !this.isEditable[rowIndex];
   }
 
-  onPartnerChange(item) {
-    const filteredPartner = (_.filter(this.partners, (partner) => {
-      return partner.partnerId === item.value;
-    }));
-    this.selectedPartner.next(filteredPartner);
-    // console.log('Patner selected', this.selectedPartner);
-  }
-  onItemChange(item, index) {
-    const control = this.myForm.controls.addRows as FormArray;
-    const selectedItem = _.filter(this.inventoryItems, (iitem) => {
-      return iitem.itemId === item.value;
-    });
-    control.controls[index].get('itemNo').setValue(selectedItem[0].itemId);
-    control.controls[index].get('itemDesc').setValue(selectedItem[0].itemId);
-    control.controls[index].get('itemType').setValue(selectedItem[0].itemType);
-    // console.log('INDEX', index, item);
-
-  }
   updateEditedValue(rowIndex, waste) {
     this.isEditable[rowIndex] = !this.isEditable[rowIndex];
   }
@@ -411,5 +294,35 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
     this.filterVal = '';
     this.rows = [...this.originalRows];
     this.cdr.detectChanges();
+  }
+
+
+
+  /***** OUTPUT CALLBACKS */
+  rowsUpdate(rows) {
+
+  }
+
+  adjustCols(type) {
+    console.log('TYPPPPPE', type);
+    if (type === 'new') {
+      this.newRowHeight += 60;
+      setTimeout(() => {
+        const colWidth = (this.windowWidth / (this.cols.length + 1));
+        const childRow = this.elem.nativeElement.querySelectorAll('.add-row-section');
+        _.each(childRow, (childCell, i) => {
+          const tblbodyCell = childCell.querySelectorAll('.new-item');
+          this.setColWidth(tblbodyCell, colWidth);
+        });
+      }, 500);
+    } else if (type === 'cancel') {
+      this.rows.splice(0, 1);
+      this.rows = [...this.rows];
+      this.table.rowDetail.toggleExpandRow(this.rows[0]);
+      this.isAddBtnClicked.emit(false);
+      this.isNewRowEnabled = false;
+      this.newRowHeight = 100;
+      this.dataTableBodyCellWidth();
+    }
   }
 }
