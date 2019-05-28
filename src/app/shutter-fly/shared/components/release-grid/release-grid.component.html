@@ -95,11 +95,11 @@
             <span class="child-item">
               <span (click)="updateOrderStatus(nrow.itemPartner.item.itemId, 'PushPrint')"
                 *ngIf="nrow.status === OrdersState.PENDINGRELEASE" matTooltip="Release to Assemblers"
-                matTooltipPosition="above" matTooltipClass="tooltip">
+                matTooltipPosition="above" matTooltipClass="tooltip"
+                (click)="updateOrderStatus(nrow.itemPartner.item.itemId, 'Released')">
                 <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
               </span>
-              <span class="active-green" (click)="updateOrderStatus(nrow.itemPartner.item.itemId, 'Printed')"
-                *ngIf="nrow.status === OrdersState.MARKPRINTED">
+              <span class="active-green" *ngIf="nrow.status === OrdersState.MARKPRINTED || nrow.status === 'Released'">
                 <fa-icon [icon]="faCheckCircle" [ngClass]="'fa-icon fs-16'"></fa-icon>
               </span>
 

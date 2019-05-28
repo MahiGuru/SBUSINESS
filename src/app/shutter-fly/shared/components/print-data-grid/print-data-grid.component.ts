@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 
 import {
   faCaretRight, faCaretDown, faWindowClose, faCheckSquare,
-  faPencilAlt, faTrashAlt, faBan, faShare, faPrint
+  faPencilAlt, faTrashAlt, faBan, faShare, faPrint, faCheckCircle
 } from '@fortawesome/free-solid-svg-icons';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
 import { BehaviorSubject } from 'rxjs';
@@ -42,6 +42,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   faShare = faShare;
   faBan = faBan;
   faPrint = faPrint;
+  faCheckCircle = faCheckCircle;
   OrdersState = ORDERS;
 
 

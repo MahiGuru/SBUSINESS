@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sb-toolbar',
@@ -7,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToolbarComponent implements OnInit {
   public selected: any;
-  constructor() { }
+  constructor(public router: Router) { }
 
   ngOnInit() {
     this.selected = 'premier';
   }
-
+  logoutClick() {
+    localStorage.clear();
+    this.router.navigate(['login']);
+  }
 }

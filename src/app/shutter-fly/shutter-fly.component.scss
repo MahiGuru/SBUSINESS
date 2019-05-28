@@ -81,7 +81,9 @@
     padding: 10px;
     box-sizing: border-box;
   }
-
+  .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell, .newRow > span{
+    font-size: 12px !important;
+  }
   .container {
     // width: 1800px;
     margin: auto;

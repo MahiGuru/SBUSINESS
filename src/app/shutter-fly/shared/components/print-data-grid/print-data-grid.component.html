@@ -36,21 +36,28 @@
   <ngx-datatable-column [sortable]="false">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
       <div *ngIf="row.children && row.children.length < 1">
-        <span class="" (click)="updateOrderStatus(row?.itemPartner?.item?.itemId, 'Ordered')"
-          *ngIf="row.status === 'Push2Print'" matTooltip="Mark as Printed" matTooltipPosition="above"
-          matTooltipClass="tooltip">
-          <fa-icon [icon]="faPrint" [ngClass]="'fa-icon fs-16'"></fa-icon>
-        </span>
-        <p *ngIf="row.status === 'New'">
+
+        <span *ngIf="row.status === 'New'">
           <span class="icon mr-8" (click)="updateOrderToCancelStatus(row?.printOrderId)" matTooltip="Cancel Order"
             matTooltipPosition="above" matTooltipClass="tooltip">
             <fa-icon [icon]="faBan" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
-          <span class="icon mr-8" (click)="updateOrderToPrintStatus(row?.printOrderId)" matTooltip="Push to Printer"
-            matTooltipPosition="above" matTooltipClass="tooltip">
+          <span class="icon mr-8" (click)="updateOrderStatus(row?.itemPartner?.item?.itemId, 'Ordered')"
+            matTooltip="Push to Printer" matTooltipPosition="above" matTooltipClass="tooltip">
             <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
-        </p>
+        </span>
+        <span *ngIf="row.status === 'Ordered'  || row.status === 'Push2Print'">
+          <span class="" (click)="updateOrderStatus(row?.itemPartner?.item?.itemId, 'Printed')"
+            matTooltip="Mark as Printed" matTooltipPosition="above" matTooltipClass="tooltip">
+            <fa-icon [icon]="faPrint" [ngClass]="'fa-icon fs-16'"></fa-icon>
+          </span>
+        </span>
+        <span *ngIf="row.status === 'Printed'">
+          <span class="" matTooltip="Mark as Printed" matTooltipPosition="above" matTooltipClass="tooltip">
+            <fa-icon [icon]="faPrint" [ngClass]="'fa-icon fs-16'"></fa-icon>
+          </span>
+        </span>
       </div>
     </ng-template>
   </ngx-datatable-column>
@@ -77,17 +84,29 @@
 
             <span class="child-item"> {{nrow.createdAt | dateFormat}}</span>
             <span class="child-item"> {{nrow.status}}</span>
-            <span class="child-item" *ngIf="nrow.status === 'New'">
-              <span class="icon mr-8" (click)="updateOrderToCancelStatus(nrow?.printOrderId)" matTooltip="Cancel Order"
-                matTooltipPosition="above" matTooltipClass="tooltip">
-                <fa-icon [icon]="faBan" [ngClass]="'fa-icon fs-16'"></fa-icon>
+            <span class="child-item">
+              <span *ngIf="nrow.status === 'New'">
+                <span class="icon mr-8" (click)="updateOrderToCancelStatus(nrow?.printOrderId)"
+                  matTooltip="Cancel Order" matTooltipPosition="above" matTooltipClass="tooltip">
+                  <fa-icon [icon]="faBan" [ngClass]="'fa-icon fs-16'"></fa-icon>
+                </span>
+                <span class="icon mr-8" (click)="updateOrderToPrintStatus(nrow?.printOrderId)"
+                  matTooltip="Push To Printer" matTooltipPosition="above" matTooltipClass="tooltip">
+                  <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
+                </span>
               </span>
-              <span class="icon mr-8" (click)="updateOrderToPrintStatus(nrow?.printOrderId)" matTooltip="Delete Order"
-                matTooltipPosition="above" matTooltipClass="tooltip">
-                <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
+              <span *ngIf="nrow.status === 'Ordered' || nrow.status === 'Push2Print'">
+                <span class="" (click)="updateOrderStatus(nrow?.itemPartner?.item?.itemId, 'Printed')"
+                  matTooltip="Mark as Printed" matTooltipPosition="above" matTooltipClass="tooltip">
+                  <fa-icon [icon]="faPrint" [ngClass]="'fa-icon fs-16'"></fa-icon>
+                </span>
               </span>
-            </span>
-            <span>
+              <span *ngIf="nrow.status === 'MarkPrinted' || nrow.status === 'Printed'">
+                <span class="icon mr-8 text-green" matTooltip="Printed" matTooltipPosition="above"
+                  matTooltipClass="tooltip">
+                  <fa-icon [icon]="faCheckCircle" [ngClass]="'fa-icon fs-16'"></fa-icon>
+                </span>
+              </span>
             </span>
           </div>
         </div>
