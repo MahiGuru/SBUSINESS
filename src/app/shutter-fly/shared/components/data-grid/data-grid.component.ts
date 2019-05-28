@@ -158,6 +158,15 @@ export class DataGridComponent implements OnInit, OnChanges {
   /** save edited value using waste API */
   updateEditedValue(row) {
     row.editable = false;
+    console.log(row);
+    const data = [{
+      ReleaseOrderId: row.itemPartner.item.itemId,
+      Waste: row.waste,
+      }
+    ]
+    this.inventoryService.updateInventoryOrder(data).subscribe(res => {
+      console.log(res);
+    })
   }
 
   /***** OUTPUT CALLBACKS  - NEW ROWS */

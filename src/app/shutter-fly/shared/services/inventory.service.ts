@@ -37,4 +37,8 @@ export class InventoryService {
     return this.http.post(`${environment.baseUrl}${environment.deletePartner}`, data)
       .pipe(map((res: any) => res));
   }
+  updateInventoryOrder(data){
+    return this.http.post(`${environment.baseUrl}${environment.releaseManage}`, data)
+      .pipe(map((res: any) => res));
+  }
 }
