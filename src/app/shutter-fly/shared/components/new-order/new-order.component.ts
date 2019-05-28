@@ -99,10 +99,7 @@ export class NewOrderComponent implements OnInit, OnChanges {
   removeCurrentRow(i) {
     const control = this.myForm.controls.addRows as FormArray;
     control.removeAt(i);
-    // this.newRowHeight -= 60;
-    // this.dataTableBodyCellWidth();
-
-    this.adjustCols.emit('bodycells');
+    this.adjustCols.emit('remove');
   }
   onDetailToggle(event) {
     // console.log('Detail Toggled', event);

@@ -69,12 +69,12 @@
   </ngx-datatable-column>
 
 
-  <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
+  <ngx-datatable-row-detail #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <section *ngIf="row.children && row.children.length > 0" class="row-detail" style="position: absolute">
+      <section *ngIf="row.children && row.children.length > 0" class="row-detail" [ngStyle]="{'height': row.childrenHeight+'px'}">
           <sb-sub-orders [row]="row" [table]="table"></sb-sub-orders>
       </section>
-      <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail" style="position: absolute">
+      <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail"  [ngStyle]="{'height': row.childrenHeight+'px'}">
           <sb-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" (onSave)="onSaveRowsUpdate($event)"
               (adjustCols)="adjustCols($event)">
           </sb-new-order>

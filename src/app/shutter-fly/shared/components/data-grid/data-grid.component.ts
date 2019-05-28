@@ -75,16 +75,24 @@ export class DataGridComponent implements OnInit, OnChanges {
 
   /** TOGGLE EXPAND ROW  */
   toggleExpandRow(row) {
-    this.newRowHeight = 0;
+    // this.newRowHeight = 0;
+    row.childrenHeight = 0;
     const childRows = [];
+    _.each(this.rows, (r) => {
+      r.expanded = false;
+    });
     _.each(row.children, (chrow) => {
       childRows.push(new Inventory(chrow));
     });
     row.children = childRows;
+    row.childrenHeight = (row.children && row.children.length > 0) ? row.children.length * 60 : 100;
+    console.log(row);
     this.table.rowDetail.toggleExpandRow(row);
-    this.newRowHeight += row.children ? row.children.length * 60 : this.newRowHeight;
     this.setColsFromMultiLevelElements('newRow', 'child-item');
+    this.setRowDetailHeight(row);
+
   }
+
 
   /** Pagination Callback */
   paginationCallback(event) {
@@ -100,6 +108,8 @@ export class DataGridComponent implements OnInit, OnChanges {
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
       this.setColsFromMultiLevelElements('add-row-section', 'new-item');
       this.dataTableBodyCellWidth();
+      this.rows[0].childrenHeight = 100;
+      this.setRowDetailHeight(this.rows[0]);
     }, 100);
   }
 
@@ -155,8 +165,10 @@ export class DataGridComponent implements OnInit, OnChanges {
 
   adjustCols(type) {
     if (type === 'new') {
-      this.newRowHeight += 60;
+      this.rows[0].childrenHeight += 60;
       this.setColsFromMultiLevelElements('add-row-section', 'new-item');
+    } else if(type === 'remove'){
+      this.rows[0].childrenHeight -= 60;
     } else if (type === 'cancel') {
       this.rows.splice(0, 1);
       this.rows = [...this.rows];
@@ -164,15 +176,27 @@ export class DataGridComponent implements OnInit, OnChanges {
       this.isAddBtnClicked.emit(false);
       this.isNewRowEnabled = false;
       this.newRowHeight = 100;
+      this.rows[0].childrenHeight = 100;
       this.dataTableBodyCellWidth();
     }
+    this.setRowDetailHeight(this.rows[0]);
   }
 
   /**********************************************************
    * * ALIGNMENT METHODS
    * ********************************************************
    * /
-
+   *
+  /***ROW DETAIL HEIGHT ADJUST HERE  */
+  setRowDetailHeight(row){
+    console.log(row.childrenHeight);
+    setTimeout(() => {
+      const rowDetailDivs = this.elem.nativeElement.querySelectorAll('.datatable-row-detail');
+      _.each(rowDetailDivs, (elem) => {
+        elem.style.height = 'auto';
+      });
+    }, 100);
+  }
   /** Datatable body column width */
   dataTableBodyCellWidth() {
     setTimeout(() => {
