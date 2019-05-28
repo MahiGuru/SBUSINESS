@@ -13,10 +13,11 @@ import { ConfirmDialogComponent } from 'src/app/shutter-fly/shared/components/co
 import { ReleaseGridComponent } from 'src/app/shutter-fly/shared/components/release-grid/release-grid.component';
 import { NewOrderComponent } from './components/new-order/new-order.component';
 import { SubOrdersComponent } from './components/sub-orders/sub-orders.component';
+import { GridFilterComponent } from './components/grid-filter/grid-filter.component';
 
 @NgModule({
   declarations: [DataGridComponent, ConfirmDialogComponent, DateFormatPipe,
-    PrintDataGridComponent, ReleaseGridComponent, NewOrderComponent, SubOrdersComponent],
+    PrintDataGridComponent, ReleaseGridComponent, NewOrderComponent, SubOrdersComponent, GridFilterComponent],
   imports: [
     CommonModule,
     MaterialModule,
@@ -28,6 +29,6 @@ import { SubOrdersComponent } from './components/sub-orders/sub-orders.component
     ReactiveFormsModule
   ],
   entryComponents: [ConfirmDialogComponent],
-  exports: [DataGridComponent, ConfirmDialogComponent, DateFormatPipe, PrintDataGridComponent, ReleaseGridComponent, NewOrderComponent, SubOrdersComponent]
+  exports: [DataGridComponent, ConfirmDialogComponent, DateFormatPipe, PrintDataGridComponent, ReleaseGridComponent, NewOrderComponent, SubOrdersComponent, GridFilterComponent]
 })
 export class SharedModule { }

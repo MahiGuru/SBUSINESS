@@ -13,17 +13,17 @@
       <span class="child-item">{{nrow.sflyWip}}</span>
       <span class="child-item">{{nrow.collated}} </span>
       <span class="child-item">
-        <input class="form-control" autofocus (input)="editValUpdate($event, nrow)" *ngIf="i == editChildRowIndex"
+        <input class="form-control" #wasteVal autofocus (input)="nrow.waste = wasteVal.value" *ngIf="nrow.editable"
           type="text" />
-        <span *ngIf="i !== editChildRowIndex">{{nrow.waste}} </span></span>
+        <span *ngIf="!row.editable">{{nrow.waste}} </span></span>
       <span class="child-item">{{nrow.overAge}} </span>
       <span class="child-item">{{nrow.completed}} </span>
       <span class="child-item"> {{nrow.sfOnHand}}</span>
       <span class="child-item"> {{nrow.pOnHand}}</span>
       <span class="child-item ellipsis"> {{nrow.updatedAt}}</span>
       <span class="child-item">
-        <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
-          <span (click)="editChildrenRowClick(getRowIndex(row), i)" matTooltip="Edit Item"
+        <span fxLayout="row" fxLayoutGap="20px" *ngIf="!nrow.editable">
+          <span (click)="nrow.editable = true" matTooltip="Edit Item"
             matTooltipPosition="above" matTooltipClass="tooltip">
             <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
@@ -33,11 +33,11 @@
         </span>
         <!-- *ngIf="isEditable[getRowIndex(row)].children[i]"
         isEditable[getRowIndex(row)].children[i] = !isEditable[getRowIndex(row)].children[i]-->
-        <span fxLayout="row" fxLayoutGap="10px" *ngIf="i == editChildRowIndex">
-          <span (click)="cancelChildRowClick(getRowIndex(row), i, nrow)">
+        <span fxLayout="row" fxLayoutGap="10px" *ngIf="nrow.editable">
+          <span (click)="nrow.editable = false">
             <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
           </span>
-          <span (click)="updateEditedChildRowValue(getRowIndex(row), i, nrow.waste)">
+          <span (click)="onSavePropertyVal(nrow)">
             <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
           </span>
         </span>

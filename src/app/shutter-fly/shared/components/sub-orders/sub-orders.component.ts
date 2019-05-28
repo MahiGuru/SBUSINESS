@@ -15,10 +15,7 @@ export class SubOrdersComponent implements OnInit {
   @Input() row: any;
   @Input() table: any;
 
-  @Output() adjustCols: EventEmitter<any> = new EventEmitter();
   @Output() rowsUpdate: EventEmitter<any> = new EventEmitter();
-
-  editChildRowIndex;
 
   faWindowClose = faWindowClose;
   faCheckSquare = faCheckSquare;
@@ -29,27 +26,10 @@ export class SubOrdersComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  public getRowIndex(row: any): number {
-    // console.log(row);
-    return this.table.bodyComponent.getRowIndex(row);   // row being data object passed into the template
+  cancelChildRowClick(row) {
+    row.editable = false;
   }
-
-  editValUpdate(event, row) {
-    row.waste = event.target.value;
-  }
-
-  editChildrenRowClick(rowIndex, childrenIndex) {
-    this.editChildRowIndex = childrenIndex;
-    // console.log(this.editChildRowIndex);
-  }
-  cancelChildRowClick(rowIndex, childrenIndex) {
-    this.editChildRowIndex = null;
-  }
-  updateEditedChildRowValue(rowIndex, childIndex, waste) {
-    // console.log(rowIndex, childIndex, waste, this.rows[rowIndex].children[childIndex]);
-    // this.rows[rowIndex].children[childIndex].waste = waste;
-
-    this.editChildRowIndex = null;
+  onSavePropertyVal(row) {
+    row.editable = false;
   }
 }

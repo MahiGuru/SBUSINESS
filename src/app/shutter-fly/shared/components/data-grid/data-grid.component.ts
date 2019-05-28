@@ -1,10 +1,8 @@
 import {
   Component, OnInit, ChangeDetectionStrategy, ViewChild, Output, EventEmitter,
-  Input, SimpleChanges, OnChanges, ChangeDetectorRef, HostListener, ElementRef, Renderer2, AfterViewInit, AfterContentInit, AfterViewChecked
+  Input, SimpleChanges, OnChanges, HostListener, ElementRef
 } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
-import { SharedOrdersService } from '../../services/shared-orders.service';
-
 import * as _ from 'lodash';
 
 import {
@@ -13,7 +11,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Inventory } from '../../../core/models/newInventory';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
-import { FormBuilder } from '@angular/forms';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material';
 
@@ -23,7 +20,7 @@ import { MatDialog } from '@angular/material';
   styleUrls: ['./data-grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, AfterViewChecked */ {
+export class DataGridComponent implements OnInit, OnChanges {
   @Input() cols: any;
   @Input() rows: any;
   @Input() newBtnClicked: boolean;
@@ -44,9 +41,6 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
   public addedRows = [];
   public newRowHeight: any = 100;
 
-  isEditable = {};
-  isChildrenEditable = {};
-  editChildRowIndex;
   windowHeight: any;
   windowWidth: any;
   colWidth: any;
@@ -58,15 +52,10 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
   getScreenSize(event?) {
     this.windowHeight = window.innerHeight;
     this.windowWidth = window.innerWidth - 200;
-    console.log(this.windowHeight, this.windowWidth);
   }
 
-  constructor(public sharedOrderService: SharedOrdersService,
-              public inventoryService: InventoryService,
-              public fb: FormBuilder,
-              public cdr: ChangeDetectorRef,
+  constructor(public inventoryService: InventoryService,
               public dialog: MatDialog,
-              private renderer: Renderer2,
               private elem: ElementRef) {
     this.getScreenSize();
   }
@@ -82,6 +71,107 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
       this.dataTableBodyCellWidth();
     }
   }
+
+
+  /** TOGGLE EXPAND ROW  */
+  toggleExpandRow(row) {
+    this.newRowHeight = 0;
+    const childRows = [];
+    _.each(row.children, (chrow) => {
+      childRows.push(new Inventory(chrow));
+    });
+    row.children = childRows;
+    this.table.rowDetail.toggleExpandRow(row);
+    this.newRowHeight += row.children ? row.children.length * 60 : this.newRowHeight;
+    this.setColsFromMultiLevelElements('newRow', 'child-item');
+  }
+
+  /** Pagination Callback */
+  paginationCallback(event) {
+    this.dataTableBodyCellWidth();
+  }
+
+  addNewBtnClicked() {
+    this.rows.unshift(new Inventory());
+    this.rows = [...this.rows];
+    this.isNewRowEnabled = true;
+    this.newRowHeight = 100;
+    setTimeout(() => {
+      this.table.rowDetail.toggleExpandRow(this.rows[0]);
+      this.setColsFromMultiLevelElements('add-row-section', 'new-item');
+      this.dataTableBodyCellWidth();
+    }, 100);
+  }
+
+  ngOnInit() {
+  }
+
+  /*** filter input change output callback */
+  filterCallback(rows){
+    this.rows = [...rows];
+    console.log(rows, this.rows);
+    this.dataTableBodyCellWidth();
+  }
+
+  /*** ON SAVE new rows output callback */
+  onSaveRowsUpdate(newRecords) {
+    const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
+    this.rows = _.values(merged);
+    this.dataTableBodyCellWidth();
+  }
+
+  /*** Delete rows functionality here */
+  trashInventoryItem(row) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        row,
+        title: 'Delete Inventory Item',
+        description: 'Are you sure you want to delete this item?',
+        noLabel: 'Cancel',
+        yesLabel: 'Delete'
+      },
+      panelClass: 'confirm-dialog'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const record = { ItemPartner: { ItemPartnerId: result.row.itemPartner.item.itemId } };
+        this.inventoryService.deleteInventory(record).subscribe(newRecords => {
+          this.rows = _.filter(this.rows, (n) => n.itemPartner.item.itemNo !== row.itemPartner.item.itemNo);
+          this.dataTableBodyCellWidth();
+        });
+      }
+    });
+  }
+
+  /** save edited value using waste API */
+  updateEditedValue(row) {
+    row.editable = false;
+  }
+
+  /***** OUTPUT CALLBACKS  - NEW ROWS */
+  rowsUpdate(rows) {}
+
+  adjustCols(type) {
+    if (type === 'new') {
+      this.newRowHeight += 60;
+      this.setColsFromMultiLevelElements('add-row-section', 'new-item');
+    } else if (type === 'cancel') {
+      this.rows.splice(0, 1);
+      this.rows = [...this.rows];
+      this.table.rowDetail.toggleExpandRow(this.rows[0]);
+      this.isAddBtnClicked.emit(false);
+      this.isNewRowEnabled = false;
+      this.newRowHeight = 100;
+      this.dataTableBodyCellWidth();
+    }
+  }
+
+  /**********************************************************
+   * * ALIGNMENT METHODS
+   * ********************************************************
+   * /
 
   /** Datatable body column width */
   dataTableBodyCellWidth() {
@@ -108,17 +198,19 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
       this.setColWidth(tblbodyCell, colWidth);
     });
   }
-  /*** Adjust New Cols width */
-  setNewColsWidth() {
+
+  /** Loop Parent elements and inside children element loop and apply the width */
+  setColsFromMultiLevelElements(parent, child){
     setTimeout(() => {
       const colWidth = (this.windowWidth / (this.cols.length + 1));
-      const childRow = this.elem.nativeElement.querySelectorAll('.add-row-section');
+      const childRow = this.elem.nativeElement.querySelectorAll('.'+ parent);
       _.each(childRow, (childCell, i) => {
-        const tblbodyCell = childCell.querySelectorAll('.new-item');
+        const tblbodyCell = childCell.querySelectorAll('.'+ child);
         this.setColWidth(tblbodyCell, colWidth);
       });
     }, 500);
   }
+
   /*** SET Column width */
   setColWidth(tblbodyCell, colWidth) {
     _.each(tblbodyCell, (tblCell, j) => {
@@ -132,166 +224,4 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
     });
   }
 
-  /** TOGGLE EXPAND ROW  */
-  toggleExpandRow(row) {
-    this.newRowHeight = 0;
-    const childRows = [];
-    _.each(row.children, (chrow) => {
-      childRows.push(new Inventory(chrow));
-    });
-    row.children = childRows;
-    this.table.rowDetail.toggleExpandRow(row);
-    this.newRowHeight += row.children ? row.children.length * 60 : this.newRowHeight;
-    setTimeout(() => {
-      const colWidth = (this.windowWidth / (this.cols.length + 1));
-      const childRow = this.elem.nativeElement.querySelectorAll('.newRow');
-      _.each(childRow, (childCell, i) => {
-        childCell.classList.add('w-row-active');
-        const tblbodyCell = childCell.querySelectorAll('.child-item');
-        this.setColWidth(tblbodyCell, colWidth);
-      });
-    }, 500);
-  }
-
-  /** Pagination Callback */
-  paginationCallback(event) {
-    this.dataTableBodyCellWidth();
-  }
-
-  addNewBtnClicked() {
-    // const control = this.myForm.controls.addRows as FormArray;
-    this.rows.unshift(new Inventory());
-    this.rows = [...this.rows];
-    this.isNewRowEnabled = true;
-    this.newRowHeight = 100;
-    setTimeout(() => {
-      this.table.rowDetail.toggleExpandRow(this.rows[0]);
-      this.setNewColsWidth();
-    }, 100);
-  }
-
-  ngOnInit() {
-  }
-
-
-  updateFilter(filterVal) {
-    console.log(this.originalRows);
-    if (filterVal === '') { this.rows = this.originalRows; }
-    const val = filterVal.toLowerCase();
-    // filter our data
-    const temp = this.rows.filter((d) => {
-      return d.itemPartner.item.itemNo.toLowerCase().indexOf(val) !== -1 || !val;
-    });
-    console.log('FILTERED >>>> ', filterVal);
-    // update the rows
-    this.rows = temp;
-    // Whenever the filter changes, always go back to the first page
-    this.table.offset = 0;
-  }
-
-  onSaveRowsUpdate(newRecords) {
-    const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
-    this.rows = _.values(merged);
-    this.dataTableBodyCellWidth();
-  }
-
-  trashInventoryItem(row) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '400px',
-      data: {
-        row,
-        title: 'Delete Inventory Item',
-        description: 'Are you sure you want to delete this item?',
-        noLabel: 'Cancel',
-        yesLabel: 'Delete'
-      },
-      panelClass: 'confirm-dialog'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const record = {
-          ItemPartner: {
-            ItemPartnerId: result.row.itemPartner.item.itemId
-          }
-        };
-        this.inventoryService.deleteInventory(record).subscribe(newRecords => {
-          this.rows = _.filter(this.rows, (n) => n.itemPartner.item.itemNo !== row.itemPartner.item.itemNo);
-        });
-      }
-    });
-  }
-
-
-  updateRowValue(event, rowIndex) {
-    // console.log('inline editing rowIndex', rowIndex, event);
-    this.isEditable[rowIndex] = !this.isEditable[rowIndex];
-  }
-
-  updateEditedValue(rowIndex, waste) {
-    this.isEditable[rowIndex] = !this.isEditable[rowIndex];
-  }
-  // editValUpdate(event, row) {
-  //   row.waste = event.target.value;
-  // }
-
-  public getRowIndex(row: any): number {
-    // console.log(row);
-    return this.table.bodyComponent.getRowIndex(row);   // row being data object passed into the template
-  }
-
-  // updateChildRowValue(event, rowIndex, childIndex) {
-  //   // console.log('inline editing rowIndex', rowIndex, event);
-  //   this.isEditable[rowIndex] = !this.isEditable[rowIndex];
-  // }
-  // updateEditedChildRowValue(rowIndex, childIndex, waste) {
-  //   // console.log(rowIndex, childIndex, waste, this.rows[rowIndex].children[childIndex]);
-  //   this.rows[rowIndex].children[childIndex].waste = waste;
-  //   this.editChildRowIndex = null;
-
-  //   // this.rows[rowIndex].children[childrenIndex].waste
-  // }
-  // editChildrenRowClick(rowIndex, childrenIndex) {
-  //   this.editChildRowIndex = childrenIndex;
-  //   // console.log(this.editChildRowIndex);
-  // }
-  // cancelChildRowClick(rowIndex, childrenIndex) {
-  //   this.editChildRowIndex = null;
-  // }
-  cleaFilterInput() {
-    console.log('clearInput');
-    this.filterVal = '';
-    this.rows = [...this.originalRows];
-    this.cdr.detectChanges();
-  }
-
-
-
-  /***** OUTPUT CALLBACKS */
-  rowsUpdate(rows) {
-
-  }
-
-  adjustCols(type) {
-    console.log('TYPPPPPE', type);
-    if (type === 'new') {
-      this.newRowHeight += 60;
-      setTimeout(() => {
-        const colWidth = (this.windowWidth / (this.cols.length + 1));
-        const childRow = this.elem.nativeElement.querySelectorAll('.add-row-section');
-        _.each(childRow, (childCell, i) => {
-          const tblbodyCell = childCell.querySelectorAll('.new-item');
-          this.setColWidth(tblbodyCell, colWidth);
-        });
-      }, 500);
-    } else if (type === 'cancel') {
-      this.rows.splice(0, 1);
-      this.rows = [...this.rows];
-      this.table.rowDetail.toggleExpandRow(this.rows[0]);
-      this.isAddBtnClicked.emit(false);
-      this.isNewRowEnabled = false;
-      this.newRowHeight = 100;
-      this.dataTableBodyCellWidth();
-    }
-  }
 }

@@ -1,38 +1,10 @@
-<div class="mtb-8" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+<sb-grid-filter [rows]="rows" (rowsUpdate)="filterCallback($event)"></sb-grid-filter>
 
-
-  <mat-form-field fxFlex="30" class="filter-input" [floatLabel]="'never'">
-    <input matInput placeholder="Search Filter By" [(ngModel)]="filterVal">
-
-    <mat-icon matPrefix class="search-icon">search</mat-icon>
-    <button mat-button *ngIf="filterVal" matSuffix mat-icon-button aria-label="Clear" (click)="cleaFilterInput()">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
-  <div fxFlex>
-    <button class="apply-btn" mat-raised-button color="accent" (click)='updateFilter(filterVal)'>Apply</button>
-  </div>
-  <div fxFlex fxFlexAlign="center" class="text-right">
-    <button mat-button> <i class="material-icons"> arrow_downward </i> Import</button>
-    <button mat-button> <i class="material-icons"> arrow_upward </i> Export </button>
-  </div>
-</div>
-<!-- <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Search filter by'
-    (keyup)='updateFilter($event)' /> -->
 <ngx-datatable #table class='material expandable' [columns]="cols" [columnMode]="'force'" [headerHeight]="50"
   [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows' (page)="paginationCallback($event)">
 
-  <!-- <ngx-datatable-column [sortable]="false" [flexGrow]="0.5">
-    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-      <a href="javascript:void(0)" class="dt-arrow" title="Expand/Collapse Row" (click)="toggleExpandRow(row)"
-        *ngIf="row.children && row.children.length > 0">
-        <fa-icon [icon]="!expanded ? faCaretRight: faCaretDown"></fa-icon>
-      </a>
-    </ng-template>
-  </ngx-datatable-column> -->
   <ngx-datatable-column name="ItemNo#" [flexGrow]="1.2">
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-      <!-- <pre>{{row |json}}</pre> -->
       <a href="javascript:void(0)" class="dt-arrow" title="Expand/Collapse Row" (click)="toggleExpandRow(row)"
         *ngIf="row.children && row.children.length > 0">
         <fa-icon [icon]="!expanded ? faCaretRight: faCaretDown"></fa-icon>
@@ -55,9 +27,9 @@
   <ngx-datatable-column prop="collated" editable="true" [flexGrow]="1"></ngx-datatable-column>
   <ngx-datatable-column name="waste" prop="waste" [flexGrow]="1">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-      <input class="form-control" autofocus (input)="editValUpdate($event, row)" *ngIf="isEditable[rowIndex]"
+      <input class="form-control" #wasteVal autofocus (input)="row.waste = wasteVal.value" *ngIf="row.editable"
         type="text" [value]="value" />
-      <span *ngIf="!isEditable[rowIndex]">{{row.waste}}</span>
+      <span *ngIf="!row.editable">{{row.waste}}</span>
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column prop="overAge" editable="true" [flexGrow]="1"></ngx-datatable-column>
@@ -70,15 +42,12 @@
       <span *ngIf="isNewRowEnabled">{{ row.updatedAt }}</span>
     </ng-template>
   </ngx-datatable-column>
-  <!-- <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
-    [cellClass]="col.prop">
-  </ngx-datatable-column> -->
   <ngx-datatable-column [sortable]="false" [flexGrow]="1">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
       <div class="row-action-btn"
-        *ngIf="(row.children && row.children.length < 1) && !(isNewRowEnabled && rowIndex == 0)">
-        <span *ngIf="!isEditable[rowIndex]" fxLayout="row" fxLayoutGap="20px">
-          <span (click)="updateRowValue($event, rowIndex)" matTooltip="Edit Item" matTooltipPosition="above"
+        *ngIf="(row.children && row.children.length < 1) && !isNewRowEnabled">
+        <span *ngIf="!row.editable" fxLayout="row" fxLayoutGap="20px">
+          <span (click)="row.editable = true" matTooltip="Edit Item" matTooltipPosition="above"
             matTooltipClass="tooltip">
             <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
@@ -87,11 +56,11 @@
             <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
           </span>
         </span>
-        <span *ngIf="isEditable[rowIndex]" fxLayout="row" fxLayoutGap="10px">
-          <span (click)="this.isEditable[rowIndex] = !this.isEditable[rowIndex]">
+        <span *ngIf="row.editable" fxLayout="row" fxLayoutGap="10px">
+          <span (click)="row.editable = false">
             <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
           </span>
-          <span (click)="updateEditedValue(rowIndex, row.waste)">
+          <span (click)="updateEditedValue(row)">
             <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
           </span>
         </span>
@@ -102,52 +71,6 @@
 
   <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <!-- <section *ngIf="row.children && row.children.length > 0" class="row-detail" style="position: absolute">
-        <div>
-          <div fxLayout="row" class="newRow" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
-            <span class="child-item"> {{nrow.itemPartner.item.itemNo}}
-            </span>
-            <span class="child-item ellipsis description">{{nrow.itemPartner.item.itemDescription}}
-            </span>
-            <span class="child-item">{{nrow.itemPartner.item.itemType}}
-            </span>
-            <span class="child-item">{{nrow.itemPartner.partner.partnerType}}
-            </span>
-            <span class="child-item">{{nrow.recieved}} </span>
-            <span class="child-item">{{nrow.sflyWip}}</span>
-            <span class="child-item">{{nrow.collated}} </span>
-            <span class="child-item">
-              <input class="form-control" autofocus (input)="editValUpdate($event, nrow)" *ngIf="i == editChildRowIndex"
-                type="text" />
-              <span *ngIf="i !== editChildRowIndex">{{nrow.waste}} </span></span>
-            <span class="child-item">{{nrow.overAge}} </span>
-            <span class="child-item">{{nrow.completed}} </span>
-            <span class="child-item"> {{nrow.sfOnHand}}</span>
-            <span class="child-item"> {{nrow.pOnHand}}</span>
-            <span class="child-item ellipsis"> {{nrow.updatedAt}}</span>
-            <span class="child-item">
-              <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
-                <span (click)="editChildrenRowClick(getRowIndex(row), i)" matTooltip="Edit Item"
-                  matTooltipPosition="above" matTooltipClass="tooltip">
-                  <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
-                </span>
-                <span matTooltip="Delete Item" matTooltipPosition="above" matTooltipClass="tooltip">
-                  <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
-                </span>
-              </span>
-              <span fxLayout="row" fxLayoutGap="10px" *ngIf="i == editChildRowIndex">
-                <span (click)="cancelChildRowClick(getRowIndex(row), i, nrow)">
-                  <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
-                </span>
-                <span (click)="updateEditedChildRowValue(getRowIndex(row), i, nrow.waste)">
-                  <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
-                </span>
-              </span>
-
-            </span>
-          </div>
-        </div>
-      </section> -->
       <section *ngIf="row.children && row.children.length > 0" class="row-detail" style="position: absolute">
           <sb-sub-orders [row]="row" [table]="table"></sb-sub-orders>
       </section>
