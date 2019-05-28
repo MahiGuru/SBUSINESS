@@ -42,7 +42,7 @@
             matTooltipPosition="above" matTooltipClass="tooltip">
             <fa-icon [icon]="faBan" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
-          <span class="icon mr-8" (click)="updateOrderStatus(row?.itemPartner?.item?.itemId, 'Ordered')"
+          <span class="icon mr-8" (click)="updateOrderToPrintStatus(row?.itemPartner?.item?.itemId)"
             matTooltip="Push to Printer" matTooltipPosition="above" matTooltipClass="tooltip">
             <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
