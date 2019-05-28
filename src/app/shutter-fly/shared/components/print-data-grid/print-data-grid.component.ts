@@ -384,8 +384,8 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       console.log(newRecords);
       _.each(this.rows, (row, i) => {
         _.each(row.children, (child, j) => {
-          if (child.printOrderId === newRecords[0].children[0].printOrderId) {
-            child.status = newRecords[0].children[0].status;
+          if (child.printOrderId === newRecords[0].printOrderId) {
+            child.status = newRecords[0].status;
           }
         });
       });

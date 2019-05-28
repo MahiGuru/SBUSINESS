@@ -328,6 +328,21 @@ export class ReleaseGridComponent implements OnInit, OnChanges {
     this.isNewRowEnabled = false;
   }
 
+  addAnotherItemInRow(row) {
+    this.table.rowDetail.toggleExpandRow(row);
+    row.childrenHeight = (row.children && row.children.length > 0) ? row.children.length * 60 : 100;
+    setTimeout(() => {
+      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const childRow = this.elem.nativeElement.querySelectorAll('.newRow');
+      _.each(childRow, (childCell, i) => {
+        childCell.classList.add('w-row-active');
+        const tblbodyCell = childCell.querySelectorAll('.child-item');
+        this.setColWidth(tblbodyCell, colWidth);
+        this.setRowDetailHeight(row);
+      });
+    }, 500);
+  }
+
   toggleExpandRow(row) {
     this.newRowHeight = 0;
     // console.log('Toggled Expand Row!', row);

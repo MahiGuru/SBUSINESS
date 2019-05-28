@@ -39,7 +39,7 @@
   <ngx-datatable-column name="Updated At" editable="true" [flexGrow]="1">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
       <span *ngIf="!isNewRowEnabled">{{ row.updatedAt | dateFormat}}</span>
-      <span *ngIf="isNewRowEnabled">{{ row.updatedAt }}</span>
+      <span *ngIf="isNewRowEnabled">{{ row.updatedAt | dateFormat }}</span>
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column [sortable]="false" [flexGrow]="1">
