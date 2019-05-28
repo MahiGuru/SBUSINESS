@@ -231,33 +231,33 @@ export class DataGridComponent implements OnInit, OnChanges/*, AfterViewInit, Af
   updateEditedValue(rowIndex, waste) {
     this.isEditable[rowIndex] = !this.isEditable[rowIndex];
   }
-  editValUpdate(event, row) {
-    row.waste = event.target.value;
-  }
+  // editValUpdate(event, row) {
+  //   row.waste = event.target.value;
+  // }
 
   public getRowIndex(row: any): number {
     // console.log(row);
     return this.table.bodyComponent.getRowIndex(row);   // row being data object passed into the template
   }
 
-  updateChildRowValue(event, rowIndex, childIndex) {
-    // console.log('inline editing rowIndex', rowIndex, event);
-    this.isEditable[rowIndex] = !this.isEditable[rowIndex];
-  }
-  updateEditedChildRowValue(rowIndex, childIndex, waste) {
-    // console.log(rowIndex, childIndex, waste, this.rows[rowIndex].children[childIndex]);
-    this.rows[rowIndex].children[childIndex].waste = waste;
-    this.editChildRowIndex = null;
+  // updateChildRowValue(event, rowIndex, childIndex) {
+  //   // console.log('inline editing rowIndex', rowIndex, event);
+  //   this.isEditable[rowIndex] = !this.isEditable[rowIndex];
+  // }
+  // updateEditedChildRowValue(rowIndex, childIndex, waste) {
+  //   // console.log(rowIndex, childIndex, waste, this.rows[rowIndex].children[childIndex]);
+  //   this.rows[rowIndex].children[childIndex].waste = waste;
+  //   this.editChildRowIndex = null;
 
-    // this.rows[rowIndex].children[childrenIndex].waste
-  }
-  editChildrenRowClick(rowIndex, childrenIndex) {
-    this.editChildRowIndex = childrenIndex;
-    // console.log(this.editChildRowIndex);
-  }
-  cancelChildRowClick(rowIndex, childrenIndex) {
-    this.editChildRowIndex = null;
-  }
+  //   // this.rows[rowIndex].children[childrenIndex].waste
+  // }
+  // editChildrenRowClick(rowIndex, childrenIndex) {
+  //   this.editChildRowIndex = childrenIndex;
+  //   // console.log(this.editChildRowIndex);
+  // }
+  // cancelChildRowClick(rowIndex, childrenIndex) {
+  //   this.editChildRowIndex = null;
+  // }
   cleaFilterInput() {
     console.log('clearInput');
     this.filterVal = '';

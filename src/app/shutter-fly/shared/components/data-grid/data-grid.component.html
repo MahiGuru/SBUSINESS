@@ -102,7 +102,7 @@
 
   <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <section *ngIf="row.children && row.children.length > 0" class="row-detail" style="position: absolute">
+      <!-- <section *ngIf="row.children && row.children.length > 0" class="row-detail" style="position: absolute">
         <div>
           <div fxLayout="row" class="newRow" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
             <span class="child-item"> {{nrow.itemPartner.item.itemNo}}
@@ -135,8 +135,6 @@
                   <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
                 </span>
               </span>
-              <!-- *ngIf="isEditable[getRowIndex(row)].children[i]"
-              isEditable[getRowIndex(row)].children[i] = !isEditable[getRowIndex(row)].children[i]-->
               <span fxLayout="row" fxLayoutGap="10px" *ngIf="i == editChildRowIndex">
                 <span (click)="cancelChildRowClick(getRowIndex(row), i, nrow)">
                   <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
@@ -149,11 +147,15 @@
             </span>
           </div>
         </div>
+      </section> -->
+      <section *ngIf="row.children && row.children.length > 0" class="row-detail" style="position: absolute">
+          <sb-sub-orders [row]="row" [table]="table"></sb-sub-orders>
       </section>
-      <sb-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" (onSave)="onSaveRowsUpdate($event)"
-        (adjustCols)="adjustCols($event)">
-      </sb-new-order>
-
+      <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail" style="position: absolute">
+          <sb-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" (onSave)="onSaveRowsUpdate($event)"
+              (adjustCols)="adjustCols($event)">
+          </sb-new-order>
+      </section>
     </ng-template>
   </ngx-datatable-row-detail>
 </ngx-datatable>

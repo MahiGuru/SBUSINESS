@@ -1,0 +1,48 @@
+<section *ngIf="row.children && row.children.length > 0" class="row-detail" style="position: absolute">
+  <div>
+    <div fxLayout="row" class="newRow" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
+      <span class="child-item"> {{nrow.itemPartner.item.itemNo}}
+      </span>
+      <span class="child-item ellipsis description">{{nrow.itemPartner.item.itemDescription}}
+      </span>
+      <span class="child-item">{{nrow.itemPartner.item.itemType}}
+      </span>
+      <span class="child-item">{{nrow.itemPartner.partner.partnerType}}
+      </span>
+      <span class="child-item">{{nrow.recieved}} </span>
+      <span class="child-item">{{nrow.sflyWip}}</span>
+      <span class="child-item">{{nrow.collated}} </span>
+      <span class="child-item">
+        <input class="form-control" autofocus (input)="editValUpdate($event, nrow)" *ngIf="i == editChildRowIndex"
+          type="text" />
+        <span *ngIf="i !== editChildRowIndex">{{nrow.waste}} </span></span>
+      <span class="child-item">{{nrow.overAge}} </span>
+      <span class="child-item">{{nrow.completed}} </span>
+      <span class="child-item"> {{nrow.sfOnHand}}</span>
+      <span class="child-item"> {{nrow.pOnHand}}</span>
+      <span class="child-item ellipsis"> {{nrow.updatedAt}}</span>
+      <span class="child-item">
+        <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
+          <span (click)="editChildrenRowClick(getRowIndex(row), i)" matTooltip="Edit Item"
+            matTooltipPosition="above" matTooltipClass="tooltip">
+            <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
+          </span>
+          <span matTooltip="Delete Item" matTooltipPosition="above" matTooltipClass="tooltip">
+            <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
+          </span>
+        </span>
+        <!-- *ngIf="isEditable[getRowIndex(row)].children[i]"
+        isEditable[getRowIndex(row)].children[i] = !isEditable[getRowIndex(row)].children[i]-->
+        <span fxLayout="row" fxLayoutGap="10px" *ngIf="i == editChildRowIndex">
+          <span (click)="cancelChildRowClick(getRowIndex(row), i, nrow)">
+            <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
+          </span>
+          <span (click)="updateEditedChildRowValue(getRowIndex(row), i, nrow.waste)">
+            <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
+          </span>
+        </span>
+
+      </span>
+    </div>
+  </div>
+</section>
