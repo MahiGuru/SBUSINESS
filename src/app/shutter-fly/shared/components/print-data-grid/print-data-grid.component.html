@@ -1,26 +1,8 @@
-<div class="mtb-8" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-
-
-  <mat-form-field fxFlex="30" class="filter-input" [floatLabel]="'never'">
-    <input matInput placeholder="Search Filter By" [(ngModel)]="filterVal">
-
-    <mat-icon matPrefix class="search-icon">search</mat-icon>
-    <button mat-button *ngIf="filterVal" matSuffix mat-icon-button aria-label="Clear" (click)="cleaFilterInput()">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
-  <div fxFlex>
-    <button class="apply-btn" mat-raised-button color="accent" (click)='updateFilter(filterVal)'>Apply</button>
-  </div>
-  <div fxFlex fxFlexAlign="center" class="text-right">
-    <button mat-button> <i class="material-icons"> arrow_downward </i> Import</button>
-    <button mat-button> <i class="material-icons"> arrow_upward </i> Export </button>
-  </div>
-</div>
+<sb-grid-filter [rows]="rows" (rowsUpdate)="filterCallback($event)"></sb-grid-filter>
 <!-- <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Search filter by'
     (keyup)='updateFilter($event)' /> -->
 <ngx-datatable class='material expandable' [columns]="cols" [columnMode]="'force'" [headerHeight]="50"
-  [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+  [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows' (page)="paginationCallback($event)">
 
   <ngx-datatable-column name="Item #">
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
@@ -59,7 +41,7 @@
           matTooltipClass="tooltip">
           <fa-icon [icon]="faPrint" [ngClass]="'fa-icon fs-16'"></fa-icon>
         </span>
-        <p *ngIf="row.status === 'Cancel'">
+        <p *ngIf="row.status === 'New'">
           <span class="icon mr-8" (click)="updateOrderToCancelStatus(row?.printOrderId)" matTooltip="Cancel Order"
             matTooltipPosition="above" matTooltipClass="tooltip">
             <fa-icon [icon]="faBan" [ngClass]="'fa-icon fs-16'"></fa-icon>
@@ -70,31 +52,15 @@
           </span>
         </p>
       </div>
-      <!-- <div class="row-action-btn"
-        *ngIf="(row.children && row.children.length < 1) && !(isNewRowEnabled && rowIndex == 0)">
-        <span *ngIf="!isEditable[rowIndex]" fxLayout="row" fxLayoutGap="20px">
-          <span (click)="updateRowValue($event, rowIndex)">
-            <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
-          </span>
-          <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
-        </span>
-        <span *ngIf="isEditable[rowIndex]" fxLayout="row" fxLayoutGap="10px">
-          <span (click)="this.isEditable[rowIndex] = !this.isEditable[rowIndex]">
-            <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
-          </span>
-          <span (click)="updateEditedValue(rowIndex, row.waste)">
-            <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
-          </span>
-        </span>
-      </div> -->
     </ng-template>
   </ngx-datatable-column>
 
 
-  <ngx-datatable-row-detail [rowHeight]="newRowHeight" #myDetailRow>
+  <ngx-datatable-row-detail #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <section *ngIf="row.children && row.children.length > 0" class="row-detail" style="position: absolute">
-        <div>
+      <section *ngIf="row.children && row.children.length > 0" class="row-detail"
+        [ngStyle]="{'height': row.childrenHeight+'px'}">
+        <div [ngStyle]="{'position': 'absolute', 'width': '100%'}">
           <div fxLayout="row" class="newRow" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
 
             <span class="child-item"> {{nrow.itemPartner?.item?.itemNo}}
@@ -109,9 +75,9 @@
             <span class="child-item">{{nrow.poNum}}</span>
             <span class="child-item">{{nrow.jobNum}} </span>
 
-            <span class="child-item"> {{nrow.createdAt}}</span>
+            <span class="child-item"> {{nrow.createdAt | dateFormat}}</span>
             <span class="child-item"> {{nrow.status}}</span>
-            <span class="child-item">
+            <span class="child-item" *ngIf="nrow.status === 'New'">
               <span class="icon mr-8" (click)="updateOrderToCancelStatus(nrow?.printOrderId)" matTooltip="Cancel Order"
                 matTooltipPosition="above" matTooltipClass="tooltip">
                 <fa-icon [icon]="faBan" [ngClass]="'fa-icon fs-16'"></fa-icon>
@@ -122,98 +88,78 @@
               </span>
             </span>
             <span>
-
-              <!-- <span fxLayout="row" fxLayoutGap="20px" *ngIf="i !== editChildRowIndex">
-                <span (click)="editChildrenRowClick(getRowIndex(row), i)" matTooltip="Edit Item"
-                  matTooltipPosition="above" matTooltipClass="tooltip">
-                  <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
-                </span>
-                <span matTooltip="Delete Item" matTooltipPosition="above" matTooltipClass="tooltip">
-                  <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
-                </span>
-              </span>
-            *ngIf="i == editChildRowIndex"
-            -->
-              <!-- <span fxLayout="row" fxLayoutGap="10px">
-                <span (click)="cancelChildRowClick(getRowIndex(row), i, nrow)" matTooltip="Cancel Order"
-                  matTooltipPosition="above" matTooltipClass="tooltip">
-                  <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
-                </span>
-                <span (click)="updateEditedChildRowValue(getRowIndex(row), i, nrow.waste)" matTooltip="Push to Printer"
-                  matTooltipPosition="above" matTooltipClass="tooltip">
-                  <fa-icon [icon]="faCheckSquare" [ngClass]="'fa-icon text-blue fs-24'"></fa-icon>
-                </span>
-              </span> -->
-
             </span>
           </div>
         </div>
       </section>
 
-      <section class="new_section" *ngIf="!(row.children && row.children.length > 0)">
-        <form [formGroup]="myForm">
-          <div formArrayName="addRows">
-            <div class="row-ab-actions">
-              <span fxFlex fxLayout="row" fxLayoutGap="10px">
-                <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
-                  cancel
-                </i>
-                <i class="material-icons done-ic" (click)="addRowsToInventory()">
-                  check_circle
-                </i>
-              </span>
-            </div>
-            <div class="new-rows-container">
+      <section class="new_section" *ngIf="!(row.children && row.children.length > 0)"
+        [ngStyle]="{'height': row.childrenHeight+'px'}">
+        <div [ngStyle]="{'position': 'absolute', 'width': '100%'}">
+          <form [formGroup]="myForm">
+            <div formArrayName="addRows">
+              <div class="row-ab-actions">
+                <span fxFlex fxLayout="row" fxLayoutGap="10px">
+                  <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
+                    cancel
+                  </i>
+                  <i class="material-icons done-ic" (click)="addRowsToInventory()">
+                    check_circle
+                  </i>
+                </span>
+              </div>
+              <div class="new-rows-container">
 
-              <div class="newRow add-row-section mtb-2"
-                *ngFor="let comp of myForm.get('addRows').controls; let i=index">
-                <div [formGroupName]="i" fxLayout="row" fxLayoutGap="0px">
-                  <span class="new-item">
-                    <mat-select [placeholder]="'Item No'" formControlName="itemNo"
-                      (selectionChange)="onItemChange($event, i)">
-                      <mat-option *ngFor="let option of printItems" [value]="option.item.itemNo">
-                        {{ option.item.itemNo }}
-                      </mat-option>
-                    </mat-select>
-                  </span>
-                  <span class="new-item">
-                    <mat-select [placeholder]="'Item Desc'" formControlName="itemDesc"
-                      (selectionChange)="onItemChange($event, i)">
-                      <mat-option *ngFor="let option of printItems" [value]="option.item.itemNo">
-                        {{ option.item.itemDescription }}
-                      </mat-option>
-                    </mat-select>
-                  </span>
-                  <span class="new-item">
-                    {{comp.get('itemType').value}}
-                  </span>
-                  <!-- <input *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId" /> -->
-                  <span class="new-item">
-                    <mat-select formControlName="partner" (selectionChange)="onPartnerChange($event, i)">
-                      <mat-option *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId">
-                        {{ partner.partner.partnerCode }}
-                      </mat-option>
-                    </mat-select>
-                  </span>
-                  <span class="new-item">
-                    <input matInput placeholder="Search Filter By" formControlName="quantity">
-                  </span>
-                  <span class="new-item">
-                    <input matInput placeholder="Search Filter By" formControlName="poNum">
-                  </span>
-                  <div class="new-item">
-                    <i class="material-icons red" (click)="removeCurrentRow(i)">
-                      remove_circle
-                    </i>
-                    <i class="material-icons green" (click)="addAnotherRow()" *ngIf="i == 0">
-                      add_circle </i>
+                <div class="newRow add-row-section mtb-2"
+                  *ngFor="let comp of myForm.get('addRows').controls; let i=index">
+                  <div [formGroupName]="i" fxLayout="row" fxLayoutGap="0px">
+                    <span class="new-item">
+                      <mat-select [placeholder]="'Item No'" formControlName="itemNo"
+                        (selectionChange)="onItemChange($event, i)">
+                        <mat-option *ngFor="let option of printItems" [value]="option.item.itemNo">
+                          {{ option.item.itemNo }}
+                        </mat-option>
+                      </mat-select>
+                    </span>
+                    <span class="new-item">
+                      <mat-select [placeholder]="'Item Desc'" formControlName="itemDesc"
+                        (selectionChange)="onItemChange($event, i)">
+                        <mat-option *ngFor="let option of printItems" [value]="option.item.itemNo">
+                          {{ option.item.itemDescription }}
+                        </mat-option>
+                      </mat-select>
+                    </span>
+                    <span class="new-item">
+                      {{comp.get('itemType').value}}
+                    </span>
+                    <!-- <input *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId" /> -->
+                    <span class="new-item">
+                      <mat-select formControlName="partner" (selectionChange)="onPartnerChange($event, i)">
+                        <mat-option *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId">
+                          {{ partner.partner.partnerCode }}
+                        </mat-option>
+                      </mat-select>
+                    </span>
+                    <span class="new-item">
+                      <input matInput placeholder="Search Filter By" formControlName="quantity">
+                    </span>
+                    <span class="new-item">
+                      <input matInput placeholder="Search Filter By" formControlName="poNum">
+                    </span>
+                    <div class="new-item">
+                      <i class="material-icons red" (click)="removeCurrentRow(i)">
+                        remove_circle
+                      </i>
+                      <i class="material-icons green" (click)="addAnotherRow()" *ngIf="i == 0">
+                        add_circle </i>
 
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
 
 
       </section>

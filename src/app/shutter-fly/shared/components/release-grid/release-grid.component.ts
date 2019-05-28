@@ -79,13 +79,13 @@ export class ReleaseGridComponent implements OnInit, OnChanges {
     console.log(this.windowHeight, this.windowWidth);
   }
   constructor(public sharedOrderService: SharedOrdersService,
-    public http: HttpClient,
-    public inventoryService: InventoryService,
-    public fb: FormBuilder,
-    public cdr: ChangeDetectorRef,
-    public dialog: MatDialog,
-    public releaseService: ReleasesService,
-    private elem: ElementRef) {
+              public http: HttpClient,
+              public inventoryService: InventoryService,
+              public fb: FormBuilder,
+              public cdr: ChangeDetectorRef,
+              public dialog: MatDialog,
+              public releaseService: ReleasesService,
+              private elem: ElementRef) {
     this.getScreenSize();
   }
 
@@ -196,6 +196,9 @@ export class ReleaseGridComponent implements OnInit, OnChanges {
     // console.log('addedRows >>> ', this.addedRows);
     setTimeout(() => {
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
+
+      this.rows[0].childrenHeight = 100;
+      this.setRowDetailHeight(this.rows[0]);
     }, 100);
   }
 
@@ -225,11 +228,13 @@ export class ReleaseGridComponent implements OnInit, OnChanges {
     }));
     // this.addedRows.push(addRow);
     this.newRowHeight += 30;
+    this.rows[0].childrenHeight += 80;
   }
   removeCurrentRow(i) {
     const control = this.myForm.controls.addRows as FormArray;
     control.removeAt(i);
     this.newRowHeight -= 30;
+    this.rows[0].childrenHeight -= 80;
   }
   onDetailToggle(event) {
     // console.log('Detail Toggled', event);
@@ -333,7 +338,7 @@ export class ReleaseGridComponent implements OnInit, OnChanges {
     row.children = childRows;
     // console.log(row);
     this.table.rowDetail.toggleExpandRow(row);
-    this.newRowHeight += row.children ? row.children.length * 60 : this.newRowHeight;
+    row.childrenHeight = (row.children && row.children.length > 0) ? row.children.length * 60 : 100;
     setTimeout(() => {
       const colWidth = (this.windowWidth / (this.cols.length + 1));
       const childRow = this.elem.nativeElement.querySelectorAll('.newRow');
@@ -341,6 +346,7 @@ export class ReleaseGridComponent implements OnInit, OnChanges {
         childCell.classList.add('w-row-active');
         const tblbodyCell = childCell.querySelectorAll('.child-item');
         this.setColWidth(tblbodyCell, colWidth);
+        this.setRowDetailHeight(row);
       });
     }, 500);
   }
@@ -403,5 +409,22 @@ export class ReleaseGridComponent implements OnInit, OnChanges {
     this.filterVal = '';
     this.rows = [...this.originalRows];
     this.cdr.detectChanges();
+  }
+
+  /*** filter input change output callback */
+  filterCallback(rows) {
+    this.rows = [...rows];
+    console.log(rows, this.rows);
+    this.dataTableBodyCellWidth();
+  }
+  /***ROW DETAIL HEIGHT ADJUST HERE  */
+  setRowDetailHeight(row) {
+    console.log(row.childrenHeight);
+    setTimeout(() => {
+      const rowDetailDivs = this.elem.nativeElement.querySelectorAll('.datatable-row-detail');
+      _.each(rowDetailDivs, (elem) => {
+        elem.style.height = 'auto';
+      });
+    }, 100);
   }
 }

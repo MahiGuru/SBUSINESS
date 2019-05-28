@@ -11,7 +11,6 @@ import {
   faCaretRight, faCaretDown, faWindowClose, faCheckSquare,
   faPencilAlt, faTrashAlt, faBan, faShare, faPrint
 } from '@fortawesome/free-solid-svg-icons';
-import { Inventory } from '../../../core/models/newInventory';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
 import { BehaviorSubject } from 'rxjs';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
@@ -148,6 +147,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
 
   toggleExpandRow(row) {
     this.newRowHeight = 0;
+    row.childrenHeight = 0;
     // console.log('Toggled Expand Row!', row);
     const childRows = [];
     _.each(row.children, (chrow) => {
@@ -156,7 +156,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     row.children = childRows;
     // console.log(row);
     this.table.rowDetail.toggleExpandRow(row);
-    this.newRowHeight += row.children ? row.children.length * 80 : this.newRowHeight;
+    row.childrenHeight = (row.children && row.children.length > 0) ? row.children.length * 65 : 100;
     setTimeout(() => {
       const colWidth = (this.windowWidth / (this.cols.length + 1));
       const childRow = this.elem.nativeElement.querySelectorAll('.newRow');
@@ -164,6 +164,8 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
         childCell.classList.add('w-row-active');
         const tblbodyCell = childCell.querySelectorAll('.child-item');
         this.setColWidth(tblbodyCell, colWidth);
+        this.setRowDetailHeight(row);
+
       });
     }, 500);
   }
@@ -187,10 +189,10 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       this.selectedItemType = res[0].itemType;
       this.selectedItem = res[0];
     });
-    // this.inventoryService.getPartners().subscribe(partners => {
-    //   this.partners = partners;
-    //   // console.log('partners >>>> ', partners, this.partners);
-    // });
+    this.inventoryService.getPartners().subscribe(partners => {
+      this.partners = partners;
+      // console.log('partners >>>> ', partners, this.partners);
+    });
 
   }
 
@@ -223,10 +225,12 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
         _.each(childRow, (childCell, i) => {
           const tblbodyCell = childCell.querySelectorAll('.new-item');
           console.log(tblbodyCell);
-
           this.setColWidth(tblbodyCell, colWidth);
         });
       }, 500);
+
+      this.rows[0].childrenHeight = 100;
+      this.setRowDetailHeight(this.rows[0]);
     }, 100);
   }
 
@@ -256,6 +260,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     }));
     // this.addedRows.push(addRow);
     this.newRowHeight += 80;
+    this.rows[0].childrenHeight += 80;
     setTimeout(() => {
       const colWidth = (this.windowWidth / (this.cols.length + 1));
       const childRow = this.elem.nativeElement.querySelectorAll('.add-row-section');
@@ -272,6 +277,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     const control = this.myForm.controls.addRows as FormArray;
     control.removeAt(i);
     this.newRowHeight -= 80;
+    this.rows[0].childrenHeight -= 80;
   }
   onDetailToggle(event) {
     // console.log('Detail Toggled', event);
@@ -432,8 +438,9 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       return iitem.item.itemNo === item.value;
     });
     this.selectedItem = selectedItem[0];
+
     control.controls[index].get('partners').setValue(selectedItem[0].itemPartner);
-    // console.log('on item change', selectedItem);
+    console.log('on item change', selectedItem);
     control.controls[index].get('itemNo').setValue(selectedItem[0].item.itemNo);
     control.controls[index].get('itemDesc').setValue(selectedItem[0].item.itemNo);
     control.controls[index].get('itemType').setValue(selectedItem[0].item.itemTypeCode);
@@ -469,5 +476,26 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   }
   cancelChildRowClick(rowIndex, childrenIndex) {
     this.editChildRowIndex = null;
+  }
+  /** Pagination Callback */
+  paginationCallback(event) {
+    this.dataTableBodyCellWidth();
+  }
+  /*** filter input change output callback */
+  filterCallback(rows) {
+    this.rows = [...rows];
+    console.log(rows, this.rows);
+    this.dataTableBodyCellWidth();
+  }
+
+  /***ROW DETAIL HEIGHT ADJUST HERE  */
+  setRowDetailHeight(row) {
+    console.log(row.childrenHeight);
+    setTimeout(() => {
+      const rowDetailDivs = this.elem.nativeElement.querySelectorAll('.datatable-row-detail');
+      _.each(rowDetailDivs, (elem) => {
+        elem.style.height = 'auto';
+      });
+    }, 100);
   }
 }

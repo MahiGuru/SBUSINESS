@@ -44,8 +44,7 @@
   </ngx-datatable-column>
   <ngx-datatable-column [sortable]="false" [flexGrow]="1">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-      <div class="row-action-btn"
-        *ngIf="(row.children && row.children.length < 1) && !isNewRowEnabled">
+      <div class="row-action-btn" *ngIf="(row.children && row.children.length < 1) && !isNewRowEnabled">
         <span *ngIf="!row.editable" fxLayout="row" fxLayoutGap="20px">
           <span (click)="row.editable = true" matTooltip="Edit Item" matTooltipPosition="above"
             matTooltipClass="tooltip">
@@ -71,13 +70,15 @@
 
   <ngx-datatable-row-detail #myDetailRow>
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-      <section *ngIf="row.children && row.children.length > 0" class="row-detail" [ngStyle]="{'height': row.childrenHeight+'px'}">
-          <sb-sub-orders [row]="row" [table]="table"></sb-sub-orders>
+      <section *ngIf="row.children && row.children.length > 0" class="row-detail"
+        [ngStyle]="{'height': row.childrenHeight+'px'}">
+        <sb-sub-orders [row]="row" [table]="table"></sb-sub-orders>
       </section>
-      <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail"  [ngStyle]="{'height': row.childrenHeight+'px'}">
-          <sb-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" (onSave)="onSaveRowsUpdate($event)"
-              (adjustCols)="adjustCols($event)">
-          </sb-new-order>
+      <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail"
+        [ngStyle]="{'height': row.childrenHeight+'px'}">
+        <sb-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" (onSave)="onSaveRowsUpdate($event)"
+          (adjustCols)="adjustCols($event)">
+        </sb-new-order>
       </section>
     </ng-template>
   </ngx-datatable-row-detail>
