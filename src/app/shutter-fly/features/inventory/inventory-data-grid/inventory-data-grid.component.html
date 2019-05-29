@@ -1,4 +1,4 @@
-<!-- <sb-grid-filter [rows]="rows" (rowsUpdate)="filterCallback($event)"></sb-grid-filter>
+<sb-grid-filter [rows]="rows" (rowsUpdate)="filterCallback($event)"></sb-grid-filter>
 
 <ngx-datatable #table class='material expandable' [columns]="cols" [columnMode]="'force'" [headerHeight]="50"
   [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows' (page)="paginationCallback($event)">
@@ -72,14 +72,14 @@
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
       <section *ngIf="row.children && row.children.length > 0" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">
-        <sb-sub-orders [row]="row" [table]="table"></sb-sub-orders>
+        <sb-inventory-sub-orders [row]="row" [table]="table"></sb-inventory-sub-orders>
       </section>
       <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">
-        <sb-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" (onSave)="onSaveRowsUpdate($event)"
+        <sb-inventory-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" (onSave)="onSaveRowsUpdate($event)"
           (adjustCols)="adjustCols($event)">
-        </sb-new-order>
+        </sb-inventory-new-order>
       </section>
     </ng-template>
   </ngx-datatable-row-detail>
-</ngx-datatable> -->
+</ngx-datatable>

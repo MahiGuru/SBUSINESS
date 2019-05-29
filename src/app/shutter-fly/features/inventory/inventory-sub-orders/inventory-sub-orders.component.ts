@@ -6,11 +6,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'sb-sub-orders',
-  templateUrl: './sub-orders.component.html',
-  styleUrls: ['./sub-orders.component.scss']
+  selector: 'sb-inventory-sub-orders',
+  templateUrl: './inventory-sub-orders.component.html',
+  styleUrls: ['./inventory-sub-orders.component.scss']
 })
-export class SubOrdersComponent implements OnInit {
+export class InventorySubOrdersComponent implements OnInit {
 
   @Input() row: any;
   @Input() table: any;

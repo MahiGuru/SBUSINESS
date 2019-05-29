@@ -7,11 +7,11 @@ import { BehaviorSubject } from 'rxjs';
 
 
 @Component({
-  selector: 'sb-new-order',
-  templateUrl: './new-order.component.html',
-  styleUrls: ['./new-order.component.sass']
+  selector: 'sb-inventory-new-order',
+  templateUrl: './inventory-new-order.component.html',
+  styleUrls: ['./inventory-new-order.component.scss']
 })
-export class NewOrderComponent implements OnInit, OnChanges {
+export class InventoryNewOrderComponent implements OnInit, OnChanges {
 
   @Input() row: any;
   @Input() rows: any;
