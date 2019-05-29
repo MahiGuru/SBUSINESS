@@ -1,3 +1,4 @@
+
 :host /deep/{
   .red{
     color:#ff0000;
@@ -5,11 +6,12 @@
   .green{
     color:rgb(0, 216, 47);
   }
-  .row-detail{
-    margin-bottom:-30px !important;
-  }
   .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-icon-button .mat-icon{
     margin-top: -15px;
+  }
+
+  .row-detail{
+    background-color: #f6f6f6;
   }
   .sortable .sort-btn:before {
     font-family: data-table;
@@ -42,14 +44,6 @@
       font-size: 14px !important;
       box-sizing: border-box !important;
 
-  }
-  .new_section{
-    position: absolute;
-    top:0px;
-    width: 100%;
-  }
-  .add-row-section{
-    background-color: #fff;
   }
   // .newRow > span.description{
   //   width:227px !important;

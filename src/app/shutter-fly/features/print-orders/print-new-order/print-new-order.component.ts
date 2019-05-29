@@ -25,7 +25,7 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
   public selectedItem: any = new BehaviorSubject('');
   myForm: FormGroup;
   addForm: FormGroup;
-  inventoryItems: any;
+  printItems: any;
   selectedItemType: any;
   partners: any;
   constructor(public inventoryService: InventoryService,
@@ -47,11 +47,13 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
       itemNo: [''],
       itemDesc: [''],
       itemType: [''],
-      partner: ['']
+      partner: [''],
+      quantity: [''],
+      poNum: ['']
     });
     this.inventoryService.getAddItems().subscribe(res => {
-      this.inventoryItems = res;
-      // console.log('INV ITEMS >>>> ', res, this.inventoryItems);
+      this.printItems = res;
+      // console.log('INV ITEMS >>>> ', res, this.printItems);
       this.selectedItemType = res[0].itemType;
       this.selectedItem = res[0];
     });
@@ -67,8 +69,11 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
     control.push(this.fb.group({
       itemNo: [1],
       itemDesc: [1],
+      partners: [[]],
       itemType: [''],
-      partner: [1]
+      partner: [1],
+      quantity: [1],
+      poNum: [1]
     }));
     control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
     control.controls[0].get('itemDesc').setValue(this.selectedItem.itemId);
@@ -79,8 +84,11 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
     control.push(this.fb.group({
       itemNo: [1],
       itemDesc: [1],
+      partners: [[]],
       itemType: [''],
-      partner: [1]
+      partner: [1],
+      quantity: [1],
+      poNum: [1]
     }));
     this.adjustCols.emit('new');
   }
@@ -135,12 +143,16 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
 
   onItemChange(item, index) {
     const control = this.myForm.controls.addRows as FormArray;
-    const selectedItem = _.filter(this.inventoryItems, (iitem) => {
-      return iitem.itemId === item.value;
+    const selectedItem = _.filter(this.printItems, (iitem) => {
+      return iitem.item.itemNo === item.value;
     });
-    control.controls[index].get('itemNo').setValue(selectedItem[0].itemId);
-    control.controls[index].get('itemDesc').setValue(selectedItem[0].itemId);
-    control.controls[index].get('itemType').setValue(selectedItem[0].itemType);
+    this.selectedItem = selectedItem[0];
+
+    control.controls[index].get('partners').setValue(selectedItem[0].itemPartner);
+    console.log('on item change', selectedItem);
+    control.controls[index].get('itemNo').setValue(selectedItem[0].item.itemNo);
+    control.controls[index].get('itemDesc').setValue(selectedItem[0].item.itemNo);
+    control.controls[index].get('itemType').setValue(selectedItem[0].item.itemTypeCode);
     // console.log('INDEX', index, item);
 
   }

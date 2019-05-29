@@ -8,7 +8,7 @@ import { MaterialModule } from 'src/app/ng-material.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
 import { DateFormatPipe } from '../shared/pipes/date-format.pipe';
-import { PrintDataGridComponent } from 'src/app/shutter-fly/shared/components/print-data-grid/print-data-grid.component';
+import { Print11DataGridComponent } from 'src/app/shutter-fly/shared/components/print-data-grid/print-data-grid.component';
 import { ConfirmDialogComponent } from 'src/app/shutter-fly/shared/components/confirm-dialog/confirm-dialog.component';
 import { ReleaseGridComponent } from 'src/app/shutter-fly/shared/components/release-grid/release-grid.component';
 import { GridFilterComponent } from './components/grid-filter/grid-filter.component';

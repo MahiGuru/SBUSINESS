@@ -497,5 +497,37 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       });
     }, 100);
   }
-
+/** Loop Parent elements and inside children element loop and apply the width */
+setColsFromMultiLevelElements(parent, child){
+  setTimeout(() => {
+    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    const childRow = this.elem.nativeElement.querySelectorAll('.'+ parent);
+    _.each(childRow, (childCell, i) => {
+      const tblbodyCell = childCell.querySelectorAll('.'+ child);
+      this.setColWidth(tblbodyCell, colWidth);
+    });
+  }, 500);
+}
+  /***** OUTPUT CALLBACKS  - NEW ROWS */
+  rowsUpdate(rows) {
+    this.rows = [...rows];
+  }
+  adjustCols(type) {
+    if (type === 'new') {
+      this.rows[0].childrenHeight += 60;
+      this.setColsFromMultiLevelElements('add-row-section', 'new-item');
+    } else if(type === 'remove'){
+      this.rows[0].childrenHeight -= 60;
+    } else if (type === 'cancel') {
+      this.rows.splice(0, 1);
+      this.rows = [...this.rows];
+      this.table.rowDetail.toggleExpandRow(this.rows[0]);
+      this.isAddBtnClicked.emit(false);
+      this.isNewRowEnabled = false;
+      this.newRowHeight = 100;
+      this.rows[0].childrenHeight = 100;
+      this.dataTableBodyCellWidth();
+    }
+    this.setRowDetailHeight(this.rows[0]);
+  }
 }

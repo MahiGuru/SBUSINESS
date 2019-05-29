@@ -26,7 +26,7 @@ import { ORDERS } from './../../../core/models/order-state';
   styleUrls: ['./print-data-grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PrintDataGridComponent implements OnInit, OnChanges {
+export class Print11DataGridComponent implements OnInit, OnChanges {
   @Input() cols: any;
   @Input() rows: any;
   @Input() newBtnClicked: boolean;
