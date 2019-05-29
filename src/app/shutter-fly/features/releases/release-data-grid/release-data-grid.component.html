@@ -52,98 +52,14 @@
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template let-rowIndex="rowIndex">
       <section *ngIf="row.children && row.children.length > 0" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">
-        <div [ngStyle]="{'position': 'absolute', 'width': '100%'}">
-          <div class="newRow" *ngFor="let nrow of row.children; let i= index" fxLayout="row" fxLayoutGap="0px">
-            <span class="child-item"> {{nrow.itemPartner.item.itemNo}}
-            </span>
-            <span class="child-item ellipsis description">{{nrow.itemPartner.item.itemDescription}}
-            </span>
-            <span class="child-item">{{nrow.itemPartner.item.itemType}}
-            </span>
-            <span class="child-item">{{nrow.itemPartner.partner.partnerType}}
-            </span>
-            <span class="child-item">{{nrow.quantity}} </span>
-            <span class="child-item">{{nrow.release}}</span>
-            <span class="child-item ellipsis"> {{nrow.createdAt | dateFormat}}</span>
-            <span class="child-item">{{nrow.status}}</span>
-
-            <span class="child-item">
-              <span (click)="updateOrderStatus(nrow.itemPartner.item.itemId, 'PushPrint')"
-                *ngIf="nrow.status === OrdersState.PENDINGRELEASE" matTooltip="Release to Assemblers"
-                matTooltipPosition="above" matTooltipClass="tooltip"
-                (click)="updateOrderStatus(nrow.itemPartner.item.itemId, 'Released')">
-                <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
-              </span>
-              <span class="active-green" *ngIf="nrow.status === OrdersState.MARKPRINTED || nrow.status === 'Released'">
-                <fa-icon [icon]="faCheckCircle" [ngClass]="'fa-icon fs-16'"></fa-icon>
-              </span>
-
-            </span>
-          </div>
-        </div>
+        <sb-release-sub-orders [row]="row" [table]="table"></sb-release-sub-orders>
       </section>
-      <section class="new_section" *ngIf="!(row.children && row.children.length > 0)"
+      <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">
-        <div [ngStyle]="{'position': 'absolute', 'width': '100%'}">
-          <form [formGroup]="myForm">
-            <div formArrayName="addRows">
-              <div class="row-ab-actions">
-                <span fxFlex fxLayout="row" fxLayoutGap="10px">
-                  <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
-                    cancel
-                  </i>
-                  <i class="material-icons done-ic" (click)="addRowsToInventory()">
-                    check_circle
-                  </i>
-                </span>
-              </div>
-              <div class="new-rows-container">
-
-                <div class="newRow add-row-section mtb-2"
-                  *ngFor="let comp of myForm.get('addRows').controls; let i=index">
-                  <div [formGroupName]="i" fxLayout="row" fxLayoutGap="0px">
-                    <span class="new-item">
-                      ITEM NO
-                    </span>
-                    <span class="new-item">
-                      ITEM PAGE
-                    </span>
-                    <span class="new-item">
-                      {{comp.get('itemType').value}}
-                    </span>
-                    <!-- <input *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId" /> -->
-                    <span class="new-item">
-                      <!-- <mat-select formControlName="partner" (selectionChange)="onPartnerChange($event, i)">
-                        <mat-option *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId">
-                          {{ partner.partner.partnerCode }}
-                        </mat-option>
-                      </mat-select> -->
-                      PARTNER
-                    </span>
-                    <span class="new-item">
-                      <input matInput placeholder="Search Filter By" formControlName="quantity">
-                    </span>
-                    <span class="new-item">
-                      <input matInput placeholder="Search Filter By" formControlName="poNum">
-                    </span>
-                    <div class="new-item">
-                      <i class="material-icons red" (click)="removeCurrentRow(i)">
-                        remove_circle
-                      </i>
-                      <i class="material-icons green" (click)="addAnotherRow()" *ngIf="i == 0">
-                        add_circle </i>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-
-
+        <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row"
+          (adjustCols)="adjustCols($event)">
+        </sb-release-new-order>
       </section>
-
     </ng-template>
   </ngx-datatable-row-detail>
 </ngx-datatable>

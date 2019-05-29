@@ -5,9 +5,6 @@
   .green{
     color:rgb(0, 216, 47);
   }
-  .row-detail{
-    margin-bottom:-30px !important;
-  }
   .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-icon-button .mat-icon{
     margin-top: -15px;
   }
@@ -37,23 +34,20 @@
       }
     }
   /** cell styling **/
-  .newRow > span, .newRow .new-item{
-      // width:95px !important;
-      font-size: 14px !important;
-      box-sizing: border-box !important;
-
-  }
-  .new_section{
-    position: absolute;
-    top:0px;
+  .newRow{
     width: 100%;
+    overflow: hidden;
   }
-  .add-row-section{
-    background-color: #fff;
-  }
-  // .newRow > span.description{
-  //   width:227px !important;
-  // }
+/** cell styling **/
+.newRow > span{
+    // width:95px !important;
+    font-size: 14px !important;
+    box-sizing: border-box !important;
+    padding:.9rem 1.2rem;
+    box-sizing: content-box;
+
+}
+
   // .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell,
   // .ngx-datatable.material .datatable-header .datatable-header-cell{
   //   width:100px !important;
@@ -86,14 +80,18 @@
     //   width:250px !important;
     // }
   }
+  .new_section{
+    position: absolute;
+    width: 100%;
+  }
   .form-control{
-    width:90%;
+    width:80%;
     box-sizing: border-box;
   }
   .dt-arrow{
     color: #333333;;
   }
-  .newRow > span, .newRow .new-item{
+  .newRow > span{
       padding:.9rem 1.2rem;
       box-sizing: content-box;
     }
@@ -117,6 +115,9 @@
   .mat-input-element{
     position: relative;
     top:-5px;
+  }
+  .p-new-item{
+    padding:.1rem 1.2rem;
   }
   .mat-form-field-label{
     color: #333333;

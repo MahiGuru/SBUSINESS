@@ -1,6 +1,4 @@
 <sb-grid-filter [rows]="rows" (rowsUpdate)="filterCallback($event)"></sb-grid-filter>
-<!-- <input type='text' style='padding:8px;margin:15px auto;width:30%;' placeholder='Search filter by'
-    (keyup)='updateFilter($event)' /> -->
 <ngx-datatable class='material expandable' [columns]="cols" [columnMode]="'force'" [headerHeight]="50"
   [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows' (page)="paginationCallback($event)">
 
@@ -30,9 +28,7 @@
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column prop="status" editable="true"></ngx-datatable-column>
-  <!-- <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
-    [cellClass]="col.prop">
-  </ngx-datatable-column> -->
+
   <ngx-datatable-column [sortable]="false">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
       <div *ngIf="row.children && row.children.length < 1">
@@ -71,8 +67,7 @@
       </section>
       <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">
-        <sb-print-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" (onSave)="onSaveRowsUpdate($event)"
-          (adjustCols)="adjustCols($event)">
+        <sb-print-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row"  (adjustCols)="adjustCols($event)">
         </sb-print-new-order>
       </section>
     </ng-template>
