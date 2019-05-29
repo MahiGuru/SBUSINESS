@@ -44,6 +44,8 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   faCheckCircle = faCheckCircle;
   OrdersState = ORDERS;
 
+  public role: string;
+
 
   isNewRowEnabled: boolean;
   public printItems: any;
@@ -80,12 +82,12 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   }
 
   constructor(public sharedOrderService: SharedOrdersService,
-              public inventoryService: InventoryService,
-              public fb: FormBuilder,
-              public printerService: PrintOrderService,
-              public cdr: ChangeDetectorRef,
-              public dialog: MatDialog,
-              private elem: ElementRef) {
+    public inventoryService: InventoryService,
+    public fb: FormBuilder,
+    public printerService: PrintOrderService,
+    public cdr: ChangeDetectorRef,
+    public dialog: MatDialog,
+    private elem: ElementRef) {
     this.getScreenSize();
   }
 
@@ -170,6 +172,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.role = localStorage.getItem('role');
     this.myForm = this.fb.group({
       addRows: this.fb.array([])
     });
@@ -192,6 +195,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       this.partners = partners;
       // console.log('partners >>>> ', partners, this.partners);
     });
+
 
   }
 
@@ -283,10 +287,8 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   }
   addRowsToInventory() {
     const control = this.myForm.controls.addRows as FormArray;
-    // console.log(control.value);
     const newRecord = [];
     _.each(control.value, (val) => {
-      // console.log('SAVE ', val);
       newRecord.push({
         ItemPartner: {
           ItemPartnerId: val.partner
@@ -298,22 +300,10 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     });
 
     this.printerService.saveNewPrintItem(newRecord).subscribe(newRecords => {
-      // console.log('SAVEDDDDD >>>> ', newRecords);
-      const tempArr = [];
-      _.each(newRecords, (record, index) => {
-        const tempChildArr = [];
-        // _.each(record.children, (child) => {
-        //   tempChildArr.push(new PrintOrder(child));
-        // });
-        // record.children = tempChildArr;
-        tempArr.push(new PrintOrder(record));
-      });
-      // console.log('TEMP ARRRRRRRR', tempArr);
-      const merged = _.merge(_.keyBy(this.rows, 'printOrderId'), _.keyBy(newRecords, 'printOrderId'));
-      this.rows = _.values(merged);
-      // console.log(values);
-      console.log(this.rows);
-
+      this.isNewRowEnabled = false;
+      this.table.rowDetail.toggleExpandRow(this.rows[0]);
+      this.isAddBtnClicked.emit(false);
+      this.getPrintOrders();
     });
     // console.log(newRecord);
 
@@ -329,11 +319,11 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     this.isAddBtnClicked.emit(false);
     this.isNewRowEnabled = false;
   }
-  updateOrderToCancelStatus(id) {
+  updateOrderToCancelStatus(row) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '450px',
       data: {
-        id,
+        row,
         title: 'Cancel Print Order',
         description: 'Are you sure you want to cancel this print order?',
         noLabel: 'Keep Order',
@@ -343,53 +333,21 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      const orderRecord = [{
-        PrintOrderId: result.id,
-        Status: 'Cancel'
-      }];
-      this.printerService.updatePrintOrderStatus(orderRecord).subscribe(newRecords => {
-        console.log(newRecords);
-        // const tempArr = [];
-        // const childItem = new PrintOrder(newRecords[0]);
-        // console.log('childItem', childItem);
-        // _.each(newRecords, (record, index) => {
-
-        //   const tempChildArr = [];
-        //   _.each(record.children, (child) => {
-        //     tempChildArr.push(new PrintOrder(child));
-        //   });
-        //   record.children = tempChildArr;
-        //   tempArr.push(new PrintOrder(record));
-        // });
-        _.each(this.rows, (row, i) => {
-          _.each(row.children, (child, j) => {
-            if (child.printOrderId === newRecords[0].children[0].printOrderId) {
-              child.status = newRecords[0].children[0].status;
-            }
-          });
-        });
-        this.rows = [...this.rows];
-        this.cdr.detectChanges();
-      });
+      console.log('CANCEL DIALOG BOX CCALLED', result);
+      this.updateOrderStatus(result, 'Cancel');
     });
   }
-  updateOrderStatus(id, status) {
+  updateOrderStatus(row, status) {
+    console.log(row);
     const orderRecord = [{
-      PrintOrderId: id,
+      PrintOrderId: row.printOrderId,
+      Quantity: row.quantity,
+      ItemPartnerId: row.itemPartner.item.itemId,
       Status: status
     }];
     this.printerService.updatePrintOrderStatus(orderRecord).subscribe(newRecords => {
-      console.log(newRecords);
-      _.each(this.rows, (row, i) => {
-        _.each(row.children, (child, j) => {
-          if (child.printOrderId === newRecords[0].printOrderId) {
-            child.status = newRecords[0].status;
-          }
-        });
-      });
-      this.rows = [...this.rows];
-      console.log(this.rows);
-      this.cdr.detectChanges();
+      console.log('SAVEDDDD', newRecords);
+      this.getPrintOrders();
     });
   }
   updateOrderToPrintStatus(id) {
@@ -497,26 +455,38 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       });
     }, 100);
   }
-/** Loop Parent elements and inside children element loop and apply the width */
-setColsFromMultiLevelElements(parent, child){
-  setTimeout(() => {
-    const colWidth = (this.windowWidth / (this.cols.length + 1));
-    const childRow = this.elem.nativeElement.querySelectorAll('.'+ parent);
-    _.each(childRow, (childCell, i) => {
-      const tblbodyCell = childCell.querySelectorAll('.'+ child);
-      this.setColWidth(tblbodyCell, colWidth);
+  /** Loop Parent elements and inside children element loop and apply the width */
+  setColsFromMultiLevelElements(parent, child) {
+    setTimeout(() => {
+      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const childRow = this.elem.nativeElement.querySelectorAll('.' + parent);
+      _.each(childRow, (childCell, i) => {
+        const tblbodyCell = childCell.querySelectorAll('.' + child);
+        this.setColWidth(tblbodyCell, colWidth);
+      });
+    }, 500);
+  }
+  /*** PRINTORDERS GET */
+  getPrintOrders() {
+    this.printerService.getAllPrintRecords().subscribe((rows: any) => {
+      const tempRows = [];
+      _.each(rows, (row) => {
+        const inventory = new PrintOrder(row);
+        tempRows.push(inventory);
+      });
+      this.rows = [...tempRows];
     });
-  }, 500);
-}
+  }
   /***** OUTPUT CALLBACKS  - NEW ROWS */
   rowsUpdate(rows) {
-    this.rows = [...rows];
+    console.log('ROWS UPDATE');
+    this.getPrintOrders();
   }
   adjustCols(type) {
     if (type === 'new') {
       this.rows[0].childrenHeight += 60;
       this.setColsFromMultiLevelElements('add-row-section', 'new-item');
-    } else if(type === 'remove'){
+    } else if (type === 'remove') {
       this.rows[0].childrenHeight -= 60;
     } else if (type === 'cancel') {
       this.rows.splice(0, 1);

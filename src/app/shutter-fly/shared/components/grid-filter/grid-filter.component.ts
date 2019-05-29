@@ -25,7 +25,10 @@ export class GridFilterComponent implements OnInit {
     const val = filterVal.toLowerCase();
     // filter our data
     const temp = this.rows.filter((d) => {
-      return d.itemPartner.item.itemNo.toLowerCase().indexOf(val) !== -1 || !val;
+      if (d.itemPartner) {
+        return d.itemPartner.item.itemNo.toLowerCase().indexOf(val) !== -1 || !val;
+      }
+      return false;
     });
     // update the rows
     this.rows = temp;

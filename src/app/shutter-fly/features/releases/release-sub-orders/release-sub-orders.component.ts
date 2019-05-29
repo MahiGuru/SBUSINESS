@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
 import {
   faWindowClose, faCheckSquare,
-  faPencilAlt, faTrashAlt, faShare, faBan, faPrint, faCheckCircle
+  faPencilAlt, faTrashAlt, faShare, faBan, faPrint, faCheckCircle, faDownload
 } from '@fortawesome/free-solid-svg-icons';
 import { PrintOrderService } from 'src/app/shutter-fly/shared/services/print-order.service';
 import { ReleasesService } from 'src/app/shutter-fly/shared/services/releases.service';
@@ -28,12 +28,14 @@ export class ReleaseSubOrdersComponent implements OnInit {
   faShare = faShare;
   faBan = faBan;
   faPrint = faPrint;
+  faDownload = faDownload;
   faCheckCircle = faCheckCircle;
   public OrdersState = ORDERS;
-
+  role: any;
   constructor(public releaseService: ReleasesService) { }
 
   ngOnInit() {
+    this.role = localStorage.getItem('role');
   }
   cancelChildRowClick(row) {
     row.editable = false;
@@ -41,13 +43,18 @@ export class ReleaseSubOrdersComponent implements OnInit {
   onSavePropertyVal(row) {
     row.editable = false;
   }
-  updateOrderStatus(id, status) {
+  updateOrderStatus(row, status) {
+    console.log(row);
     const orderRecord = [{
-      PrintOrderId: id,
+      ReleaseOrderId: row.releaseOrderId,
+      Quantity: row.quantity,
+      ItemPartnerId: row.itemPartner.item.itemId,
       Status: status
     }];
     this.releaseService.updateReleaseOrderStatus(orderRecord).subscribe(newRecords => {
       console.log(newRecords);
+      this.rowsUpdate.emit(newRecords);
     });
   }
+
 }

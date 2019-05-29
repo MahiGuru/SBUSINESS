@@ -132,18 +132,18 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
 
     this.printerService.saveNewPrintItem(newRecord).subscribe(newRecords => {
       // console.log('SAVEDDDDD >>>> ', newRecords);
-      const tempArr = [];
-      _.each(newRecords, (record, index) => {
-        const tempChildArr = [];
-        _.each(record.children, (child) => {
-          tempChildArr.push(new PrintOrder(child));
-        });
-        record.children = tempChildArr;
-        tempArr.push(new PrintOrder(record));
-      });
-      // console.log('TEMP ARRRRRRRR', tempArr);
-      const merged = _.merge(_.keyBy(this.rows, 'printOrderId'), _.keyBy(newRecords, 'printOrderId'));
-      this.rows = _.values(merged);
+      // const tempArr = [];
+      // _.each(newRecords, (record, index) => {
+      //   const tempChildArr = [];
+      //   _.each(record.children, (child) => {
+      //     tempChildArr.push(new PrintOrder(child));
+      //   });
+      //   record.children = tempChildArr;
+      //   tempArr.push(new PrintOrder(record));
+      // });
+      // // console.log('TEMP ARRRRRRRR', tempArr);
+      // const merged = _.merge(_.keyBy(this.rows, 'printOrderId'), _.keyBy(newRecords, 'printOrderId'));
+      // this.rows = _.values(merged);
       this.rowsUpdate.emit(this.rows);
       // console.log(values);
       console.log(this.rows);

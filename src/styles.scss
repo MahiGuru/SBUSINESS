@@ -335,6 +335,10 @@ $fw-normal: normal; //FONT WEIGHT CLASSES (e.g. class="fw-light")
 .lowercase {
   text-transform: lowercase;
 }
+.capitalize{
+  text-transform: capitalize;
+}
+
 
 .mat-form-field-appearance-legacy {
   .mat-form-field-underline {

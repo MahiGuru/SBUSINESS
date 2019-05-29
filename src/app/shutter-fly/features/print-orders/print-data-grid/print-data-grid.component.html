@@ -34,18 +34,18 @@
       <div *ngIf="row.children && row.children.length < 1">
 
         <span *ngIf="row.status === 'New'">
-          <span class="icon mr-8" (click)="updateOrderToCancelStatus(row?.printOrderId)" matTooltip="Cancel Order"
+          <span class="icon mr-8" (click)="updateOrderToCancelStatus(row)" matTooltip="Cancel Order"
             matTooltipPosition="above" matTooltipClass="tooltip">
             <fa-icon [icon]="faBan" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
-          <span class="icon mr-8" (click)="updateOrderToPrintStatus(row?.itemPartner?.item?.itemId)"
-            matTooltip="Push to Printer" matTooltipPosition="above" matTooltipClass="tooltip">
+          <span class="icon mr-8" (click)="updateOrderStatus(row, 'Ordered')" matTooltip="Push to Printer"
+            matTooltipPosition="above" matTooltipClass="tooltip">
             <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
         </span>
-        <span *ngIf="row.status === 'Ordered'  || row.status === 'Push2Print'">
-          <span class="" (click)="updateOrderStatus(row?.itemPartner?.item?.itemId, 'Printed')"
-            matTooltip="Mark as Printed" matTooltipPosition="above" matTooltipClass="tooltip">
+        <span *ngIf="(row.status === 'Ordered' && this.role === 'printer')">
+          <span class="" (click)="updateOrderStatus(row, 'Printed')" matTooltip="Mark as Printed"
+            matTooltipPosition="above" matTooltipClass="tooltip">
             <fa-icon [icon]="faPrint" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
         </span>
@@ -63,11 +63,12 @@
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
       <section *ngIf="row.children && row.children.length > 0" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">
-        <sb-print-sub-orders [row]="row" [table]="table"></sb-print-sub-orders>
+        <sb-print-sub-orders [row]="row" [table]="table" (rowsUpdate)="rowsUpdate()"></sb-print-sub-orders>
       </section>
       <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">
-        <sb-print-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row"  (adjustCols)="adjustCols($event)">
+        <sb-print-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row"
+          (adjustCols)="adjustCols($event)" (rowsUpdate)="rowsUpdate()">
         </sb-print-new-order>
       </section>
     </ng-template>

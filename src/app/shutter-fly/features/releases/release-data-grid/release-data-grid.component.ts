@@ -305,16 +305,19 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     });
   }
 
-  updateOrderStatus(id, status) {
+  updateOrderStatus(row, status) {
+    console.log(row);
     const orderRecord = [{
-      PrintOrderId: id,
+      ReleaseOrderId: row.releaseOrderId,
+      Quantity: row.quantity,
+      ItemPartnerId: row.itemPartner.item.itemId,
       Status: status
     }];
     this.releaseService.updateReleaseOrderStatus(orderRecord).subscribe(newRecords => {
       console.log(newRecords);
+      this.getReleaseOrders();
     });
   }
-
   cancelNewInventory() {
     const control = this.myForm.controls.addRows as FormArray;
     control.controls = [];
@@ -441,25 +444,36 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     }, 100);
   }
   /** Loop Parent elements and inside children element loop and apply the width */
-setColsFromMultiLevelElements(parent, child){
-  setTimeout(() => {
-    const colWidth = (this.windowWidth / (this.cols.length + 1));
-    const childRow = this.elem.nativeElement.querySelectorAll('.'+ parent);
-    _.each(childRow, (childCell, i) => {
-      const tblbodyCell = childCell.querySelectorAll('.'+ child);
-      this.setColWidth(tblbodyCell, colWidth);
+  setColsFromMultiLevelElements(parent, child) {
+    setTimeout(() => {
+      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const childRow = this.elem.nativeElement.querySelectorAll('.' + parent);
+      _.each(childRow, (childCell, i) => {
+        const tblbodyCell = childCell.querySelectorAll('.' + child);
+        this.setColWidth(tblbodyCell, colWidth);
+      });
+    }, 500);
+  }
+  getReleaseOrders() {
+    this.releaseService.getAllReleaseRecords().subscribe((rows: any) => {
+      console.log('ROWS, ', rows);
+      const tempRows = [];
+      _.each(rows, (row) => {
+        const inventory = new ReleaseOrder(row);
+        tempRows.push(inventory);
+      });
+      this.rows = [...tempRows];
     });
-  }, 500);
-}
-   /***** OUTPUT CALLBACKS  - NEW ROWS */
-   rowsUpdate(rows) {
-    this.rows = [...rows];
+  }
+  /***** OUTPUT CALLBACKS  - NEW ROWS */
+  rowsUpdate(rows) {
+    this.getReleaseOrders();
   }
   adjustCols(type) {
     if (type === 'new') {
       this.rows[0].childrenHeight += 60;
       this.setColsFromMultiLevelElements('add-row-section', 'new-item');
-    } else if(type === 'remove'){
+    } else if (type === 'remove') {
       this.rows[0].childrenHeight -= 60;
     } else if (type === 'cancel') {
       this.rows.splice(0, 1);

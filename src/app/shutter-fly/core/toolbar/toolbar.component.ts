@@ -8,10 +8,12 @@ import { Router } from '@angular/router';
 })
 export class ToolbarComponent implements OnInit {
   public selected: any;
+  public username: any;
   constructor(public router: Router) { }
 
   ngOnInit() {
     this.selected = 'premier';
+    this.username = localStorage.getItem('username');
   }
   logoutClick() {
     localStorage.clear();

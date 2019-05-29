@@ -22,6 +22,8 @@ export class LoginComponent implements OnInit {
     this.authenticateService.authenticate(this.loginForm.value).subscribe((res: any) => {
       localStorage.setItem('token', res.tkn);
       localStorage.setItem('role', res.userRole);
+      localStorage.setItem('username', res.loginName);
+      console.log(res);
       this.router.navigate(['shutterfly']);
     });
 

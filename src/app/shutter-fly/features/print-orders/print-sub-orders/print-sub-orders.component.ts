@@ -27,10 +27,11 @@ export class PrintSubOrdersComponent implements OnInit {
   faBan = faBan;
   faPrint = faPrint;
   faCheckCircle = faCheckCircle;
-
+  role: any;
   constructor(public printerService: PrintOrderService) { }
 
   ngOnInit() {
+    this.role = localStorage.getItem('role');
   }
   cancelChildRowClick(row) {
     row.editable = false;
@@ -38,22 +39,15 @@ export class PrintSubOrdersComponent implements OnInit {
   onSavePropertyVal(row) {
     row.editable = false;
   }
-  updateOrderStatus(id, status) {
+  updateOrderStatus(row, status) {
     const orderRecord = [{
-      PrintOrderId: id,
+      PrintOrderId: row.printOrderId,
+      Quantity: row.quantity,
+      ItemPartnerId: row.itemPartner.item.itemId,
       Status: status
     }];
     this.printerService.updatePrintOrderStatus(orderRecord).subscribe(newRecords => {
-      this.rowsUpdate.emit(newRecords);
-      console.log(newRecords);
-      _.each(this.rows, (row, i) => {
-        _.each(row.children, (child, j) => {
-          if (child.printOrderId === newRecords[0].printOrderId) {
-            child.status = newRecords[0].status;
-          }
-        });
-      });
-      this.rows = [...this.rows];
+      console.log('SAVEDDDD', newRecords);
       this.rowsUpdate.emit(this.rows);
     });
   }

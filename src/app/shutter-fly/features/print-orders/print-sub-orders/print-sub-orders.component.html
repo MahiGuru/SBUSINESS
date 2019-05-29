@@ -19,24 +19,23 @@
       <span class="child-item"> {{nrow.status}}</span>
       <span class="child-item">
         <span *ngIf="nrow.status === 'New'">
-          <span class="icon mr-8" (click)="updateOrderStatus(nrow?.printOrderId, 'Cancel')"
-            matTooltip="Cancel Order" matTooltipPosition="above" matTooltipClass="tooltip">
+          <span class="icon mr-8" (click)="updateOrderStatus(nrow, 'Cancel')" matTooltip="Cancel Order"
+            matTooltipPosition="above" matTooltipClass="tooltip">
             <fa-icon [icon]="faBan" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
-          <span class="icon mr-8" (click)="updateOrderStatus(nrow?.printOrderId, 'Printed')"
-            matTooltip="Push To Printer" matTooltipPosition="above" matTooltipClass="tooltip">
+          <span class="icon mr-8" (click)="updateOrderStatus(nrow, 'Ordered')" matTooltip="Push To Printer"
+            matTooltipPosition="above" matTooltipClass="tooltip">
             <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
         </span>
-        <span *ngIf="nrow.status === 'Ordered' || nrow.status === 'Push2Print'">
-          <span class="" (click)="updateOrderStatus(nrow?.itemPartner?.item?.itemId, 'Printed')"
-            matTooltip="Mark as Printed" matTooltipPosition="above" matTooltipClass="tooltip">
+        <span *ngIf="(nrow.status === 'Ordered' && role == 'printer')">
+          <span class="" (click)="updateOrderStatus(nrow, 'Printed')" matTooltip="Mark as Printed"
+            matTooltipPosition="above" matTooltipClass="tooltip">
             <fa-icon [icon]="faPrint" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
         </span>
         <span *ngIf="nrow.status === 'MarkPrinted' || nrow.status === 'Printed'">
-          <span class="icon mr-8 text-green" matTooltip="Printed" matTooltipPosition="above"
-            matTooltipClass="tooltip">
+          <span class="icon mr-8 text-green" matTooltip="Printed" matTooltipPosition="above" matTooltipClass="tooltip">
             <fa-icon [icon]="faCheckCircle" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
         </span>

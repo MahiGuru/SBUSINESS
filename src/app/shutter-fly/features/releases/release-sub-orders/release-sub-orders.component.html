@@ -13,16 +13,21 @@
       <span class="child-item">{{nrow.quantity}} </span>
       <span class="child-item">{{nrow.release}}</span>
       <span class="child-item ellipsis"> {{nrow.createdAt | dateFormat}}</span>
-      <span class="child-item">{{nrow.status}}</span>
+      <span class="child-item">
+        {{(nrow.status == 'Printed' && role == 'admin') || (nrow.status == 'PreReleased' && role == 'printer') ? 'Pending Release' : nrow.status}}
+      </span>
 
       <span class="child-item">
-        <span (click)="updateOrderStatus(nrow.itemPartner.item.itemId, 'PushPrint')"
-          *ngIf="nrow.status === OrdersState.PENDINGRELEASE" matTooltip="Release to Assemblers"
-          matTooltipPosition="above" matTooltipClass="tooltip"
-          (click)="updateOrderStatus(nrow.itemPartner.item.itemId, 'Released')">
+        <span *ngIf="nrow.status === 'Printed' || (nrow.status === 'PreReleased' && role == 'printer' )"
+          matTooltip="Release to Assemblers" matTooltipPosition="above" matTooltipClass="tooltip"
+          (click)="updateOrderStatus(nrow, (nrow.status == 'PreReleased' && role == 'printer') ? 'Released' : 'PreReleased')">
           <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
         </span>
-        <span class="active-green" *ngIf="nrow.status === OrdersState.MARKPRINTED || nrow.status === 'Released'">
+        <span *ngIf="(nrow.status === 'Released' && (role == 'assembler'))" matTooltip="Mark as Received"
+          matTooltipPosition="above" matTooltipClass="tooltip">
+          <fa-icon [icon]="faDownload" [ngClass]="'fa-icon fs-16'"></fa-icon>
+        </span>
+        <span class="active-green" *ngIf="nrow.status === 'Released' && (role == 'admin')">
           <fa-icon [icon]="faCheckCircle" [ngClass]="'fa-icon fs-16'"></fa-icon>
         </span>
 

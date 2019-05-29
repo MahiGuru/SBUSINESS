@@ -26,6 +26,9 @@
     overflow: hidden;
     border-bottom: 1px solid #ccc;
   }
+  .add-row-section{
+    border-bottom: none;
+  }
   .ngx-datatable .datatable-body .datatable-row-wrapper:last-child{
     .datatable-body-row{border-bottom: none;}
   }
