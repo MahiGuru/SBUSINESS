@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Inventory } from '../../core/models/inventory-old';
 
 @Injectable({
   providedIn: 'root'

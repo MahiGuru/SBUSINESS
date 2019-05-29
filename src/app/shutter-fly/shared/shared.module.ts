@@ -15,7 +15,7 @@ import { GridFilterComponent } from './components/grid-filter/grid-filter.compon
 
 @NgModule({
   declarations: [DataGridComponent, ConfirmDialogComponent, DateFormatPipe,
-    PrintDataGridComponent, ReleaseGridComponent, GridFilterComponent],
+    /*PrintDataGridComponent, ReleaseGridComponent, */ GridFilterComponent],
   imports: [
     CommonModule,
     MaterialModule,
@@ -27,6 +27,6 @@ import { GridFilterComponent } from './components/grid-filter/grid-filter.compon
     ReactiveFormsModule
   ],
   entryComponents: [ConfirmDialogComponent],
-  exports: [DataGridComponent, ConfirmDialogComponent, DateFormatPipe, PrintDataGridComponent, ReleaseGridComponent, GridFilterComponent]
+  exports: [DataGridComponent, ConfirmDialogComponent, DateFormatPipe,  GridFilterComponent]
 })
 export class SharedModule { }

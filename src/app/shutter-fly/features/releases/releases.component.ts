@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { SharedOrdersService } from '../../shared/services/shared-orders.service';
 import { MatDialog } from '@angular/material';
-import { Inventory } from '../../core/models/inventory-old';
-import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
 import * as _ from 'lodash';
 import { ReleasesService } from 'src/app/shutter-fly/shared/services/releases.service';
 import { DatatableComponent } from '@swimlane/ngx-datatable';

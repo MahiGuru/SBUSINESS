@@ -26,9 +26,9 @@ export class InventoryService {
     return this.http.get(`${environment.baseUrl}${environment.partner}`)
       .pipe(map((res: any) => res));
   }
-  calculatedInventoryItems() {
-    return this.http.get(`assets/data/calculateInventory.json`);
-  }
+  // calculatedInventoryItems() {
+  //   return this.http.get(`assets/data/calculateInventory.json`);
+  // }
   saveNewInventory(data) {
     return this.http.post(`${environment.baseUrl}${environment.saveNewInventory}`, data)
       .pipe(map((res: any) => res));
