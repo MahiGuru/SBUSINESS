@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
-import { Inventory } from 'src/app/shutter-fly/core/models/newInventory';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+import { PrintOrderService } from 'src/app/shutter-fly/shared/services/print-order.service';
+import { PrintOrder } from 'src/app/shutter-fly/core/models/printOrder';
 
 
 @Component({
@@ -28,7 +29,8 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
   printItems: any;
   selectedItemType: any;
   partners: any;
-  constructor(public inventoryService: InventoryService,
+  constructor(public printerService: PrintOrderService,
+              public inventoryService: InventoryService,
               public fb: FormBuilder) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isAddBtnClicked && changes.isAddBtnClicked.currentValue) {
@@ -51,9 +53,9 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
       quantity: [''],
       poNum: ['']
     });
-    this.inventoryService.getAddItems().subscribe(res => {
+    this.printerService.getPrintItems().subscribe(res => {
       this.printItems = res;
-      // console.log('INV ITEMS >>>> ', res, this.printItems);
+      // console.log('printItems ITEMS >>>> ', res, this.printItems);
       this.selectedItemType = res[0].itemType;
       this.selectedItem = res[0];
     });
@@ -112,31 +114,40 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
   onDetailToggle(event) {
     // console.log('Detail Toggled', event);
   }
-  addRowsToInventory() {
+  addRowsToPrinter() {
     const control = this.myForm.controls.addRows as FormArray;
+    // console.log(control.value);
     const newRecord = [];
     _.each(control.value, (val) => {
+      // console.log('SAVE ', val);
       newRecord.push({
-        Item: {
-          ItemId: val.itemNo
+        ItemPartner: {
+          ItemPartnerId: val.partner
         },
-        Partner: {
-          PartnerId: val.partner
-        }
+        Quantity: val.quantity,
+        PoNum: val.poNum,
+        Status: 'New'
       });
     });
 
-    this.inventoryService.saveNewInventory(newRecord).subscribe(newRecords => {
+    this.printerService.saveNewPrintItem(newRecord).subscribe(newRecords => {
+      // console.log('SAVEDDDDD >>>> ', newRecords);
       const tempArr = [];
       _.each(newRecords, (record, index) => {
         const tempChildArr = [];
         _.each(record.children, (child) => {
-          tempChildArr.push(new Inventory(child));
+          tempChildArr.push(new PrintOrder(child));
         });
         record.children = tempChildArr;
-        tempArr.push(new Inventory(record));
+        tempArr.push(new PrintOrder(record));
       });
-      this.onSave.emit(tempArr);
+      // console.log('TEMP ARRRRRRRR', tempArr);
+      const merged = _.merge(_.keyBy(this.rows, 'printOrderId'), _.keyBy(newRecords, 'printOrderId'));
+      this.rows = _.values(merged);
+      this.rowsUpdate.emit(this.rows);
+      // console.log(values);
+      console.log(this.rows);
+
     });
 
   }
