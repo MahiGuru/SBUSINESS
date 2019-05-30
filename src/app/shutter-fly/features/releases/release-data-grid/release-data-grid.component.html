@@ -4,18 +4,22 @@
 
   <ngx-datatable-column name="ItemNo#">
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-      <a href="javascript:void(0)" class="dt-arrow" title="Expand/Collapse Row" (click)="addAnotherItemInRow(row)"
+      <!-- <a href="javascript:void(0)" class="dt-arrow" title="Expand/Collapse Row" (click)="addAnotherItemInRow(row)"
         *ngIf="row.children && row.children.length === 0">
         <i class="material-icons green"> add_circle </i>
-      </a>
+      </a> -->
       <a href="javascript:void(0)" class="dt-arrow" title="Expand/Collapse Row" (click)="toggleExpandRow(row)"
         *ngIf="row.children && row.children.length > 0">
         <fa-icon [icon]="!expanded ? faCaretRight: faCaretDown"></fa-icon>
       </a> {{row?.itemPartner?.item?.itemNo}}
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column name="description" prop="itemPartner.item.itemDescription" editable="true"
-    [cellClass]="'ellipsis'">
+  <ngx-datatable-column name="description" prop="itemPartner.item.itemDescription" editable="true">
+    <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+      <span [matTooltip]="row?.itemPartner?.item?.itemDescription" matTooltipPosition="above" matTooltipClass="tooltip">
+        {{row?.itemPartner?.item?.itemDescription}}
+      </span>
+    </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column name="Type" prop="itemPartner.item.itemType" editable="true">
   </ngx-datatable-column>
@@ -33,15 +37,21 @@
   <!-- <ngx-datatable-column *ngFor="let col of cols" [name]="col.name" [prop]="col.prop" [resizeable]="false"
     [cellClass]="col.prop">
   </ngx-datatable-column> -->
-  <ngx-datatable-column prop="status" editable="true"></ngx-datatable-column>
+  <ngx-datatable-column name="Status" editable="true">
+    <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+      {{((row.status == 'Printed' && role == 'admin') || (row.status == 'PreReleased' && role == 'printer'))? 'Pending Release' : row.status}}
+    </ng-template>
+  </ngx-datatable-column>
 
   <ngx-datatable-column [sortable]="false">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
       <div class="row-action-btn"
-        *ngIf="row.children && row.children.length == 0 && row.status === OrdersState.MARKPRINTED">
-        <span (click)="updateRowValue($event, rowIndex)">
+        *ngIf="row.children && row.children.length == 0 && ((row.status === OrdersState.PRINTED && role == 'admin') || (row.status === 'PreReleased' && role == 'printer'))">
+        <span (click)="updateOrderStatus(row, (row.status == 'PreReleased' && role == 'printer') ? 'Released' : 'PreReleased')" matTooltip="Release to Assemblers" matTooltipPosition="above"
+          matTooltipClass="tooltip">
           <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
         </span>
+        
 
       </div>
     </ng-template>
@@ -52,7 +62,8 @@
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template let-rowIndex="rowIndex">
       <section *ngIf="row.children && row.children.length > 0" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">
-        <sb-release-sub-orders [row]="row" [table]="table" (rowsUpdate)="rowsUpdate($event)"></sb-release-sub-orders>
+        <sb-release-sub-orders [row]="row" [table]="table" (rowsUpdate)="rowsUpdate($event)"
+          (adjustCols)="adjustCols($event)"></sb-release-sub-orders>
       </section>
       <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">

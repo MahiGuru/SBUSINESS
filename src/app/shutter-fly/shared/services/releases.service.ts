@@ -19,6 +19,12 @@ export class ReleasesService {
     return this.http.get(`${environment.baseUrl}${environment.releasesList}`, { headers })
       .pipe(map((res: any) => res));
   }
+  
+  getReleaseItems() {
+    // return this.http.get(`assets/data/addedInventory.json`).pipe(map(res => res));
+    return this.http.get(`${environment.baseUrl}${environment.releaseItems}`)
+      .pipe(map((res: any) => res));
+  }
   updateReleaseOrderStatus(data) {
     return this.http.post(`${environment.baseUrl}${environment.releaseManage}`, data)
       .pipe(map((res: any) => res));

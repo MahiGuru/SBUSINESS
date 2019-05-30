@@ -4,6 +4,7 @@ import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.
 import { Inventory } from 'src/app/shutter-fly/core/models/newInventory';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+import { ReleasesService } from 'src/app/shutter-fly/shared/services/releases.service';
 
 
 @Component({
@@ -24,10 +25,11 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
   public selectedItem: any = new BehaviorSubject('');
   myForm: FormGroup;
   addForm: FormGroup;
-  printItems: any;
+  releaseItems: any;
   selectedItemType: any;
   partners: any;
   constructor(public inventoryService: InventoryService,
+              public releaseService: ReleasesService,
               public fb: FormBuilder) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isAddBtnClicked && changes.isAddBtnClicked.currentValue) {
@@ -50,8 +52,8 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
       quantity: [''],
       poNum: ['']
     });
-    this.inventoryService.getAddItems().subscribe(res => {
-      this.printItems = res;
+    this.releaseService.getReleaseItems().subscribe(res => {
+      this.releaseItems = res;
       // console.log('INV ITEMS >>>> ', res, this.printItems);
       this.selectedItemType = res[0].itemType;
       this.selectedItem = res[0];
@@ -142,7 +144,7 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
 
   onItemChange(item, index) {
     const control = this.myForm.controls.addRows as FormArray;
-    const selectedItem = _.filter(this.printItems, (iitem) => {
+    const selectedItem = _.filter(this.releaseItems, (iitem) => {
       return iitem.item.itemNo === item.value;
     });
     this.selectedItem = selectedItem[0];

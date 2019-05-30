@@ -12,6 +12,7 @@ export const environment = {
   deletePartner: 'inventory/itempartnerdelete',
   printList: 'print/orders',
   printItems: 'print/items',
+  releaseItems: 'release/items',
   savePrintRecord: 'print/order/manage',
   releasesList: 'release/orders',
   releaseManage: 'release/order/manage',

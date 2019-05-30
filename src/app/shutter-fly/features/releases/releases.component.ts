@@ -22,14 +22,14 @@ export class ReleasesComponent implements OnInit {
   public isAddNewBtnClicked = false;
 
   columns = [
-    { prop: 'itemNo', name: 'Item #', width: 100 },
-    { name: 'Description', width: 850 },
-    { prop: 'type', name: 'Type', width: 100 },
-    { prop: 'printer', name: 'Printers', width: 100 },
-    { prop: 'quantity', name: 'Quantity', width: 100 },
-    { prop: 'poNum', name: 'PO #', width: 100 },
-    { prop: 'jobNum', name: 'Job #', width: 100 },
-    { prop: 'createdAt', name: 'Created', width: 100 },
+    { prop: 'itemNo', name: 'Item #' },
+    { name: 'Description' },
+    { prop: 'type', name: 'Type' },
+    { prop: 'printer', name: 'Printers' },
+    { prop: 'quantity', name: 'Quantity' },
+    { prop: 'poNum', name: 'PO #' },
+    { prop: 'jobNum', name: 'Job #' },
+    { prop: 'createdAt', name: 'Created' },
     { prop: 'status', name: 'Status' }
 
 

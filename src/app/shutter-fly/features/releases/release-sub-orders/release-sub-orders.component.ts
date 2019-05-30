@@ -20,6 +20,7 @@ export class ReleaseSubOrdersComponent implements OnInit {
   @Input() table: any;
 
   @Output() rowsUpdate: EventEmitter<any> = new EventEmitter();
+  @Output() adjustCols: EventEmitter<any> = new EventEmitter();
 
   faWindowClose = faWindowClose;
   faCheckSquare = faCheckSquare;
@@ -32,10 +33,13 @@ export class ReleaseSubOrdersComponent implements OnInit {
   faCheckCircle = faCheckCircle;
   public OrdersState = ORDERS;
   role: any;
+  isNewRowEnabled: any;
   constructor(public releaseService: ReleasesService) { }
 
   ngOnInit() {
     this.role = localStorage.getItem('role');
+
+    this.addInitialRows();
   }
   cancelChildRowClick(row) {
     row.editable = false;
@@ -56,5 +60,38 @@ export class ReleaseSubOrdersComponent implements OnInit {
       this.rowsUpdate.emit(newRecords);
     });
   }
+  addChildrenRows() {
+  }
+  removeCurrentRow(i) {
+    // const control = this.myForm.controls.addRows as FormArray;
+    // control.removeAt(i);
+    // this.adjustCols.emit('remove');
+  }
+  addAnotherRow(row) {
+    console.log(row);
+    row.isNewRowEnabled = true;
+    this.adjustCols.emit('new');
+    // const control = this.myForm.controls.addRows as FormArray;
+    // control.push(this.fb.group({
+    //   itemNo: [1],
+    //   itemDesc: [1],
+    //   itemType: [''],
+    //   partner: [1]
+    // }));
+    // this.adjustCols.emit('new');
+  }
+  addInitialRows() {
+    // const control = this.myForm.controls.addRows as FormArray;
+    // control.push(this.fb.group({
+    //   itemNo: [1],
+    //   itemDesc: [1],
+    //   itemType: [''],
+    //   partner: [1]
+    // }));
+    // control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
+    // control.controls[0].get('itemDesc').setValue(this.selectedItem.itemId);
+    // control.controls[0].get('itemType').setValue(this.selectedItem.itemType);
+  }
+
 
 }

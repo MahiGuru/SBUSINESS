@@ -9,5 +9,6 @@ export const environment = {
   printList: 'print/orders',
   printItems: 'print/items',
   savePrintRecord: 'print/order/manage',
-  authenticate: 'authenticate'
+  authenticate: 'authenticate',
+  releaseItems: 'release/items'
 };

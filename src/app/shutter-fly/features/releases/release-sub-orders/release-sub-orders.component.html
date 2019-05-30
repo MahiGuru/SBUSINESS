@@ -1,37 +1,50 @@
 <section *ngIf="row.children && row.children.length > 0" class="row-detail"
   [ngStyle]="{'height': row.childrenHeight+'px'}">
-  <div [ngStyle]="{'position': 'absolute', 'width': '100%'}">
-    <div class="newRow" *ngFor="let nrow of row.children; let i= index" fxLayout="row" fxLayoutGap="0px">
-      <span class="child-item"> {{nrow.itemPartner.item.itemNo}}
-      </span>
-      <span class="child-item ellipsis description">{{nrow.itemPartner.item.itemDescription}}
-      </span>
-      <span class="child-item">{{nrow.itemPartner.item.itemType}}
-      </span>
-      <span class="child-item">{{nrow.itemPartner.partner.partnerType}}
-      </span>
-      <span class="child-item">{{nrow.quantity}} </span>
-      <span class="child-item">{{nrow.release}}</span>
-      <span class="child-item ellipsis"> {{nrow.createdAt | dateFormat}}</span>
-      <span class="child-item">
-        {{(nrow.status == 'Printed' && role == 'admin') || (nrow.status == 'PreReleased' && role == 'printer') ? 'Pending Release' : nrow.status}}
-      </span>
-
-      <span class="child-item">
-        <span *ngIf="nrow.status === 'Printed' || (nrow.status === 'PreReleased' && role == 'printer' )"
-          matTooltip="Release to Assemblers" matTooltipPosition="above" matTooltipClass="tooltip"
-          (click)="updateOrderStatus(nrow, (nrow.status == 'PreReleased' && role == 'printer') ? 'Released' : 'PreReleased')">
-          <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
+  <div>
+    <div class="newRow sub-row" *ngFor="let nrow of row.children; let i= index">
+      <div fxLayout="row" fxLayoutGap="0px">
+        <span class="child-item" [fxFlexAlign]="center">
+          <span (click)="addAnotherRow(nrow)">
+            <i class="material-icons green"> add_circle </i>
+          </span>
+          {{nrow.itemPartner.item.itemNo}}
         </span>
-        <span *ngIf="(nrow.status === 'Released' && (role == 'assembler'))" matTooltip="Mark as Received"
-          matTooltipPosition="above" matTooltipClass="tooltip">
-          <fa-icon [icon]="faDownload" [ngClass]="'fa-icon fs-16'"></fa-icon>
+        <span class="child-item ellipsis description">{{nrow.itemPartner.item.itemDescription}}
         </span>
-        <span class="active-green" *ngIf="nrow.status === 'Released' && (role == 'admin')">
-          <fa-icon [icon]="faCheckCircle" [ngClass]="'fa-icon fs-16'"></fa-icon>
+        <span class="child-item">{{nrow.itemPartner.item.itemType}}
+        </span>
+        <span class="child-item">{{nrow.itemPartner.partner.partnerType}}
+        </span>
+        <span class="child-item">{{nrow.quantity}}</span>
+        <span class="child-item">{{nrow.release}}</span>
+        <span class="child-item ellipsis"> {{nrow.createdAt | dateFormat}}</span>
+        <span class="child-item">
+          {{(nrow.status == 'Printed' && role == 'admin') || (nrow.status == 'PreReleased' && role == 'printer') ? 'Pending Release' : nrow.status}}
         </span>
 
-      </span>
+        <span class="child-item">
+          <span *ngIf="nrow.status === 'Printed' || (nrow.status === 'PreReleased' && role == 'printer' )"
+            matTooltip="Release to Assemblers" matTooltipPosition="above" matTooltipClass="tooltip"
+            (click)="updateOrderStatus(nrow, (nrow.status == 'PreReleased' && role == 'printer') ? 'Released' : 'PreReleased')">
+            <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
+          </span>
+          <span *ngIf="(nrow.status === 'Released' && (role == 'assembler'))" matTooltip="Mark as Received"
+            matTooltipPosition="above" matTooltipClass="tooltip">
+            <fa-icon [icon]="faDownload" [ngClass]="'fa-icon fs-16'"></fa-icon>
+          </span>
+          <span class="active-green" *ngIf="nrow.status === 'Released' && (role == 'admin')">
+            <fa-icon [icon]="faCheckCircle" [ngClass]="'fa-icon fs-16'"></fa-icon>
+          </span>
+
+        </span>
+      </div>
+      <div class="release-detail" *ngIf="nrow.isNewRowEnabled" fxLayout="row">
+        <section class="row-detail newRow">
+          <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row">
+          </sb-release-new-order>
+        </section>
+      </div>
     </div>
+
   </div>
 </section>

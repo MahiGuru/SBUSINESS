@@ -49,7 +49,12 @@
             <fa-icon [icon]="faPrint" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
         </span>
-        <span *ngIf="row.status === 'Printed'">
+        <span *ngIf="(row.status === 'Printed' && this.role === 'printer')">
+          <span class="active-green" matTooltip="Mark as Printed" matTooltipPosition="above" matTooltipClass="tooltip">
+            <fa-icon [icon]="faCheckCircle" [ngClass]="'fa-icon fs-16'"></fa-icon>
+          </span>
+        </span>
+        <span *ngIf="(row.status === 'Printed'  && this.role === 'admin')">
           <span class="" matTooltip="Mark as Printed" matTooltipPosition="above" matTooltipClass="tooltip">
             <fa-icon [icon]="faPrint" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>

@@ -58,6 +58,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   public defaultItemVal = 1;
   myForm: FormGroup;
   addForm: FormGroup;
+  role: string;
 
   @Output() isAddBtnClicked: EventEmitter<any> = new EventEmitter();
   filterVal: any;
@@ -139,20 +140,20 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       } else if (j === 1) {
         tblCell.style.width = (colWidth + 200) + 'px';
       } else {
-        tblCell.style.width = colWidth - (370 / (this.cols.length + 1)) + 'px';
+        tblCell.style.width = colWidth - (320 / (this.cols.length + 1)) + 'px';
       }
     });
   }
   setBodyColWidth(bodyCellRow) {
     const colWidth = (this.windowWidth / (this.cols.length + 1));
     _.each(bodyCellRow, (bodyCell, i) => {
-      bodyCell.classList.add('w-active');
       const tblbodyCell = bodyCell.querySelectorAll('.datatable-body-cell');
       this.setColWidth(tblbodyCell, colWidth);
     });
   }
 
   ngOnInit() {
+    this.role = localStorage.getItem('role');
     this.myForm = this.fb.group({
       addRows: this.fb.array([])
     });
@@ -336,7 +337,6 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       const colWidth = (this.windowWidth / (this.cols.length + 1));
       const childRow = this.elem.nativeElement.querySelectorAll('.newRow');
       _.each(childRow, (childCell, i) => {
-        childCell.classList.add('w-row-active');
         const tblbodyCell = childCell.querySelectorAll('.child-item');
         this.setColWidth(tblbodyCell, colWidth);
         this.setRowDetailHeight(row);
@@ -359,7 +359,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       const colWidth = (this.windowWidth / (this.cols.length + 1));
       const childRow = this.elem.nativeElement.querySelectorAll('.newRow');
       _.each(childRow, (childCell, i) => {
-        childCell.classList.add('w-row-active');
+        childCell.style.width = this.windowWidth - 20 + 'px';
         const tblbodyCell = childCell.querySelectorAll('.child-item');
         this.setColWidth(tblbodyCell, colWidth);
         this.setRowDetailHeight(row);
