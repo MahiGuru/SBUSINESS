@@ -70,6 +70,12 @@ export class ReleaseSubOrdersComponent implements OnInit {
   addAnotherRow(row) {
     console.log(row);
     row.isNewRowEnabled = true;
+    console.log(row);
+    row.isNewRowEnabled = true;
+    if (!(row.childrenHeight && row.childrenHeight.length === 0)) { row.childrenHeight = 60; }
+    console.log('ADJUST COLSSS', row.childrenHeight);
+    row.childrenHeight = row.childrenHeight + 30;
+
     this.adjustCols.emit('new');
     // const control = this.myForm.controls.addRows as FormArray;
     // control.push(this.fb.group({
@@ -91,6 +97,17 @@ export class ReleaseSubOrdersComponent implements OnInit {
     // control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
     // control.controls[0].get('itemDesc').setValue(this.selectedItem.itemId);
     // control.controls[0].get('itemType').setValue(this.selectedItem.itemType);
+  }
+  adjustNewCols(val, row) {
+    console.log(val, row.childrenHeight);
+    if (row.childrenHeight.length === 0) { row.childrenHeight = 60; }
+    console.log('ADJUST COLSSS', val, row.childrenHeight);
+    if (val === 'new') {
+      row.childrenHeight = row.childrenHeight + 30;
+    } else {
+      row.childrenHeight = row.childrenHeight - 20;
+    }
+    this.adjustCols.emit(val);
   }
 
 

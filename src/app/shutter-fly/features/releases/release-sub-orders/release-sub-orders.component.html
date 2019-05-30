@@ -3,7 +3,7 @@
   <div>
     <div class="newRow sub-row" *ngFor="let nrow of row.children; let i= index">
       <div fxLayout="row" fxLayoutGap="0px">
-        <span class="child-item" [fxFlexAlign]="center">
+        <span class="child-item" [fxFlexAlign]="'center'">
           <span (click)="addAnotherRow(nrow)">
             <i class="material-icons green"> add_circle </i>
           </span>
@@ -40,7 +40,8 @@
       </div>
       <div class="release-detail" *ngIf="nrow.isNewRowEnabled" fxLayout="row">
         <section class="row-detail newRow">
-          <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row">
+          <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row"
+            (adjustCols)="adjustNewCols($event, row)">
           </sb-release-new-order>
         </section>
       </div>
