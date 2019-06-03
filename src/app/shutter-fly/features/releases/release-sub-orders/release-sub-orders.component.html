@@ -4,7 +4,7 @@
     <div class="newRow sub-row" *ngFor="let nrow of row.children; let i= index">
       <div fxLayout="row" fxLayoutGap="0px">
         <span class="child-item" [fxFlexAlign]="'center'">
-          <span (click)="addAnotherRow(nrow)">
+          <span (click)="addAnotherRow(nrow)" *ngIf="!isNewRowEnabled">
             <i class="material-icons green"> add_circle </i>
           </span>
           {{nrow.itemPartner.item.itemNo}}

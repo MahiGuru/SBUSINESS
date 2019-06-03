@@ -57,12 +57,27 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
       // console.log('INV ITEMS >>>> ', res, this.printItems);
       this.selectedItemType = res[0].itemType;
       this.selectedItem = res[0];
+      const control = this.myForm.controls.addRows as FormArray;
+      console.log('ROW >>>> ', this.row, res);
+      const selectedItem = _.filter(this.releaseItems, (iitem) => {
+        return iitem.item.itemNo === this.row.itemPartner.item.itemNo;
+      });
+      console.log('SELECTED ITEM :', selectedItem);
+      if (selectedItem.length > 0) {
+        control.controls[0].get('partners').setValue(selectedItem[0].itemPartner);
+        console.log('on item change', selectedItem);
+        control.controls[0].get('itemNo').setValue(selectedItem[0].item.itemNo);
+        control.controls[0].get('itemDesc').setValue(selectedItem[0].item.itemNo);
+        control.controls[0].get('itemType').setValue(selectedItem[0].item.itemTypeCode);
+      }
+      console.log(this.selectedItem);
     });
     this.inventoryService.getPartners().subscribe(partners => {
       this.partners = partners;
       // console.log('partners >>>> ', partners, this.partners);
     });
     this.addInitialRows();
+    console.log(this.row);
   }
 
   addInitialRows() {
@@ -82,15 +97,30 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
   }
   addAnotherRow() {
     const control = this.myForm.controls.addRows as FormArray;
+    const selectedItem = _.filter(this.releaseItems, (iitem) => {
+      return iitem.item.itemNo === this.row.itemPartner.item.itemNo;
+    });
+    console.log('SELECTED ITEM :', selectedItem, control, control.controls[control.value.length - 1]);
+
     control.push(this.fb.group({
-      itemNo: [1],
-      itemDesc: [1],
+      itemNo: [selectedItem[0] ? selectedItem[0].item.itemId : 1],
+      itemDesc: [selectedItem[0] ? selectedItem[0].item.itemId : 1],
       partners: [[]],
-      itemType: [''],
+      itemType: [selectedItem[0] ? selectedItem[0].item.itemType : 1],
       partner: [1],
-      quantity: [1],
-      poNum: [1]
+      quantity: [0],
+      poNum: [0]
     }));
+
+    setTimeout(() => {
+      if (selectedItem[0]) {
+        control.controls[control.value.length - 1].get('partners').setValue(selectedItem[0].itemPartner);
+        control.controls[control.value.length - 1].get('itemNo').setValue(selectedItem[0].item.itemNo);
+        control.controls[control.value.length - 1].get('itemDesc').setValue(selectedItem[0].item.itemNo);
+        control.controls[control.value.length - 1].get('itemType').setValue(selectedItem[0].item.itemTypeCode);
+      }
+    }, 500);
+
     this.adjustCols.emit('new');
   }
   cancelNewInventory() {
@@ -99,11 +129,6 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
     control.controls = [];
 
     this.adjustCols.emit('cancel');
-    // this.newRowHeight = 100;
-    // this.table.rowDetail.toggleExpandRow(this.rows[0]);
-    // this.isAddBtnClicked.emit(false);
-    // this.isNewRowEnabled = false;
-    // this.dataTableBodyCellWidth();
   }
   removeCurrentRow(i) {
     const control = this.myForm.controls.addRows as FormArray;
@@ -113,36 +138,37 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
   onDetailToggle(event) {
     // console.log('Detail Toggled', event);
   }
-  addRowsToInventory() {
+  addRowsToRelease(row) {
     const control = this.myForm.controls.addRows as FormArray;
+    console.log('SAVEEEEE ', control, row);
     const newRecord = [];
     _.each(control.value, (val) => {
-      newRecord.push({
-        Item: {
-          ItemId: val.itemNo
-        },
-        Partner: {
-          PartnerId: val.partner
+      newRecord.push(
+        {
+          ReleaseOrderId: row.releaseOrderId,
+          ItemAssemblerId: row.ItemAssemblerId,
+          Quantity: row.quantity
         }
-      });
+      );
     });
 
-    this.inventoryService.saveNewInventory(newRecord).subscribe(newRecords => {
-      const tempArr = [];
-      _.each(newRecords, (record, index) => {
-        const tempChildArr = [];
-        _.each(record.children, (child) => {
-          tempChildArr.push(new Inventory(child));
-        });
-        record.children = tempChildArr;
-        tempArr.push(new Inventory(record));
-      });
-      this.onSave.emit(tempArr);
-    });
+    // this.inventoryService.saveNewInventory(newRecord).subscribe(newRecords => {
+    //   const tempArr = [];
+    //   _.each(newRecords, (record, index) => {
+    //     const tempChildArr = [];
+    //     _.each(record.children, (child) => {
+    //       tempChildArr.push(new Inventory(child));
+    //     });
+    //     record.children = tempChildArr;
+    //     tempArr.push(new Inventory(record));
+    //   });
+    //   this.onSave.emit(tempArr);
+    // });
 
   }
 
   onItemChange(item, index) {
+    console.log('ITEM INDEX', item, index);
     const control = this.myForm.controls.addRows as FormArray;
     const selectedItem = _.filter(this.releaseItems, (iitem) => {
       return iitem.item.itemNo === item.value;
@@ -155,7 +181,6 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
     control.controls[index].get('itemDesc').setValue(selectedItem[0].item.itemNo);
     control.controls[index].get('itemType').setValue(selectedItem[0].item.itemTypeCode);
     // console.log('INDEX', index, item);
-
   }
 
   onPartnerChange(item) {

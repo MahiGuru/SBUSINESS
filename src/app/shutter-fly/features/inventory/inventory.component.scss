@@ -56,34 +56,6 @@
 
   }
 
-  .row-ab-actions {
-    position: absolute;
-    right: 20px;
-
-    i {
-      font-size: 36px;
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
-
-    .cancel-ic {
-      color: #353535;
-
-      &:hover {
-        color: #6e0000;
-      }
-    }
-
-    .done-ic {
-      color: #f51d00;
-
-      &:hover {
-        color: #e20057;
-      }
-    }
-  }
   .h-title{
     font-size: 24px;
     font-weight: 300;

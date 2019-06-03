@@ -121,5 +121,16 @@
     }
 
   }
+  .row-action-btn{
+    position: relative;
+    top: -4px;
+    .fa-icon{
+      &:hover{
+        color:rgb(250, 50, 0);
+      }
+      margin-bottom: -10px;
+      cursor: pointer;
+    }
+  }
 
 }

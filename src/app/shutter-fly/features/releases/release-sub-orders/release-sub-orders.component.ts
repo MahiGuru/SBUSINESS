@@ -38,7 +38,6 @@ export class ReleaseSubOrdersComponent implements OnInit {
 
   ngOnInit() {
     this.role = localStorage.getItem('role');
-
     this.addInitialRows();
   }
   cancelChildRowClick(row) {
@@ -60,43 +59,18 @@ export class ReleaseSubOrdersComponent implements OnInit {
       this.rowsUpdate.emit(newRecords);
     });
   }
-  addChildrenRows() {
-  }
-  removeCurrentRow(i) {
-    // const control = this.myForm.controls.addRows as FormArray;
-    // control.removeAt(i);
-    // this.adjustCols.emit('remove');
-  }
   addAnotherRow(row) {
-    console.log(row);
+    console.log('ADD ANOTHER ROW >>> ', row);
     row.isNewRowEnabled = true;
-    console.log(row);
-    row.isNewRowEnabled = true;
+    this.isNewRowEnabled = true;
     if (!(row.childrenHeight && row.childrenHeight.length === 0)) { row.childrenHeight = 60; }
     console.log('ADJUST COLSSS', row.childrenHeight);
     row.childrenHeight = row.childrenHeight + 30;
 
     this.adjustCols.emit('new');
-    // const control = this.myForm.controls.addRows as FormArray;
-    // control.push(this.fb.group({
-    //   itemNo: [1],
-    //   itemDesc: [1],
-    //   itemType: [''],
-    //   partner: [1]
-    // }));
-    // this.adjustCols.emit('new');
   }
   addInitialRows() {
-    // const control = this.myForm.controls.addRows as FormArray;
-    // control.push(this.fb.group({
-    //   itemNo: [1],
-    //   itemDesc: [1],
-    //   itemType: [''],
-    //   partner: [1]
-    // }));
-    // control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
-    // control.controls[0].get('itemDesc').setValue(this.selectedItem.itemId);
-    // control.controls[0].get('itemType').setValue(this.selectedItem.itemType);
+
   }
   adjustNewCols(val, row) {
     console.log(val, row.childrenHeight);

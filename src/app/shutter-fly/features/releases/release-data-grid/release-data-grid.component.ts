@@ -79,12 +79,12 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     console.log(this.windowHeight, this.windowWidth);
   }
   constructor(public sharedOrderService: SharedOrdersService,
-              public inventoryService: InventoryService,
-              public fb: FormBuilder,
-              public cdr: ChangeDetectorRef,
-              public dialog: MatDialog,
-              public releaseService: ReleasesService,
-              private elem: ElementRef) {
+    public inventoryService: InventoryService,
+    public fb: FormBuilder,
+    public cdr: ChangeDetectorRef,
+    public dialog: MatDialog,
+    public releaseService: ReleasesService,
+    private elem: ElementRef) {
     this.getScreenSize();
   }
 
@@ -136,11 +136,11 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   setColWidth(tblbodyCell, colWidth) {
     _.each(tblbodyCell, (tblCell, j) => {
       if (j === 0) {
-        tblCell.style.width = (colWidth + 100) + 'px';
+        tblCell.style.width = (colWidth) + 'px';
       } else if (j === 1) {
-        tblCell.style.width = (colWidth + 200) + 'px';
+        tblCell.style.width = (colWidth) + 'px';
       } else {
-        tblCell.style.width = colWidth - (320 / (this.cols.length + 1)) + 'px';
+        tblCell.style.width = colWidth + 'px';
       }
     });
   }
@@ -216,18 +216,19 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     this.table.offset = 0;
   }
 
-  addAnotherRow() {
-    const control = this.myForm.controls.addRows as FormArray;
-    const addRow = new Inventory();
-    control.push(this.fb.group({
-      itemNo: [1],
-      itemDesc: [1],
-      itemType: [''],
-      partner: [1]
-    }));
-    // this.addedRows.push(addRow);
-    this.newRowHeight += 30;
-    this.rows[0].childrenHeight += 80;
+  addAnotherRow(row) {
+
+    this.isNewRowEnabled = true;
+    if (!(row.childrenHeight && row.childrenHeight.length === 0)) { row.childrenHeight = 60; }
+    console.log('ADJUST COLSSS', row.childrenHeight);
+    row.childrenHeight = row.childrenHeight + 30;
+    console.log(row);
+    setTimeout(() => {
+      this.table.rowDetail.toggleExpandRow(row);
+      row.childrenHeight = 100;
+      this.setRowDetailHeight(row);
+      this.setColsFromMultiLevelElements('add-row-section', 'new-item');
+    }, 100);
   }
   removeCurrentRow(i) {
     const control = this.myForm.controls.addRows as FormArray;
@@ -239,36 +240,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     // console.log('Detail Toggled', event);
   }
   addRowsToInventory() {
-    const control = this.myForm.controls.addRows as FormArray;
-    // console.log(control.value);
-    const newRecord = [];
-    _.each(control.value, (val) => {
-      newRecord.push({
-        Item: {
-          ItemId: val.itemNo
-        },
-        Partner: {
-          PartnerId: val.partner
-        }
-      });
-    });
 
-    this.inventoryService.saveNewInventory(newRecord).subscribe(newRecords => {
-      // console.log('SAVEDDDDD >>>> ', newRecords);
-      const tempArr = [];
-      _.each(newRecords, (record, index) => {
-        const tempChildArr = [];
-        _.each(record.children, (child) => {
-          tempChildArr.push(new Inventory(child));
-        });
-        record.children = tempChildArr;
-        tempArr.push(new Inventory(record));
-      });
-      // console.log('TEMP ARRRRRRRR', tempArr);
-      const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
-      this.rows = _.values(merged);
-      // // console.log(values);
-    });
 
   }
   trashInventoryItem(row) {
@@ -323,10 +295,8 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     const control = this.myForm.controls.addRows as FormArray;
     control.controls = [];
     this.newRowHeight = 100;
-    this.rows.splice(0, 1);
-    this.rows = [...this.rows];
     this.table.rowDetail.toggleExpandRow(this.rows[0]);
-    this.isAddBtnClicked.emit(false);
+    // this.isAddBtnClicked.emit(false);
     this.isNewRowEnabled = false;
   }
 
@@ -469,23 +439,21 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   rowsUpdate(rows) {
     this.getReleaseOrders();
   }
-  adjustCols(type) {
+  adjustCols(type, row = null) {
     if (type === 'new') {
-      this.rows[0].childrenHeight += 60;
+      row.childrenHeight += 60;
       this.setColsFromMultiLevelElements('add-row-section', 'new-item');
     } else if (type === 'remove') {
-      this.rows[0].childrenHeight -= 60;
+      row.childrenHeight -= 60;
     } else if (type === 'cancel') {
-      this.rows.splice(0, 1);
-      this.rows = [...this.rows];
-      this.table.rowDetail.toggleExpandRow(this.rows[0]);
+      this.table.rowDetail.toggleExpandRow(row);
       this.isAddBtnClicked.emit(false);
       this.isNewRowEnabled = false;
       this.newRowHeight = 100;
-      this.rows[0].childrenHeight = 100;
+      row.childrenHeight = 100;
       this.dataTableBodyCellWidth();
     }
-    this.setRowDetailHeight(this.rows[0]);
+    this.setRowDetailHeight(row);
   }
 
 }

@@ -1,16 +1,16 @@
 <div [ngStyle]="{'width': '100%'}">
   <form [formGroup]="myForm">
     <div formArrayName="addRows">
-      <!-- <div class="row-ab-actions">
-        <span fxFlex fxLayout="row" fxLayoutGap="10px">
+      <div class="row-ab-actions">
+        <span fxFlex fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
           <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
             cancel
           </i>
-          <i class="material-icons done-ic" (click)="addRowsToInventory()">
+          <i class="material-icons done-ic" (click)="addRowsToRelease(row)">
             check_circle
           </i>
         </span>
-      </div> -->
+      </div>
       <div class="new-rows-container">
 
         <div class="newRow add-row-section mtb-2" *ngFor="let comp of myForm.get('addRows').controls; let i=index">
