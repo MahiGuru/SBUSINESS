@@ -51,8 +51,8 @@ export class ReleaseSubOrdersComponent implements OnInit {
       console.log('SUBORDER >>>> ', this.row);
     });
   }
-  onItemChange(event) {
-    console.log(event);
+  onItemChange(event, nrow) {
+    console.log(event, nrow);
   }
   cancelChildRowClick(row) {
     row.editable = false;

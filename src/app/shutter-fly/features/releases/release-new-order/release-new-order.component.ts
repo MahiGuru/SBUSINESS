@@ -154,18 +154,10 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
     });
     console.log(newRecord);
 
-    // this.inventoryService.saveNewInventory(newRecord).subscribe(newRecords => {
-    //   const tempArr = [];
-    //   _.each(newRecords, (record, index) => {
-    //     const tempChildArr = [];
-    //     _.each(record.children, (child) => {
-    //       tempChildArr.push(new Inventory(child));
-    //     });
-    //     record.children = tempChildArr;
-    //     tempArr.push(new Inventory(record));
-    //   });
-    //   this.onSave.emit(tempArr);
-    // });
+    this.releaseService.saveNewReleaseItem(newRecord).subscribe(newRecords => {
+      const tempArr = [];
+      this.adjustCols.emit('new');
+    });
 
   }
 
