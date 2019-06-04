@@ -68,6 +68,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   @ViewChild(DatatableComponent) table: DatatableComponent;
   windowWidth: number;
   windowHeight: number;
+  public releaseItems: any;
 
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?) {
@@ -76,12 +77,12 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     console.log(this.windowHeight, this.windowWidth);
   }
   constructor(public sharedOrderService: SharedOrdersService,
-    public inventoryService: InventoryService,
-    public fb: FormBuilder,
-    public cdr: ChangeDetectorRef,
-    public dialog: MatDialog,
-    public releaseService: ReleasesService,
-    private elem: ElementRef) {
+              public inventoryService: InventoryService,
+              public fb: FormBuilder,
+              public cdr: ChangeDetectorRef,
+              public dialog: MatDialog,
+              public releaseService: ReleasesService,
+              private elem: ElementRef) {
     this.getScreenSize();
   }
 
@@ -105,27 +106,44 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       itemType: [''],
       partner: ['']
     });
-    this.inventoryService.getAddItems().subscribe(res => {
-      this.inventoryItems = res;
-      // console.log('INV ITEMS >>>> ', res, this.inventoryItems);
-      this.selectedItemType = res[0].itemType;
-      this.selectedItem = res[0];
-    });
-    this.inventoryService.getPartners().subscribe(partners => {
-      this.partners = partners;
-      // console.log('partners >>>> ', partners, this.partners);
-    });
+    // this.inventoryService.getAddItems().subscribe(res => {
+    //   this.inventoryItems = res;
+    //   // console.log('INV ITEMS >>>> ', res, this.inventoryItems);
+    //   this.selectedItemType = res[0].itemType;
+    //   this.selectedItem = res[0];
+    // });
+    // this.inventoryService.getPartners().subscribe(partners => {
+    //   this.partners = partners;
+    //   // console.log('partners >>>> ', partners, this.partners);
+    // });
+    this.getReleaseOrders();
 
+  }
+  onItemChange(event) {
+    console.log(event);
   }
   getReleaseOrders() {
     this.releaseService.getAllReleaseRecords().subscribe((rows: any) => {
       console.log('ROWS, ', rows);
       const tempRows = [];
-      _.each(rows, (row) => {
-        const inventory = new ReleaseOrder(row);
-        tempRows.push(inventory);
+      this.releaseService.getReleaseItems().subscribe(res => {
+        this.releaseItems = res;
+        _.each(rows, (row) => {
+          const releaseItem = _.filter(this.releaseItems, (val) => {
+            return val.item.itemId === row.itemPartner.item.itemId;
+            // console.log(val, row);
+          });
+          const releaseOrders = new ReleaseOrder(row);
+          console.log('BEFORE >> ', releaseOrders, releaseItem[0]);
+
+          releaseOrders.assemblers = (releaseItem[0]) ? releaseItem[0].itemPartner : [];
+          console.log(releaseOrders);
+          tempRows.push(releaseOrders);
+        });
+        this.rows = [...tempRows];
+
+        console.log(res);
       });
-      this.rows = [...tempRows];
     });
   }
 

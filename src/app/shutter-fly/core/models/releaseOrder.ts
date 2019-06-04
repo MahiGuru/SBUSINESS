@@ -10,6 +10,7 @@ export class ReleaseOrder {
   public createdAt: any = '';
   public updatedAt: any = '';
   public children: any = [];
+  public assemblers: any = [];
 
   constructor(releaseOrder?: any) {
     if (releaseOrder) {

@@ -4,16 +4,32 @@
     <div class="newRow sub-row" *ngFor="let nrow of row.children; let i= index">
       <div fxLayout="row" fxLayoutGap="0px">
         <span class="child-item" [fxFlexAlign]="'center'">
-          <span (click)="addAnotherRow(nrow)" *ngIf="!isNewRowEnabled">
-            <i class="material-icons green"> add_circle </i>
-          </span>
+
           {{nrow.itemPartner.item.itemNo}}
         </span>
         <span class="child-item ellipsis description">{{nrow.itemPartner.item.itemDescription}}
         </span>
         <span class="child-item">{{nrow.itemPartner.item.itemType}}
         </span>
-        <span class="child-item">{{nrow.itemPartner.partner.partnerType}}
+        <span class="child-item">
+          <!-- {{nrow.itemPartner.partner.partnerType}} -->
+          <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="5px">
+            <aside fxFlex>
+              <mat-select [placeholder]="'Please choose'" [(ngModel)]="nrow.itemAssemblerId"
+                (selectionChange)="onItemChange($event)">
+                <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
+                  {{ option?.partner?.partnerCode }}
+                </mat-option>
+              </mat-select>
+            </aside>
+            <aside fxFlex="30px">
+              <span (click)="addAnotherRow(nrow)"
+                *ngIf="(!isNewRowEnabled && row.assemblers && row.assemblers.length > 0)">
+                <i class="material-icons green"> add_circle </i>
+              </span>
+            </aside>
+          </div>
+
         </span>
         <span class="child-item">{{nrow.quantity}}</span>
         <span class="child-item">{{nrow.release}}</span>
@@ -40,7 +56,7 @@
       </div>
       <div class="release-detail" *ngIf="nrow.isNewRowEnabled" fxLayout="row">
         <section class="row-detail newRow">
-          <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row"
+          <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" [childRow]="childRow"
             (adjustCols)="adjustNewCols($event, row)">
           </sb-release-new-order>
         </section>

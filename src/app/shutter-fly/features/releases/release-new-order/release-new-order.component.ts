@@ -14,6 +14,7 @@ import { ReleasesService } from 'src/app/shutter-fly/shared/services/releases.se
 })
 export class ReleaseNewOrderComponent implements OnInit, OnChanges {
   @Input() row: any;
+  @Input() childRow: any;
   @Input() rows: any;
   @Input() isAddBtnClicked: boolean;
 
@@ -40,7 +41,7 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    console.log('ngONINIT');
+    console.log('ngONINIT', this.childRow);
     this.myForm = this.fb.group({
       addRows: this.fb.array([])
     });
@@ -140,17 +141,18 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
   }
   addRowsToRelease(row) {
     const control = this.myForm.controls.addRows as FormArray;
-    console.log('SAVEEEEE ', control, row);
+    console.log('SAVEEEEE ', row);
     const newRecord = [];
     _.each(control.value, (val) => {
       newRecord.push(
         {
-          ReleaseOrderId: row.releaseOrderId,
-          ItemAssemblerId: row.ItemAssemblerId,
-          Quantity: row.quantity
+          ReleaseOrderId: this.childRow.releaseOrderId,
+          ItemAssemblerId: this.childRow.ItemAssemblerId,
+          Quantity: val.quantity
         }
       );
     });
+    console.log(newRecord);
 
     // this.inventoryService.saveNewInventory(newRecord).subscribe(newRecords => {
     //   const tempArr = [];

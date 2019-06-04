@@ -34,11 +34,25 @@ export class ReleaseSubOrdersComponent implements OnInit {
   public OrdersState = ORDERS;
   role: any;
   isNewRowEnabled: any;
+  releaseItems: any;
+  childRow: any;
   constructor(public releaseService: ReleasesService) { }
 
   ngOnInit() {
     this.role = localStorage.getItem('role');
     this.addInitialRows();
+    this.releaseService.getReleaseItems().subscribe(res => {
+      this.releaseItems = res;
+      const releaseItem = _.filter(this.releaseItems, (val) => {
+        return val.item.itemId === this.row.itemPartner.item.itemId;
+        // console.log(val, row);
+      });
+      this.row.assemblers = (releaseItem[0]) ? releaseItem[0].itemPartner : [];
+      console.log('SUBORDER >>>> ', this.row);
+    });
+  }
+  onItemChange(event) {
+    console.log(event);
   }
   cancelChildRowClick(row) {
     row.editable = false;
@@ -66,7 +80,7 @@ export class ReleaseSubOrdersComponent implements OnInit {
     if (!(row.childrenHeight && row.childrenHeight.length === 0)) { row.childrenHeight = 60; }
     console.log('ADJUST COLSSS', row.childrenHeight);
     row.childrenHeight = row.childrenHeight + 30;
-
+    this.childRow = row;
     this.adjustCols.emit('new');
   }
   addInitialRows() {

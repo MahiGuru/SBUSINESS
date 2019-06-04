@@ -8,9 +8,9 @@
         *ngIf="row.children && row.children.length > 0">
         <fa-icon [icon]="!expanded ? faCaretRight: faCaretDown"></fa-icon>
       </a>
-      <span (click)="addNewBtnClicked(row)" *ngIf="(row.children && row.children.length <= 0)">
+      <!-- <span (click)="addNewBtnClicked(row)" *ngIf="(row.children && row.children.length <= 0)">
         <i class="material-icons green"> add_circle </i>
-      </span>
+      </span> -->
       {{row?.itemPartner?.item?.itemNo}}
     </ng-template>
   </ngx-datatable-column>
@@ -23,7 +23,25 @@
   </ngx-datatable-column>
   <ngx-datatable-column name="Type" prop="itemPartner.item.itemType" editable="true">
   </ngx-datatable-column>
-  <ngx-datatable-column name="Assembler" prop="itemPartner.partner.partnerType" editable="true">
+  <ngx-datatable-column name="Assembler" editable="true">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="5px">
+        <aside fxFlex>
+          <mat-select [placeholder]="'Please choose'" [(ngModel)]="row.itemAssemblerId"
+            (selectionChange)="onItemChange($event)">
+            <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
+              {{ option?.partner?.partnerCode }}
+            </mat-option>
+          </mat-select>
+        </aside>
+        <aside fxFlex="30px">
+          <span (click)="addNewBtnClicked(row)"
+            *ngIf="((row.assemblers && row.assemblers.length > 0) && (row.children && row.children.length == 0))">
+            <i class="material-icons green"> add_circle </i>
+          </span>
+        </aside>
+      </div>
+    </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column prop="quantity" editable="true"></ngx-datatable-column>
   <ngx-datatable-column prop="release" editable="true"></ngx-datatable-column>
