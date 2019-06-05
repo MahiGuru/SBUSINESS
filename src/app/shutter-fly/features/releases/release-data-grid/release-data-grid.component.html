@@ -53,7 +53,11 @@
       </div>
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column prop="quantity" editable="true"></ngx-datatable-column>
+  <ngx-datatable-column editable="true">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <input matInput placeholder="Quantity" [(ngModel)]="row.quantity">
+    </ng-template>
+  </ngx-datatable-column>
   <ngx-datatable-column prop="release" editable="true"></ngx-datatable-column>
   <ngx-datatable-column name="Created" editable="true">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
@@ -89,7 +93,7 @@
       </section>
       <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">
-        <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row"
+        <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" [childRow]="childRow"
           (adjustCols)="adjustCols($event, row)">
         </sb-release-new-order>
       </section>

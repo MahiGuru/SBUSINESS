@@ -33,8 +33,8 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
               public releaseService: ReleasesService,
               public fb: FormBuilder) { }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.isAddBtnClicked && changes.isAddBtnClicked.currentValue) {
-      console.log('ON CHANGES ');
+    if (changes.childRow && changes.childRow.currentValue) {
+      console.log('ON CHANGES ', changes.childRow);
     }
 
     // console.log('ORIGINAL ROWS ', this.originalRows, this.rows);

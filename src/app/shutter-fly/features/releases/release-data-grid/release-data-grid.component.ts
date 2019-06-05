@@ -70,6 +70,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   windowWidth: number;
   windowHeight: number;
   public releaseItems: any;
+  childRow: any;
 
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?) {
@@ -122,6 +123,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
         ReleaseOrderId: row.releaseOrderId,
         ItemAssemblerId: row.itemAssemblerId,
         PrintOrderId: row.printOrderId,
+        // ItemPartnerId:
         Quantity: row.quantity
       }
     );
@@ -161,12 +163,13 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   }
 
   addNewBtnClicked(row) {
-
     this.isNewRowEnabled = true;
     if (!(row.childrenHeight && row.childrenHeight.length === 0)) { row.childrenHeight = 60; }
     console.log('ADJUST COLSSS', row.childrenHeight);
     row.childrenHeight = row.childrenHeight + 30;
     console.log(row);
+    this.childRow = row;
+    console.log(this.childRow);
     setTimeout(() => {
       this.table.rowDetail.toggleExpandRow(row);
       row.childrenHeight = 100;
