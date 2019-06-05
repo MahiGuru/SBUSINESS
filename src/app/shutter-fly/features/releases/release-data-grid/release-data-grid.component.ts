@@ -173,8 +173,9 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       const tempRows = [];
       this.releaseService.getReleaseItems().subscribe(res => {
         this.releaseItems = res;
+        console.log("this.releaseItems >>>> ",this.releaseItems);
         _.each(rows, (row) => {
-          console.log(row.itemPartner.item.itemDescription, row.itemPartner.item.itemId);
+          // console.log(row.item.itemId, row.itemPartner.item.itemId);
           const releaseItem = _.filter(this.releaseItems, (val) => {
             return val.item.itemId === row.itemPartner.item.itemId;
             // console.log(val, row);

@@ -29,7 +29,7 @@
         <aside fxFlex fxFlexAlign="center">
           <span *ngIf="role === 'admin'">
             <mat-select [placeholder]="'Please choose'" [(ngModel)]="row.itemAssemblerId"
-              (selectionChange)="onItemChange($event, row)" [disabled]="row.status == 'Released'"
+              (selectionChange)="onItemChange($event, row)" [disabled]="(row.status == 'Released' || row.status == 'PreReleased')"
               *ngIf="(row.assemblers && row.assemblers.length > 0 && (row.children && row.children.length == 0))">
               <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
                 {{ option?.partner?.partnerCode }}
@@ -39,7 +39,7 @@
           <span *ngIf="(row.children && row.children.length > 0)"> Multiple</span>
         </aside>
         <aside [fxFlex]="(row.isAssemblerChanged) ? '60px': '30px'" fxFlexAlign="center"
-          *ngIf="role === 'admin' && row.status != 'Released'">
+          *ngIf="role === 'admin' && !(row.status == 'Released' || row.status == 'PreReleased')">
           <span (click)="addNewBtnClicked(row)"
             *ngIf="((row.assemblers && row.assemblers.length > 0) && (row.children && row.children.length == 0) && !row.isAssemblerChanged)">
             <i class="material-icons green"> add_circle </i>
@@ -58,7 +58,13 @@
   </ngx-datatable-column>
   <ngx-datatable-column editable="true">
     <ng-template let-row="row" ngx-datatable-cell-template>
-      <input matInput placeholder="Quantity" [(ngModel)]="row.quantity" [disabled]="row.status == 'Released'">
+      <span *ngIf="role== 'admin'">
+      <input matInput placeholder="Quantity" *ngIf="(row.children && row.children.length == 0)"
+        [(ngModel)]="row.quantity" [disabled]="(row.status == 'Released' || row.status == 'PreReleased')">
+      </span>
+      <span *ngIf="role !== 'admin' && (row.children && row.children.length == 0)">
+        {{ row.quantity }}
+      </span>
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column prop="releaseJobNo" editable="true"></ngx-datatable-column>
@@ -76,13 +82,12 @@
   <ngx-datatable-column [sortable]="false">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
       <div class="row-action-btn"
-        *ngIf="row.children && row.children.length == 0 && ((row.status === OrdersState.PRINTED && role == 'admin') || (row.status === 'PreReleased' && role == 'printer'))">
+        *ngIf="row.children && row.children.length == 0 && row.itemAssemblerId && ((row.status === OrdersState.PRINTED && role == 'admin') || (row.status === 'PreReleased' && role == 'printer'))">
         <span
           (click)="updateOrderStatus(row, (row.status == 'PreReleased' && role == 'printer') ? 'Released' : 'PreReleased')"
           matTooltip="Release to Assemblers" matTooltipPosition="above" matTooltipClass="tooltip">
           <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>
         </span>
-
 
       </div>
     </ng-template>
