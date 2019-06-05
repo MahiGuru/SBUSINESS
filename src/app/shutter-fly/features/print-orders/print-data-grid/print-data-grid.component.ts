@@ -82,12 +82,12 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   }
 
   constructor(public sharedOrderService: SharedOrdersService,
-    public inventoryService: InventoryService,
-    public fb: FormBuilder,
-    public printerService: PrintOrderService,
-    public cdr: ChangeDetectorRef,
-    public dialog: MatDialog,
-    private elem: ElementRef) {
+              public inventoryService: InventoryService,
+              public fb: FormBuilder,
+              public printerService: PrintOrderService,
+              public cdr: ChangeDetectorRef,
+              public dialog: MatDialog,
+              private elem: ElementRef) {
     this.getScreenSize();
   }
 
@@ -204,13 +204,13 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     this.rows.unshift(new PrintOrder());
     this.rows = [...this.rows];
     control.push(this.fb.group({
-      itemNo: [1],
-      itemDesc: [1],
+      itemNo: [null],
+      itemDesc: [null],
       partners: [[]],
       itemType: [''],
       partner: [null],
-      quantity: [1],
-      poNum: [1]
+      quantity: [null],
+      poNum: [null]
     }));
 
     control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
@@ -253,13 +253,13 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   addAnotherRow() {
     const control = this.myForm.controls.addRows as FormArray;
     control.push(this.fb.group({
-      itemNo: [1],
-      itemDesc: [1],
+      itemNo: [null],
+      itemDesc: [null],
       itemType: [''],
       partners: [[]],
       partner: [null],
-      quantity: [1],
-      poNum: [1]
+      quantity: [null],
+      poNum: [null]
     }));
     // this.addedRows.push(addRow);
     this.newRowHeight += 80;

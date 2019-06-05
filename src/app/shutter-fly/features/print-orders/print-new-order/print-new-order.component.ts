@@ -30,8 +30,8 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
   selectedItemType: any;
   partners: any;
   constructor(public printerService: PrintOrderService,
-              public inventoryService: InventoryService,
-              public fb: FormBuilder) { }
+    public inventoryService: InventoryService,
+    public fb: FormBuilder) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isAddBtnClicked && changes.isAddBtnClicked.currentValue) {
       console.log('ON CHANGES ');
@@ -69,13 +69,13 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
   addInitialRows() {
     const control = this.myForm.controls.addRows as FormArray;
     control.push(this.fb.group({
-      itemNo: [1],
-      itemDesc: [1],
+      itemNo: [null],
+      itemDesc: [null],
       partners: [[]],
       itemType: [''],
       partner: [null],
-      quantity: [1],
-      poNum: [1]
+      quantity: [null],
+      poNum: [null]
     }));
     control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
     control.controls[0].get('itemDesc').setValue(this.selectedItem.itemId);
@@ -84,13 +84,13 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
   addAnotherRow() {
     const control = this.myForm.controls.addRows as FormArray;
     control.push(this.fb.group({
-      itemNo: [1],
-      itemDesc: [1],
+      itemNo: [null],
+      itemDesc: [null],
       partners: [[]],
       itemType: [''],
       partner: [null],
-      quantity: [1],
-      poNum: [1]
+      quantity: [null],
+      poNum: [null]
     }));
     this.adjustCols.emit('new');
   }

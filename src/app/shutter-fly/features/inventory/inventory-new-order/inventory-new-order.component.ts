@@ -65,8 +65,8 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
   addInitialRows() {
     const control = this.myForm.controls.addRows as FormArray;
     control.push(this.fb.group({
-      itemNo: [1],
-      itemDesc: [1],
+      itemNo: [null],
+      itemDesc: [null],
       itemType: [''],
       partner: [null]
     }));
@@ -77,8 +77,8 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
   addAnotherRow() {
     const control = this.myForm.controls.addRows as FormArray;
     control.push(this.fb.group({
-      itemNo: [1],
-      itemDesc: [1],
+      itemNo: [null],
+      itemDesc: [null],
       itemType: [''],
       partner: [null]
     }));
