@@ -338,6 +338,11 @@ $fw-normal: normal; //FONT WEIGHT CLASSES (e.g. class="fw-light")
 .capitalize{
   text-transform: capitalize;
 }
+
+.mat-select{
+  padding: 10px !important;
+  background-color: #ececec;
+  }
 .newRow {
   .mat-input-element {
     padding: 10px !important;

@@ -73,16 +73,16 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?) {
     this.windowHeight = window.innerHeight;
-    this.windowWidth = window.innerWidth - 200;
+    this.windowWidth = window.innerWidth;
     console.log(this.windowHeight, this.windowWidth);
   }
   constructor(public sharedOrderService: SharedOrdersService,
-              public inventoryService: InventoryService,
-              public fb: FormBuilder,
-              public cdr: ChangeDetectorRef,
-              public dialog: MatDialog,
-              public releaseService: ReleasesService,
-              private elem: ElementRef) {
+    public inventoryService: InventoryService,
+    public fb: FormBuilder,
+    public cdr: ChangeDetectorRef,
+    public dialog: MatDialog,
+    public releaseService: ReleasesService,
+    private elem: ElementRef) {
     this.getScreenSize();
   }
 
@@ -106,16 +106,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       itemType: [''],
       partner: ['']
     });
-    // this.inventoryService.getAddItems().subscribe(res => {
-    //   this.inventoryItems = res;
-    //   // console.log('INV ITEMS >>>> ', res, this.inventoryItems);
-    //   this.selectedItemType = res[0].itemType;
-    //   this.selectedItem = res[0];
-    // });
-    // this.inventoryService.getPartners().subscribe(partners => {
-    //   this.partners = partners;
-    //   // console.log('partners >>>> ', partners, this.partners);
-    // });
+
     this.getReleaseOrders();
 
   }
@@ -194,7 +185,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       const colWidth = (this.windowWidth / (this.cols.length + 1));
       const childRow = this.elem.nativeElement.querySelectorAll('.newRow');
       _.each(childRow, (childCell, i) => {
-        childCell.style.width = this.windowWidth - 20 + 'px';
+        // childCell.style.width = this.windowWidth + 'px';
         const tblbodyCell = childCell.querySelectorAll('.child-item');
         this.setColWidth(tblbodyCell, colWidth);
         this.setRowDetailHeight(row);
@@ -245,6 +236,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
 
   /** Data table header column width set */
   setColHeaderWidth() {
+    console.log('COLWIDTH >> ', this.cols.length, this.windowWidth);
     const colWidth = (this.windowWidth / (this.cols.length + 1));
     setTimeout(() => {
       const twoElem = this.elem.nativeElement.querySelectorAll('.datatable-header-cell');
@@ -274,7 +266,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   /** Loop Parent elements and inside children element loop and apply the width */
   setColsFromMultiLevelElements(parent, child) {
     setTimeout(() => {
-      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const colWidth = (this.windowWidth - 200 / (this.cols.length + 1));
       const childRow = this.elem.nativeElement.querySelectorAll('.' + parent);
       _.each(childRow, (childCell, i) => {
         const tblbodyCell = childCell.querySelectorAll('.' + child);

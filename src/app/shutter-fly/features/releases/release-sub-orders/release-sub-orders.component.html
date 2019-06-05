@@ -1,5 +1,4 @@
-<section *ngIf="row.children && row.children.length > 0" class="row-detail"
-  [ngStyle]="{'height': row.childrenHeight+'px'}">
+<section *ngIf="row.children && row.children.length > 0" [ngStyle]="{'height': row.childrenHeight+'px'}">
   <div>
     <div class="newRow sub-row" *ngFor="let nrow of row.children; let i= index">
       <div fxLayout="row" fxLayoutGap="0px">

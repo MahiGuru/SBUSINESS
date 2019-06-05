@@ -128,13 +128,16 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
 
     const control = this.myForm.controls.addRows as FormArray;
     control.controls = [];
-
     this.adjustCols.emit('cancel');
   }
   removeCurrentRow(i) {
     const control = this.myForm.controls.addRows as FormArray;
     control.removeAt(i);
-    this.adjustCols.emit('remove');
+    if (control.value.length === 0) {
+      this.cancelNewInventory();
+    } else {
+      this.adjustCols.emit('remove');
+    }
   }
   onDetailToggle(event) {
     // console.log('Detail Toggled', event);
