@@ -27,16 +27,19 @@
     <ng-template let-row="row" ngx-datatable-cell-template>
       <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="5px">
         <aside fxFlex fxFlexAlign="center">
-          <mat-select [placeholder]="'Please choose'" [(ngModel)]="row.itemAssemblerId"
-            (selectionChange)="onItemChange($event, row)"
-            *ngIf="(row.assemblers && row.assemblers.length > 0 && (row.children && row.children.length == 0))">
-            <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
-              {{ option?.partner?.partnerCode }}
-            </mat-option>
-          </mat-select>
+          <span *ngIf="role === 'admin'">
+            <mat-select [placeholder]="'Please choose'" [(ngModel)]="row.itemAssemblerId"
+              (selectionChange)="onItemChange($event, row)" [disabled]="row.status == 'Released'"
+              *ngIf="(row.assemblers && row.assemblers.length > 0 && (row.children && row.children.length == 0))">
+              <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
+                {{ option?.partner?.partnerCode }}
+              </mat-option>
+            </mat-select>
+          </span>
           <span *ngIf="(row.children && row.children.length > 0)"> Multiple</span>
         </aside>
-        <aside [fxFlex]="(row.isAssemblerChanged) ? '60px': '30px'" fxFlexAlign="center">
+        <aside [fxFlex]="(row.isAssemblerChanged) ? '60px': '30px'" fxFlexAlign="center"
+          *ngIf="role === 'admin' && row.status != 'Released'">
           <span (click)="addNewBtnClicked(row)"
             *ngIf="((row.assemblers && row.assemblers.length > 0) && (row.children && row.children.length == 0) && !row.isAssemblerChanged)">
             <i class="material-icons green"> add_circle </i>
@@ -55,7 +58,7 @@
   </ngx-datatable-column>
   <ngx-datatable-column editable="true">
     <ng-template let-row="row" ngx-datatable-cell-template>
-      <input matInput placeholder="Quantity" [(ngModel)]="row.quantity">
+      <input matInput placeholder="Quantity" [(ngModel)]="row.quantity" [disabled]="row.status == 'Released'">
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column prop="releaseJobNo" editable="true"></ngx-datatable-column>
@@ -94,7 +97,7 @@
       <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">
         <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" [childRow]="childRow"
-          (adjustCols)="adjustCols($event, row)">
+          (adjustCols)="adjustCols($event, row)" (onSave)="onSaveNewOrder($event, row)">
         </sb-release-new-order>
       </section>
     </ng-template>

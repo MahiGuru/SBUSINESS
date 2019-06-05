@@ -170,33 +170,33 @@ $fw-normal: normal; //FONT WEIGHT CLASSES (e.g. class="fw-light")
    **/
 @for $i from 0 through 40 {
   .p-#{$i} {
-    padding: ($i)+px;
+    padding: ($i)+px !important;
   }
 
   .pl-#{$i} {
-    padding-left: ($i)+px;
+    padding-left: ($i)+px !important;
   }
 
   .pr-#{$i} {
-    padding-right: ($i)+px;
+    padding-right: ($i)+px  !important;
   }
 
   .pb-#{$i} {
-    padding-bottom: ($i)+px;
+    padding-bottom: ($i)+px !important;
   }
 
   .pt-#{$i} {
-    padding-top: ($i)+px;
+    padding-top: ($i)+px !important;
   }
 
   .ptb-#{$i} {
-    padding-top: ($i)+px;
-    padding-bottom: ($i)+px;
+    padding-top: ($i)+px !important;
+    padding-bottom: ($i)+px !important;
   }
 
   .plr-#{$i} {
-    padding-left: ($i)+px;
-    padding-right: ($i)+px;
+    padding-left: ($i)+px !important;
+    padding-right: ($i)+px !important;
   }
 }
 
@@ -345,11 +345,23 @@ $fw-normal: normal; //FONT WEIGHT CLASSES (e.g. class="fw-light")
   padding: 10px !important;
   background-color: #ececec;
   }
-.mat-input-element {
+  .mat-input-element:disabled{
+    color: #999999;
+  }
+  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: red;
+  }
+.newRow, .ngx-datatable {
+  .mat-input-element {
+    padding: 10px !important;
+    background-color: #ececec;
+    position: relative;
+    top: 0;
+  }
+  .mat-select{
   padding: 10px !important;
-  background-color: #ececec !important;
-  position: relative;
-  top: 0;
+  background-color: #ececec;
+  }
 }
 
 .mat-form-field-appearance-legacy {

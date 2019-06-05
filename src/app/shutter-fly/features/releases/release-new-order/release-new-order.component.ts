@@ -160,11 +160,12 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
         }
       );
     });
-    console.log(newRecord);
-    this.releaseService.saveNewReleaseItem(newRecord).subscribe(newRecords => {
-      const tempArr = [];
-      this.adjustCols.emit('new');
-    });
+    this.onSave.emit(newRecord);
+    // console.log(newRecord);
+    // this.releaseService.saveNewReleaseItem(newRecord).subscribe(newRecords => {
+    //   const tempArr = [];
+    //   this.adjustCols.emit('new');
+    // });
 
   }
 

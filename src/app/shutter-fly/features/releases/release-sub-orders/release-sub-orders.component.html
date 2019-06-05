@@ -14,14 +14,17 @@
           <!-- {{nrow.itemPartner.partner.partnerType}} -->
           <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="5px">
             <aside fxFlex fxFlexAlign="center">
-              <mat-select [placeholder]="'Please choose'" [(ngModel)]="nrow.itemAssemblerId"
-                (selectionChange)="onItemChange($event, nrow)">
-                <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
-                  {{ option?.partner?.partnerCode }}
-                </mat-option>
-              </mat-select>
+              <span *ngIf="role === 'admin'">
+                <mat-select [placeholder]="'Please choose'" [(ngModel)]="nrow.itemAssemblerId"
+                  (selectionChange)="onItemChange($event, nrow)" [disabled]="row.status == 'Released'">
+                  <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
+                    {{ option?.partner?.partnerCode }}
+                  </mat-option>
+                </mat-select>
+              </span>
             </aside>
-            <aside [fxFlex]="(nrow.isAssemblerChanged) ? '60px': '30px'" fxFlexAlign="center">
+            <aside [fxFlex]="(nrow.isAssemblerChanged) ? '60px': '30px'" fxFlexAlign="center"
+              *ngIf="role === 'admin' && row.status != 'Released'">
               <span (click)="addAnotherRow(nrow)"
                 *ngIf="(!isNewRowEnabled && row.assemblers && row.assemblers.length > 0 && !nrow.isAssemblerChanged)">
                 <i class="material-icons green"> add_circle </i>
@@ -39,7 +42,7 @@
 
         </span>
         <span class="child-item" fxFlexAlign="center">
-          <input matInput placeholder="Quantity" [(ngModel)]="nrow.quantity">
+          <input matInput placeholder="Quantity" [(ngModel)]="nrow.quantity" [disabled]="row.status == 'Released'">
         </span>
         <span class="child-item" fxFlexAlign="center">
           {{nrow.releaseJobNo}}</span>

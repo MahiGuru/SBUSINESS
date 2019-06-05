@@ -116,7 +116,30 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     row.itemAssemblerId = null;
     row.isAssemblerChanged = false;
   }
+  onSaveNewOrder(orders, row) {
+    orders.push({
+      ReleaseOrderId: row.releaseOrderId,
+      ItemAssemblerId: row.itemAssemblerId,
+      PrintOrderId: row.printOrderId,
+      ItemPartner: {
+        ItemPartnerId: row.itemPartner.itemPartnerId
+      },
+      // ItemPartnerId:
+      Quantity: row.quantity
+    });
+    console.log(orders, row);
+    this.releaseService.saveNewReleaseItem(orders).subscribe(newRecords => {
+      row.isAssemblerChanged = false;
+      setTimeout(() => {
+        this.isNewRowEnabled = false;
+        this.table.rowDetail.toggleExpandRow(row);
+        this.getReleaseOrders();
+      }, 500);
+    });
+  }
+
   saveAssembler(row) {
+    console.log('ROWWWW ', row);
     const newRecord = [];
     newRecord.push(
       {
@@ -151,6 +174,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       this.releaseService.getReleaseItems().subscribe(res => {
         this.releaseItems = res;
         _.each(rows, (row) => {
+          console.log(row.itemPartner.item.itemDescription, row.itemPartner.item.itemId);
           const releaseItem = _.filter(this.releaseItems, (val) => {
             return val.item.itemId === row.itemPartner.item.itemId;
             // console.log(val, row);

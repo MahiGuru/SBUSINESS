@@ -10,7 +10,9 @@ import { AuthenticateService } from 'src/app/shutter-fly/shared/services/authent
 })
 export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
-  constructor(public fb: FormBuilder, public router: Router, public authenticateService: AuthenticateService) { }
+  constructor(public fb: FormBuilder, public router: Router, public authenticateService: AuthenticateService) {
+    localStorage.clear();
+  }
 
   ngOnInit() {
     this.loginForm = this.fb.group({

@@ -72,7 +72,7 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
     }));
     control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
     control.controls[0].get('itemDesc').setValue(this.selectedItem.itemId);
-    control.controls[0].get('itemType').setValue(this.selectedItem.itemType);
+    control.controls[0].get('itemType').setValue(this.selectedItem.itemTypeCode);
   }
   addAnotherRow() {
     const control = this.myForm.controls.addRows as FormArray;
@@ -140,7 +140,7 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
     });
     control.controls[index].get('itemNo').setValue(selectedItem[0].itemId);
     control.controls[index].get('itemDesc').setValue(selectedItem[0].itemId);
-    control.controls[index].get('itemType').setValue(selectedItem[0].itemType);
+    control.controls[index].get('itemType').setValue(selectedItem[0].itemTypeCode);
     // console.log('INDEX', index, item);
 
   }

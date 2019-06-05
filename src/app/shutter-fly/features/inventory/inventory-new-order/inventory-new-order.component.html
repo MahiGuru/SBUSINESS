@@ -30,7 +30,7 @@
           <span class="new-item">
             {{comp.get('itemType').value}}
           </span>
-          <span class="new-item">
+          <span class="new-item pr-0">
             <mat-select formControlName="partner" (selectionChange)="onPartnerChange($event, i)">
               <mat-option *ngFor="let partner of partners" [value]="partner.partnerId">{{ partner.partnerCode }}
               </mat-option>
