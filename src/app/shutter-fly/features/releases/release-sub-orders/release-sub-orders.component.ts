@@ -78,7 +78,7 @@ export class ReleaseSubOrdersComponent implements OnInit {
     );
     console.log(newRecord);
     this.releaseService.saveNewReleaseItem(newRecord).subscribe(newRecords => {
-      this.adjustCols.emit('new');
+      this.adjustCols.emit('save');
       row.isAssemblerChanged = false;
     });
   }

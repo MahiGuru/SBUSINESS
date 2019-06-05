@@ -233,6 +233,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       this.setColsFromMultiLevelElements('add-row-section', 'new-item');
     } else if (type === 'remove') {
       row.childrenHeight -= 60;
+    } else if (type === 'save') {
     } else if (type === 'cancel') {
       this.table.rowDetail.toggleExpandRow(row);
       this.isAddBtnClicked.emit(false);

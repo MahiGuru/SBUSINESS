@@ -25,8 +25,8 @@
   </ngx-datatable-column>
   <ngx-datatable-column name="Assembler" editable="true">
     <ng-template let-row="row" ngx-datatable-cell-template>
-      <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="5px">
-        <aside fxFlex>
+      <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="5px">
+        <aside fxFlex fxFlexAlign="center">
           <mat-select [placeholder]="'Please choose'" [(ngModel)]="row.itemAssemblerId"
             (selectionChange)="onItemChange($event, row)"
             *ngIf="(row.assemblers && row.assemblers.length > 0 && (row.children && row.children.length == 0))">
@@ -36,7 +36,7 @@
           </mat-select>
           <span *ngIf="(row.children && row.children.length > 0)"> Multiple</span>
         </aside>
-        <aside fxFlex="30px">
+        <aside [fxFlex]="(row.isAssemblerChanged) ? '60px': '30px'" fxFlexAlign="center">
           <span (click)="addNewBtnClicked(row)"
             *ngIf="((row.assemblers && row.assemblers.length > 0) && (row.children && row.children.length == 0) && !row.isAssemblerChanged)">
             <i class="material-icons green"> add_circle </i>
