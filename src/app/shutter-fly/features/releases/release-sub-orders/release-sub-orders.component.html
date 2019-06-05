@@ -16,15 +16,16 @@
             <aside fxFlex fxFlexAlign="center">
               <span *ngIf="role === 'admin' ">
                 <mat-select [placeholder]="'Please choose'" [(ngModel)]="nrow.itemAssemblerId"
-                  (selectionChange)="onItemChange($event, nrow)" [disabled]="(nrow.status == 'Released' || nrow.status == 'PreReleased')">
+                  (selectionChange)="onItemChange($event, nrow)"
+                  [disabled]="(nrow.status == 'Released' || nrow.status == 'PreReleased')">
                   <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
                     {{ option?.partner?.partnerCode }}
                   </mat-option>
                 </mat-select>
               </span>
               <span *ngIf="role !== 'admin'">
-                  <mat-select [placeholder]="'Please choose'" [(ngModel)]="nrow.itemAssemblerId"
-                  [disabled]="role !== 'admin' && (nrow.status == 'Released' || nrow.status == 'PreReleased')">
+                <mat-select [placeholder]="'Please choose'" [(ngModel)]="nrow.itemAssemblerId"
+                  [disabled]="(nrow.status == 'Released' || nrow.status == 'PreReleased')">
                   <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
                     {{ option?.partner?.partnerCode }}
                   </mat-option>
@@ -51,7 +52,8 @@
         </span>
         <span class="child-item" fxFlexAlign="center">
           <span *ngIf="role == 'admin'">
-            <input matInput placeholder="Quantity" [(ngModel)]="nrow.quantity" [disabled]="(nrow.status == 'Released' || nrow.status == 'PreReleased')">
+            <input matInput placeholder="Quantity" [(ngModel)]="nrow.quantity"
+              [disabled]="(nrow.status == 'Released' || nrow.status == 'PreReleased')">
           </span>
           <span *ngIf="role != 'admin'">
             {{nrow.quantity}}
@@ -66,7 +68,8 @@
         </span>
 
         <span class="child-item" fxFlexAlign="center">
-          <span *ngIf="(nrow.itemAssemblerId) && nrow.status === 'Printed' || (nrow.status === 'PreReleased' && role == 'printer' )"
+          <span
+            *ngIf="(nrow.itemAssemblerId) && nrow.status === 'Printed' || (nrow.status === 'PreReleased' && role == 'printer' )"
             matTooltip="Release to Assemblers" matTooltipPosition="above" matTooltipClass="tooltip"
             (click)="updateOrderStatus(nrow, (nrow.status == 'PreReleased' && role == 'printer') ? 'Released' : 'PreReleased')">
             <fa-icon [icon]="faShare" [ngClass]="'fa-icon fs-16'"></fa-icon>

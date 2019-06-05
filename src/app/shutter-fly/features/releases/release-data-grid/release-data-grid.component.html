@@ -29,8 +29,17 @@
         <aside fxFlex fxFlexAlign="center">
           <span *ngIf="role === 'admin'">
             <mat-select [placeholder]="'Please choose'" [(ngModel)]="row.itemAssemblerId"
-              (selectionChange)="onItemChange($event, row)" [disabled]="(row.status == 'Released' || row.status == 'PreReleased')"
+              (selectionChange)="onItemChange($event, row)"
+              [disabled]="(row.status == 'Released' || row.status == 'PreReleased')"
               *ngIf="(row.assemblers && row.assemblers.length > 0 && (row.children && row.children.length == 0))">
+              <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
+                {{ option?.partner?.partnerCode }}
+              </mat-option>
+            </mat-select>
+          </span>
+          <span *ngIf="role !== 'admin' && (row.children && row.children.length == 0)">
+            <mat-select [placeholder]="'Please choose'" [(ngModel)]="row.itemAssemblerId"
+              [disabled]="(row.status == 'Released' || row.status == 'PreReleased')">
               <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
                 {{ option?.partner?.partnerCode }}
               </mat-option>
@@ -59,8 +68,8 @@
   <ngx-datatable-column editable="true">
     <ng-template let-row="row" ngx-datatable-cell-template>
       <span *ngIf="role== 'admin'">
-      <input matInput placeholder="Quantity" *ngIf="(row.children && row.children.length == 0)"
-        [(ngModel)]="row.quantity" [disabled]="(row.status == 'Released' || row.status == 'PreReleased')">
+        <input matInput placeholder="Quantity" *ngIf="(row.children && row.children.length == 0)"
+          [(ngModel)]="row.quantity" [disabled]="(row.status == 'Released' || row.status == 'PreReleased')">
       </span>
       <span *ngIf="role !== 'admin' && (row.children && row.children.length == 0)">
         {{ row.quantity }}
