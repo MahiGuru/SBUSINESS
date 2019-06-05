@@ -338,7 +338,18 @@ $fw-normal: normal; //FONT WEIGHT CLASSES (e.g. class="fw-light")
 .capitalize{
   text-transform: capitalize;
 }
-
+.newRow {
+  .mat-input-element {
+    padding: 10px !important;
+    background-color: #ececec;
+    position: relative;
+    top: 0;
+  }
+  .mat-select{
+  padding: 10px !important;
+  background-color: #ececec;
+  }
+}
 
 .mat-form-field-appearance-legacy {
   .mat-form-field-underline {
