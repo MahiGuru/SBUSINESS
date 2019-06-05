@@ -65,6 +65,27 @@ export class ReleaseSubOrdersComponent implements OnInit {
     row.itemAssemblerId = null;
     row.isAssemblerChanged = false;
   }
+
+  onSaveNewOrder(orders, row) {
+    orders.push({
+      ReleaseOrderId: row.releaseOrderId, // this.childRow.releaseOrderId,
+      ItemAssemblerId: row.itemAssemblerId, // this.childRow.ItemAssemblerId,
+      PrintOrderId: row.printOrderId,
+      ItemPartner: {
+        ItemPartnerId: row.itemPartner.itemPartnerId
+      },
+      Quantity: row.quantity
+    });
+    console.log(orders, row);
+    this.releaseService.saveNewReleaseItem(orders).subscribe(newRecords => {
+      this.adjustCols.emit('save');
+      // row.isAssemblerChanged = false;
+      // row.isNewRowEnabled = false;
+      this.rowsUpdate.emit(newRecords);
+
+    });
+  }
+
   saveAssembler(row) {
     console.log(row);
     const newRecord = [];
