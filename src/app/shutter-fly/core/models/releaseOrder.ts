@@ -2,6 +2,7 @@ export class ReleaseOrder {
   public itemPartner;
   public releaseOrderId: any = '';
   public itemAssemblerId: any = '';
+  public printOrderId: any = '';
   public quantity: any = '';
   public poNum: any = '';
   public waste: any = '';
@@ -32,6 +33,7 @@ export class ReleaseOrder {
       };
       this.releaseOrderId = releaseOrder.releaseOrderId;
       this.itemAssemblerId = releaseOrder.itemAssemblerId;
+      this.printOrderId = releaseOrder.printOrderId;
       this.quantity = releaseOrder.quantity;
       this.waste = releaseOrder.waste;
       this.poNum = releaseOrder.poNum;

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
 import {
   faWindowClose, faCheckSquare,
-  faPencilAlt, faTrashAlt, faShare, faBan, faPrint, faCheckCircle, faDownload
+  faPencilAlt, faTrashAlt, faShare, faBan, faPrint, faCheckCircle, faDownload, faSave
 } from '@fortawesome/free-solid-svg-icons';
 import { PrintOrderService } from 'src/app/shutter-fly/shared/services/print-order.service';
 import { ReleasesService } from 'src/app/shutter-fly/shared/services/releases.service';
@@ -31,11 +31,14 @@ export class ReleaseSubOrdersComponent implements OnInit {
   faPrint = faPrint;
   faDownload = faDownload;
   faCheckCircle = faCheckCircle;
+  faSave = faSave;
+
   public OrdersState = ORDERS;
   role: any;
   isNewRowEnabled: any;
   releaseItems: any;
   childRow: any;
+  isAssemblerChanged: boolean;
   constructor(public releaseService: ReleasesService) { }
 
   ngOnInit() {
@@ -53,9 +56,31 @@ export class ReleaseSubOrdersComponent implements OnInit {
   }
   onItemChange(event, nrow) {
     console.log(event, nrow);
+    nrow.isAssemblerChanged = true;
   }
   cancelChildRowClick(row) {
     row.editable = false;
+  }
+  cancelItemChange(row) {
+    row.itemAssemblerId = null;
+    row.isAssemblerChanged = false;
+  }
+  saveAssembler(row) {
+    console.log(row);
+    const newRecord = [];
+    newRecord.push(
+      {
+        ReleaseOrderId: row.releaseOrderId, // this.childRow.releaseOrderId,
+        ItemAssemblerId: row.itemAssemblerId, // this.childRow.ItemAssemblerId,
+        PrintOrderId: row.printOrderId,
+        Quantity: row.quantity
+      }
+    );
+    console.log(newRecord);
+    this.releaseService.saveNewReleaseItem(newRecord).subscribe(newRecords => {
+      this.adjustCols.emit('new');
+      row.isAssemblerChanged = false;
+    });
   }
   onSavePropertyVal(row) {
     row.editable = false;

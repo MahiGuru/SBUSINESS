@@ -144,19 +144,20 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
   }
   addRowsToRelease(row) {
     const control = this.myForm.controls.addRows as FormArray;
-    console.log('SAVEEEEE ', row);
+    console.log('SAVEEEEE ', row, this.childRow);
     const newRecord = [];
     _.each(control.value, (val) => {
+      console.log(val);
       newRecord.push(
         {
-          ReleaseOrderId: this.childRow.releaseOrderId,
-          ItemAssemblerId: this.childRow.ItemAssemblerId,
+          ReleaseOrderId: null, // this.childRow.releaseOrderId,
+          ItemAssemblerId: val.partner, // this.childRow.ItemAssemblerId,
+          PrintOrderId: this.childRow.printOrderId,
           Quantity: val.quantity
         }
       );
     });
     console.log(newRecord);
-
     this.releaseService.saveNewReleaseItem(newRecord).subscribe(newRecords => {
       const tempArr = [];
       this.adjustCols.emit('new');

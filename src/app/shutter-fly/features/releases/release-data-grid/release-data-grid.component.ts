@@ -56,6 +56,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   myForm: FormGroup;
   addForm: FormGroup;
   role: string;
+  isAssemblerChanged: boolean;
 
   @Output() isAddBtnClicked: EventEmitter<any> = new EventEmitter();
   filterVal: any;
@@ -110,8 +111,29 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     this.getReleaseOrders();
 
   }
-  onItemChange(event) {
+  cancelItemChange(row) {
+    row.itemAssemblerId = null;
+    row.isAssemblerChanged = false;
+  }
+  saveAssembler(row) {
+    const newRecord = [];
+    newRecord.push(
+      {
+        ReleaseOrderId: row.releaseOrderId,
+        ItemAssemblerId: row.itemAssemblerId,
+        PrintOrderId: row.printOrderId,
+        Quantity: row.quantity
+      }
+    );
+    console.log(newRecord);
+    this.releaseService.saveNewReleaseItem(newRecord).subscribe(newRecords => {
+      this.getReleaseOrders();
+      row.isAssemblerChanged = false;
+    });
+  }
+  onItemChange(event, row) {
     console.log(event);
+    row.isAssemblerChanged = true;
   }
   getReleaseOrders() {
     this.releaseService.getAllReleaseRecords().subscribe((rows: any) => {

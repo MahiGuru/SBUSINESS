@@ -28,17 +28,27 @@
       <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="5px">
         <aside fxFlex>
           <mat-select [placeholder]="'Please choose'" [(ngModel)]="row.itemAssemblerId"
-            (selectionChange)="onItemChange($event)" *ngIf="(row.assemblers && row.assemblers.length > 0)">
+            (selectionChange)="onItemChange($event, row)"
+            *ngIf="(row.assemblers && row.assemblers.length > 0 && (row.children && row.children.length == 0))">
             <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
               {{ option?.partner?.partnerCode }}
             </mat-option>
           </mat-select>
+          <span *ngIf="(row.children && row.children.length > 0)"> Multiple</span>
         </aside>
         <aside fxFlex="30px">
           <span (click)="addNewBtnClicked(row)"
-            *ngIf="((row.assemblers && row.assemblers.length > 0) && (row.children && row.children.length == 0))">
+            *ngIf="((row.assemblers && row.assemblers.length > 0) && (row.children && row.children.length == 0) && !row.isAssemblerChanged)">
             <i class="material-icons green"> add_circle </i>
           </span>
+          <div *ngIf="row.isAssemblerChanged">
+            <span (click)="cancelItemChange(row)" class="mr-5">
+              <i class="material-icons red"> cancel_presentation </i>
+            </span>
+            <span (click)="saveAssembler(row)">
+              <i class="material-icons save-green"> save </i>
+            </span>
+          </div>
         </aside>
       </div>
     </ng-template>

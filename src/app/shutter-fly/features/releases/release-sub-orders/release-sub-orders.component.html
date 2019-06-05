@@ -21,11 +21,19 @@
                 </mat-option>
               </mat-select>
             </aside>
-            <aside fxFlex="30px" fxFlexAlign="center">
+            <aside [fxFlex]="(nrow.isAssemblerChanged) ? '60px': '30px'" fxFlexAlign="center">
               <span (click)="addAnotherRow(nrow)"
-                *ngIf="(!isNewRowEnabled && row.assemblers && row.assemblers.length > 0)">
+                *ngIf="(!isNewRowEnabled && row.assemblers && row.assemblers.length > 0 && !nrow.isAssemblerChanged)">
                 <i class="material-icons green"> add_circle </i>
               </span>
+              <div *ngIf="nrow.isAssemblerChanged">
+                <span (click)="cancelItemChange(nrow)" class="mr-5">
+                  <i class="material-icons red"> cancel_presentation </i>
+                </span>
+                <span (click)="saveAssembler(nrow)">
+                  <i class="material-icons save-green"> save </i>
+                </span>
+              </div>
             </aside>
           </div>
 
