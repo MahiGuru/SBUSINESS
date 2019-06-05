@@ -6,7 +6,7 @@ import { DatatableComponent } from '@swimlane/ngx-datatable';
 import * as _ from 'lodash';
 import {
   faCaretRight, faCaretDown, faWindowClose, faCheckSquare,
-  faPencilAlt, faTrashAlt, faShare, faCheckCircle, faPrint
+  faPencilAlt, faTrashAlt, faShare, faCheckCircle, faPrint, faDownload
 } from '@fortawesome/free-solid-svg-icons';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
 import { MatDialog } from '@angular/material';
@@ -40,6 +40,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   faShare = faShare;
   faCheckCircle = faCheckCircle;
   faPrint = faPrint;
+  faDownload = faDownload;
 
   isNewRowEnabled: boolean;
   public inventoryItems: any;

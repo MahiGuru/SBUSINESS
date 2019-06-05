@@ -7,7 +7,7 @@
       </span>
       <span class="child-item">{{nrow.itemPartner.item.itemType}}
       </span>
-      <span class="child-item">{{nrow.itemPartner.partner.partnerType}}
+      <span class="child-item">{{nrow.itemPartner.partner.partnerCode}}
       </span>
       <span class="child-item">{{nrow.recieved}} </span>
       <span class="child-item">{{nrow.sflyWip}}</span>
@@ -23,8 +23,8 @@
       <span class="child-item ellipsis"> {{nrow.updatedAt}}</span>
       <span class="child-item">
         <span fxLayout="row" fxLayoutGap="20px" *ngIf="!nrow.editable">
-          <span (click)="nrow.editable = true" matTooltip="Edit Item"
-            matTooltipPosition="above" matTooltipClass="tooltip">
+          <span (click)="nrow.editable = true" matTooltip="Edit Item" matTooltipPosition="above"
+            matTooltipClass="tooltip">
             <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
           <span matTooltip="Delete Item" matTooltipPosition="above" matTooltipClass="tooltip">

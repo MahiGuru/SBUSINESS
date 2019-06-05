@@ -20,7 +20,7 @@
   </ngx-datatable-column>
   <ngx-datatable-column name="Type" prop="itemPartner.item.itemType" editable="true" [flexGrow]="1">
   </ngx-datatable-column>
-  <ngx-datatable-column name="Partner" prop="itemPartner.partner.partnerType" editable="true" [flexGrow]="1">
+  <ngx-datatable-column name="Partner" prop="itemPartner.partner.partnerCode" editable="true" [flexGrow]="1">
   </ngx-datatable-column>
   <ngx-datatable-column prop="recieved" editable="true" [flexGrow]="1"></ngx-datatable-column>
   <ngx-datatable-column prop="sflyWip" editable="true" [flexGrow]="1"></ngx-datatable-column>
@@ -76,8 +76,8 @@
       </section>
       <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">
-        <sb-inventory-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" (onSave)="onSaveRowsUpdate($event)"
-          (adjustCols)="adjustCols($event)">
+        <sb-inventory-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row"
+          (onSave)="onSaveRowsUpdate($event)" (adjustCols)="adjustCols($event)">
         </sb-inventory-new-order>
       </section>
     </ng-template>

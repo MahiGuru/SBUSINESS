@@ -180,7 +180,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       itemNo: [''],
       itemDesc: [''],
       itemType: [''],
-      partner: [''],
+      partner: [null],
       quantity: [''],
       poNum: ['']
     });
@@ -208,7 +208,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       itemDesc: [1],
       partners: [[]],
       itemType: [''],
-      partner: [1],
+      partner: [null],
       quantity: [1],
       poNum: [1]
     }));
@@ -257,7 +257,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       itemDesc: [1],
       itemType: [''],
       partners: [[]],
-      partner: [1],
+      partner: [null],
       quantity: [1],
       poNum: [1]
     }));

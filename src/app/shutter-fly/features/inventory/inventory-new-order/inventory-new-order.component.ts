@@ -68,7 +68,7 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
       itemNo: [1],
       itemDesc: [1],
       itemType: [''],
-      partner: [1]
+      partner: [null]
     }));
     control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
     control.controls[0].get('itemDesc').setValue(this.selectedItem.itemId);
@@ -80,7 +80,7 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
       itemNo: [1],
       itemDesc: [1],
       itemType: [''],
-      partner: [1]
+      partner: [null]
     }));
     this.adjustCols.emit('new');
   }

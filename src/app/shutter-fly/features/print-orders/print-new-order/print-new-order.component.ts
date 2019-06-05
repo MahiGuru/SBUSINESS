@@ -73,7 +73,7 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
       itemDesc: [1],
       partners: [[]],
       itemType: [''],
-      partner: [1],
+      partner: [null],
       quantity: [1],
       poNum: [1]
     }));
@@ -88,7 +88,7 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
       itemDesc: [1],
       partners: [[]],
       itemType: [''],
-      partner: [1],
+      partner: [null],
       quantity: [1],
       poNum: [1]
     }));
