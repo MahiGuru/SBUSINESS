@@ -73,6 +73,9 @@ export class ReleaseSubOrdersComponent implements OnInit {
         ReleaseOrderId: row.releaseOrderId, // this.childRow.releaseOrderId,
         ItemAssemblerId: row.itemAssemblerId, // this.childRow.ItemAssemblerId,
         PrintOrderId: row.printOrderId,
+        ItemPartner: {
+          ItemPartnerId: row.itemPartner.itemPartnerId
+        },
         Quantity: row.quantity
       }
     );

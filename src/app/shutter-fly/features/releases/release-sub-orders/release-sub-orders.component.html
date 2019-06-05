@@ -38,8 +38,11 @@
           </div>
 
         </span>
-        <span class="child-item" fxFlexAlign="center">{{nrow.quantity}}</span>
-        <span class="child-item" fxFlexAlign="center">{{nrow.release}}</span>
+        <span class="child-item" fxFlexAlign="center">
+          <input matInput placeholder="Quantity" [(ngModel)]="nrow.quantity">
+        </span>
+        <span class="child-item" fxFlexAlign="center">
+          {{nrow.releaseJobNo}}</span>
         <span class="child-item ellipsis" fxFlexAlign="center"> {{nrow.createdAt | dateFormat}}</span>
         <span class="child-item" fxFlexAlign="center">
           {{(nrow.status == 'Printed' && role == 'admin') || (nrow.status == 'PreReleased' && role == 'printer') ? 'Pending Release' : nrow.status}}

@@ -153,6 +153,9 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
           ReleaseOrderId: null, // this.childRow.releaseOrderId,
           ItemAssemblerId: val.partner, // this.childRow.ItemAssemblerId,
           PrintOrderId: this.childRow.printOrderId,
+          ItemPartner: {
+            ItemPartnerId: this.childRow.itemPartner.itemPartnerId
+          },
           Quantity: val.quantity
         }
       );

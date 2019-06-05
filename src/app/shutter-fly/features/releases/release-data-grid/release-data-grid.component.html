@@ -58,7 +58,7 @@
       <input matInput placeholder="Quantity" [(ngModel)]="row.quantity">
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column prop="release" editable="true"></ngx-datatable-column>
+  <ngx-datatable-column prop="releaseJobNo" editable="true"></ngx-datatable-column>
   <ngx-datatable-column name="Created" editable="true">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
       <span *ngIf="!isNewRowEnabled">{{ row.createdAt | dateFormat}}</span>

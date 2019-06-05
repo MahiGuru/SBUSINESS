@@ -345,17 +345,11 @@ $fw-normal: normal; //FONT WEIGHT CLASSES (e.g. class="fw-light")
   padding: 10px !important;
   background-color: #ececec;
   }
-.newRow {
-  .mat-input-element {
-    padding: 10px !important;
-    background-color: #ececec;
-    position: relative;
-    top: 0;
-  }
-  .mat-select{
+.mat-input-element {
   padding: 10px !important;
-  background-color: #ececec;
-  }
+  background-color: #ececec !important;
+  position: relative;
+  top: 0;
 }
 
 .mat-form-field-appearance-legacy {

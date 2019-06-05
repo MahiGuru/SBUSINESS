@@ -12,11 +12,13 @@ export class ReleaseOrder {
   public updatedAt: any = '';
   public children: any = [];
   public assemblers: any = [];
+  public releaseJobNo = '';
 
   constructor(releaseOrder?: any) {
     if (releaseOrder) {
       this.itemAssemblerId = releaseOrder.itemAssemblerId;
       this.itemPartner = {
+        itemPartnerId: releaseOrder.itemPartner.itemPartnerId,
         item: {
           itemId: releaseOrder.itemPartner.item.itemId,
           itemNo: releaseOrder.itemPartner.item.itemNo,
@@ -31,6 +33,7 @@ export class ReleaseOrder {
           partnerCode: releaseOrder.itemPartner.partner.partnerCode
         }
       };
+      this.releaseJobNo = releaseOrder.releaseJobNo;
       this.releaseOrderId = releaseOrder.releaseOrderId;
       this.itemAssemblerId = releaseOrder.itemAssemblerId;
       this.printOrderId = releaseOrder.printOrderId;

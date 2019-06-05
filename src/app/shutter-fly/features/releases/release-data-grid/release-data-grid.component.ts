@@ -123,14 +123,21 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
         ReleaseOrderId: row.releaseOrderId,
         ItemAssemblerId: row.itemAssemblerId,
         PrintOrderId: row.printOrderId,
+        ItemPartner: {
+          ItemPartnerId: row.itemPartner.itemPartnerId
+        },
         // ItemPartnerId:
         Quantity: row.quantity
       }
     );
     console.log(newRecord);
     this.releaseService.saveNewReleaseItem(newRecord).subscribe(newRecords => {
-      this.getReleaseOrders();
       row.isAssemblerChanged = false;
+      setTimeout(() => {
+        this.isNewRowEnabled = false;
+        this.table.rowDetail.toggleExpandRow(row);
+        this.getReleaseOrders();
+      }, 500);
     });
   }
   onItemChange(event, row) {
