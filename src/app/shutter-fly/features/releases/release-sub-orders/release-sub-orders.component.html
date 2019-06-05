@@ -32,7 +32,7 @@
               </span>
             </aside>
             <aside [fxFlex]="(nrow.isAssemblerChanged) ? '60px': '30px'" fxFlexAlign="center"
-              *ngIf="(nrow.itemAssemblerId) && role === 'admin' && !(nrow.status == 'Released' || nrow.status == 'PreReleased')">
+              *ngIf=" role === 'admin' && !(nrow.status == 'Released' || nrow.status == 'PreReleased')">
               <span (click)="addAnotherRow(nrow)"
                 *ngIf="(!isNewRowEnabled && row.assemblers && row.assemblers.length > 0 && !nrow.isAssemblerChanged)">
                 <i class="material-icons green"> add_circle </i>
