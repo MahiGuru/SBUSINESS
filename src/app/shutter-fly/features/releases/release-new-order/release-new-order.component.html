@@ -14,41 +14,42 @@
       <div class="new-rows-container">
 
         <div class="newRow add-row-section mtb-2" *ngFor="let comp of myForm.get('addRows').controls; let i=index">
-          <div [formGroupName]="i" fxLayout="row" fxLayoutGap="0px">
-            <span class="new-item">
-              <mat-select [placeholder]="'Item No'" formControlName="itemNo"
-                (selectionChange)="onItemChange($event, i)">
+          <div [formGroupName]="i" fxLayout="row" fxLayoutGap="0px" fxLayoutAlign="center">
+            <span class="new-item" fxFlexAlign="center">
+              <mat-select [placeholder]="'Item No'" formControlName="itemNo" (selectionChange)="onItemChange($event, i)"
+                disabled>
                 <mat-option *ngFor="let option of releaseItems" [value]="option?.item?.itemNo">
                   {{ option?.item?.itemNo }}
                 </mat-option>
               </mat-select>
             </span>
-            <span class="new-item">
+            <span class="new-item" fxFlexAlign="center">
               <mat-select [placeholder]="'Item Desc'" formControlName="itemDesc"
-                (selectionChange)="onItemChange($event, i)">
+                (selectionChange)="onItemChange($event, i)" disabled>
                 <mat-option *ngFor="let option of releaseItems" [value]="option?.item?.itemNo">
                   {{ option?.item?.itemDescription }}
                 </mat-option>
               </mat-select>
             </span>
-            <span class="new-item">
+            <span class="new-item" fxFlexAlign="center">
               {{comp.get('itemType').value}}
             </span>
             <!-- <input *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId" /> -->
-            <span class="new-item">
-              <mat-select formControlName="partner" (selectionChange)="onPartnerChange($event, i)">
+            <span class="new-item" fxFlexAlign="center">
+              <mat-select [placeholder]="'Please choose'" formControlName="partner"
+                (selectionChange)="onPartnerChange($event, i)">
                 <mat-option *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId">
                   {{ partner?.partner?.partnerCode }}
                 </mat-option>
               </mat-select>
             </span>
-            <span class="new-item">
+            <span class="new-item" fxFlexAlign="center">
               <input matInput placeholder="Search Filter By" formControlName="quantity">
             </span>
-            <span class="new-item">
+            <span class="new-item" fxFlexAlign="center">
               <input matInput placeholder="Search Filter By" formControlName="poNum">
             </span>
-            <div class="new-item">
+            <div class="new-item" fxFlexAlign="center">
               <i class="material-icons red" (click)="removeCurrentRow(i)">
                 remove_circle
               </i>

@@ -28,7 +28,7 @@
       <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="5px">
         <aside fxFlex>
           <mat-select [placeholder]="'Please choose'" [(ngModel)]="row.itemAssemblerId"
-            (selectionChange)="onItemChange($event)">
+            (selectionChange)="onItemChange($event)" *ngIf="(row.assemblers && row.assemblers.length > 0)">
             <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
               {{ option?.partner?.partnerCode }}
             </mat-option>

@@ -95,6 +95,15 @@ export class ReleaseSubOrdersComponent implements OnInit {
     } else {
       row.childrenHeight = row.childrenHeight - 20;
     }
+    this.releaseService.getReleaseItems().subscribe(res => {
+      this.releaseItems = res;
+      const releaseItem = _.filter(this.releaseItems, (val) => {
+        return val.item.itemId === this.row.itemPartner.item.itemId;
+        // console.log(val, row);
+      });
+      this.row.assemblers = (releaseItem[0]) ? releaseItem[0].itemPartner : [];
+      console.log('SUBORDER >>>> ', this.row);
+    });
     this.adjustCols.emit(val);
   }
 

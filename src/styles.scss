@@ -338,7 +338,9 @@ $fw-normal: normal; //FONT WEIGHT CLASSES (e.g. class="fw-light")
 .capitalize{
   text-transform: capitalize;
 }
-
+.mat-select-disabled .mat-select-value {
+  color: rgba(163, 163, 163, 0.5);
+}
 .mat-select{
   padding: 10px !important;
   background-color: #ececec;

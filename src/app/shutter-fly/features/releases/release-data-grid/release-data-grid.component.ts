@@ -77,12 +77,12 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     console.log(this.windowHeight, this.windowWidth);
   }
   constructor(public sharedOrderService: SharedOrdersService,
-    public inventoryService: InventoryService,
-    public fb: FormBuilder,
-    public cdr: ChangeDetectorRef,
-    public dialog: MatDialog,
-    public releaseService: ReleasesService,
-    private elem: ElementRef) {
+              public inventoryService: InventoryService,
+              public fb: FormBuilder,
+              public cdr: ChangeDetectorRef,
+              public dialog: MatDialog,
+              public releaseService: ReleasesService,
+              private elem: ElementRef) {
     this.getScreenSize();
   }
 
@@ -180,7 +180,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     row.children = childRows;
     // console.log(row);
     this.table.rowDetail.toggleExpandRow(row);
-    row.childrenHeight = (row.children && row.children.length > 0) ? row.children.length * 60 : 100;
+    row.childrenHeight = (row.children && row.children.length > 0) ? row.children.length * 70 : 100;
     setTimeout(() => {
       const colWidth = (this.windowWidth / (this.cols.length + 1));
       const childRow = this.elem.nativeElement.querySelectorAll('.newRow');
