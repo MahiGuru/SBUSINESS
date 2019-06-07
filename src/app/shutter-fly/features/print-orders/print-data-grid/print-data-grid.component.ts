@@ -77,7 +77,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?) {
     this.windowHeight = window.innerHeight;
-    this.windowWidth = window.innerWidth - 200;
+    this.windowWidth = window.innerWidth;
     console.log(this.windowHeight, this.windowWidth);
   }
 
@@ -105,7 +105,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   /** Datatable body column width */
   dataTableBodyCellWidth() {
     setTimeout(() => {
-      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const colWidth = (this.windowWidth / (this.cols.length));
       const wActiveClass = this.elem.nativeElement.querySelectorAll('.w-active');
       const bodyCellRow = this.elem.nativeElement.querySelectorAll('.datatable-body-row');
       if (bodyCellRow.length > wActiveClass.length) {
@@ -116,7 +116,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
 
   /** Data table header column width set */
   setColHeaderWidth() {
-    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    const colWidth = (this.windowWidth / (this.cols.length));
     setTimeout(() => {
       const twoElem = this.elem.nativeElement.querySelectorAll('.datatable-header-cell');
       this.setColWidth(twoElem, colWidth);
@@ -125,7 +125,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
 
   /** Datatable Body column width */
   setBodyCellWidth(bodyCellRow) {
-    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    const colWidth = (this.windowWidth / (this.cols.length));
     _.each(bodyCellRow, (bodyCell, i) => {
       bodyCell.classList.add('w-active');
       const tblbodyCell = bodyCell.querySelectorAll('.datatable-body-cell');
@@ -137,11 +137,11 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   setColWidth(tblbodyCell, colWidth) {
     _.each(tblbodyCell, (tblCell, j) => {
       if (j === 0) {
-        tblCell.style.width = (colWidth + 100) + 'px';
+        tblCell.style.width = (colWidth) + 'px';
       } else if (j === 1) {
-        tblCell.style.width = (colWidth + 200) + 'px';
+        tblCell.style.width = (colWidth) + 'px';
       } else {
-        tblCell.style.width = colWidth - (370 / (this.cols.length + 1)) + 'px';
+        tblCell.style.width = colWidth + 'px';
       }
     });
   }
@@ -157,9 +157,9 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     row.children = childRows;
     // console.log(row);
     this.table.rowDetail.toggleExpandRow(row);
-    row.childrenHeight = (row.children && row.children.length > 0) ? row.children.length * 65 : 100;
+    row.childrenHeight = (row.children && row.children.length > 0) ? row.children.length * 50 : 100;
     setTimeout(() => {
-      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const colWidth = (this.windowWidth / (this.cols.length));
       const childRow = this.elem.nativeElement.querySelectorAll('.newRow');
       _.each(childRow, (childCell, i) => {
         childCell.classList.add('w-row-active');
@@ -222,7 +222,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     setTimeout(() => {
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
       setTimeout(() => {
-        const colWidth = (this.windowWidth / (this.cols.length + 1));
+        const colWidth = (this.windowWidth / (this.cols.length));
         const childRow = this.elem.nativeElement.querySelectorAll('.add-row-section');
         console.log('ADD ANOTHER CHILDDDD >>> ', childRow);
         _.each(childRow, (childCell, i) => {
@@ -265,7 +265,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     this.newRowHeight += 80;
     this.rows[0].childrenHeight += 80;
     setTimeout(() => {
-      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const colWidth = (this.windowWidth / (this.cols.length));
       const childRow = this.elem.nativeElement.querySelectorAll('.add-row-section');
       console.log('ADD ANOTHER CHILDDDD >>> ', childRow);
       _.each(childRow, (childCell, i) => {
@@ -458,7 +458,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   /** Loop Parent elements and inside children element loop and apply the width */
   setColsFromMultiLevelElements(parent, child) {
     setTimeout(() => {
-      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const colWidth = (this.windowWidth / (this.cols.length));
       const childRow = this.elem.nativeElement.querySelectorAll('.' + parent);
       _.each(childRow, (childCell, i) => {
         const tblbodyCell = childCell.querySelectorAll('.' + child);

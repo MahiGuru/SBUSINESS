@@ -344,23 +344,50 @@ $fw-normal: normal; //FONT WEIGHT CLASSES (e.g. class="fw-light")
 .mat-select{
   padding: 10px !important;
   background-color: #ececec;
+  &.mat-select-disabled{
+    border: none;
+    background-color: #fcfcfc;
+
   }
+}
   .mat-input-element:disabled{
-    color: #999999;
+    color: #b9b9b9;
+    background-color: #e1e1e1 !important;
   }
   ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: red;
   }
+.error{
+  font-size: 12px;
+}
 .newRow, .ngx-datatable {
   .mat-input-element {
-    padding: 10px !important;
-    background-color: #ececec;
-    position: relative;
-    top: 0;
+      padding: 10px !important;
+      background-color: #f7f7f7;
+      position: relative;
+      border: 1px solid #e2e2e2;
+      top: 0;
+      &.error{
+        background-color: #ffe3e3;
+        border: 1px solid #ffb4aa;
+      }
   }
   .mat-select{
-  padding: 10px !important;
-  background-color: #ececec;
+      padding: 10px !important;
+      background-color: #f7f7f7;
+      border: 1px solid #e2e2e2;
+      &.error{
+        background-color: #ffe3e3;
+        border: 1px solid #ffb4aa;
+      }
+      &.mat-select-disabled{
+        border: none;
+        background-color:#e1e1e1 !important;
+        .mat-select-placeholder{
+          color:#bcbcbc;
+        }
+
+      }
   }
 }
 

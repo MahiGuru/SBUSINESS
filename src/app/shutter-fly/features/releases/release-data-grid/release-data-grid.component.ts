@@ -110,7 +110,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       partner: ['']
     });
 
-    this.getReleaseOrders();
+    this.setAssemblers(this.rows);
 
   }
   cancelItemChange(row) {
@@ -171,28 +171,33 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   getReleaseOrders() {
     this.releaseService.getAllReleaseRecords().subscribe((rows: any) => {
       console.log('ROWS, ', rows);
-      const tempRows = [];
       this.releaseService.getReleaseItems().subscribe(res => {
         this.releaseItems = res;
-        console.log("this.releaseItems >>>> ",this.releaseItems);
-        _.each(rows, (row) => {
-          // console.log(row.item.itemId, row.itemPartner.item.itemId);
-          const releaseItem = _.filter(this.releaseItems, (val) => {
-            return val.item.itemId === row.itemPartner.item.itemId;
-            // console.log(val, row);
-          });
-          const releaseOrders = new ReleaseOrder(row);
-          console.log('BEFORE >> ', releaseOrders, releaseItem[0]);
-
-          releaseOrders.assemblers = (releaseItem[0]) ? releaseItem[0].itemPartner : [];
-          console.log(releaseOrders);
-          tempRows.push(releaseOrders);
-        });
-        this.rows = [...tempRows];
-
+        console.log('this.releaseItems >>>> ', this.releaseItems);
+        this.setAssemblers(rows);
         console.log(res);
       });
     });
+  }
+  /****
+   * SET ASSEMBLERS
+   */
+  setAssemblers(rows) {
+    const tempRows = [];
+    _.each(rows, (row) => {
+      // console.log(row.item.itemId, row.itemPartner.item.itemId);
+      const releaseItem = _.filter(this.releaseItems, (val) => {
+        return val.item.itemId === row.itemPartner.item.itemId;
+        // console.log(val, row);
+      });
+      const releaseOrders = new ReleaseOrder(row);
+      console.log('BEFORE >> ', releaseOrders, releaseItem[0]);
+
+      releaseOrders.assemblers = (releaseItem[0]) ? releaseItem[0].itemPartner : [];
+      console.log(releaseOrders);
+      tempRows.push(releaseOrders);
+    });
+    this.rows = [...tempRows];
   }
 
   addNewBtnClicked(row) {

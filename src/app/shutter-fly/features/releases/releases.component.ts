@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { SharedOrdersService } from '../../shared/services/shared-orders.service';
 import { MatDialog } from '@angular/material';
 import * as _ from 'lodash';
 import { ReleasesService } from 'src/app/shutter-fly/shared/services/releases.service';
@@ -56,36 +55,6 @@ export class ReleasesComponent implements OnInit {
   toggleExpandRow(row) {
     this.isAddNewBtnClicked = true;
   }
-  // addRowsToInventory() {
-  //   if (this.addedRows.length > 0) {
-  //     this.rows.splice(0, 1);
-  //     this.addedRows.forEach(row => {
-  //       this.rows.unshift(row);
-  //     });
-  //     this.rows = [...this.rows];
-  //     this.table.rowDetail.toggleExpandRow(this.rows[0]);
-  //   }
-  // }
-  // cancelNewInventory() {
-  //   this.rows.splice(0, 1);
-  //   this.addedRows = [];
-  //   this.rows = [...this.rows];
-  //   this.table.rowDetail.toggleExpandRow(this.rows[0]);
-  // }
-
-  // deleteOrder() {
-  //   const dialogRef = this.dialog.open(DeleteDialogComponent, {
-  //     width: '350px',
-  //     height: '350px',
-  //     data: {}
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     // console.log('The dialog was closed');
-  //     // this.animal = result;
-  //   });
-  // }
-
   isAddBtnClicked(event) {
     this.isAddNewBtnClicked = event;
     this.cdr.detectChanges();

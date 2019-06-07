@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
 import { Inventory } from 'src/app/shutter-fly/core/models/newInventory';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+import { CommonService } from 'src/app/shutter-fly/shared/services/common.service';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
   selectedItemType: any;
   partners: any;
   constructor(public inventoryService: InventoryService,
+              public commonService: CommonService,
               public fb: FormBuilder) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isAddBtnClicked && changes.isAddBtnClicked.currentValue) {
@@ -44,10 +46,10 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
       addRows: this.fb.array([])
     });
     this.addForm = this.fb.group({
-      itemNo: [''],
-      itemDesc: [''],
+      itemNo: ['', Validators.required],
+      itemDesc: ['', Validators.required],
       itemType: [''],
-      partner: ['']
+      partner: ['', Validators.required]
     });
     this.inventoryService.getAddItems().subscribe(res => {
       this.inventoryItems = res;
@@ -65,10 +67,10 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
   addInitialRows() {
     const control = this.myForm.controls.addRows as FormArray;
     control.push(this.fb.group({
-      itemNo: [null],
-      itemDesc: [null],
+      itemNo: [null, Validators.required],
+      itemDesc: [null, Validators.required],
       itemType: [''],
-      partner: [null]
+      partner: [null, Validators.required]
     }));
     control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
     control.controls[0].get('itemDesc').setValue(this.selectedItem.itemId);
@@ -77,24 +79,17 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
   addAnotherRow() {
     const control = this.myForm.controls.addRows as FormArray;
     control.push(this.fb.group({
-      itemNo: [null],
-      itemDesc: [null],
+      itemNo: [null, Validators.required],
+      itemDesc: [null, Validators.required],
       itemType: [''],
-      partner: [null]
+      partner: [null, Validators.required]
     }));
     this.adjustCols.emit('new');
   }
   cancelNewInventory() {
-
     const control = this.myForm.controls.addRows as FormArray;
     control.controls = [];
-
     this.adjustCols.emit('cancel');
-    // this.newRowHeight = 100;
-    // this.table.rowDetail.toggleExpandRow(this.rows[0]);
-    // this.isAddBtnClicked.emit(false);
-    // this.isNewRowEnabled = false;
-    // this.dataTableBodyCellWidth();
   }
   removeCurrentRow(i) {
     const control = this.myForm.controls.addRows as FormArray;
@@ -102,7 +97,6 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
     this.adjustCols.emit('remove');
   }
   onDetailToggle(event) {
-    // console.log('Detail Toggled', event);
   }
   addRowsToInventory() {
     const control = this.myForm.controls.addRows as FormArray;
@@ -117,19 +111,23 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
         }
       });
     });
-
-    this.inventoryService.saveNewInventory(newRecord).subscribe(newRecords => {
-      const tempArr = [];
-      _.each(newRecords, (record, index) => {
-        const tempChildArr = [];
-        _.each(record.children, (child) => {
-          tempChildArr.push(new Inventory(child));
+    this.commonService.validateAllFields(this.myForm);
+    if (this.myForm.valid) {
+      this.inventoryService.saveNewInventory(newRecord).subscribe(newRecords => {
+        const tempArr = [];
+        _.each(newRecords, (record, index) => {
+          const tempChildArr = [];
+          _.each(record.children, (child) => {
+            tempChildArr.push(new Inventory(child));
+          });
+          record.children = tempChildArr;
+          tempArr.push(new Inventory(record));
         });
-        record.children = tempChildArr;
-        tempArr.push(new Inventory(record));
+        this.onSave.emit(tempArr);
       });
-      this.onSave.emit(tempArr);
-    });
+    } else {
+
+    }
 
   }
 

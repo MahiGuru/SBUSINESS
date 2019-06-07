@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { PrintOrderService } from 'src/app/shutter-fly/shared/services/print-order.service';
-import { PrintOrder } from 'src/app/shutter-fly/core/models/printOrder';
+import { PrintOrderService } from 'src/app/shutter-fly/shared/services/print-order.service'; 
+import { CommonService } from 'src/app/shutter-fly/shared/services/common.service';
 
 
 @Component({
@@ -30,8 +30,9 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
   selectedItemType: any;
   partners: any;
   constructor(public printerService: PrintOrderService,
-    public inventoryService: InventoryService,
-    public fb: FormBuilder) { }
+              public commonService: CommonService,
+              public inventoryService: InventoryService,
+              public fb: FormBuilder) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isAddBtnClicked && changes.isAddBtnClicked.currentValue) {
       console.log('ON CHANGES ');
@@ -46,12 +47,12 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
       addRows: this.fb.array([])
     });
     this.addForm = this.fb.group({
-      itemNo: [''],
-      itemDesc: [''],
+      itemNo: ['', Validators.required],
+      itemDesc: ['', Validators.required],
       itemType: [''],
-      partner: [''],
-      quantity: [''],
-      poNum: ['']
+      partner: ['', Validators.required],
+      quantity: ['', Validators.required],
+      poNum: ['', Validators.required]
     });
     this.printerService.getPrintItems().subscribe(res => {
       this.printItems = res;
@@ -69,13 +70,13 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
   addInitialRows() {
     const control = this.myForm.controls.addRows as FormArray;
     control.push(this.fb.group({
-      itemNo: [null],
-      itemDesc: [null],
+      itemNo: [null, Validators.required],
+      itemDesc: [null, Validators.required],
       partners: [[]],
       itemType: [''],
-      partner: [null],
-      quantity: [null],
-      poNum: [null]
+      partner: [null, Validators.required],
+      quantity: [null, Validators.required],
+      poNum: [null, Validators.required]
     }));
     control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
     control.controls[0].get('itemDesc').setValue(this.selectedItem.itemId);
@@ -84,27 +85,20 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
   addAnotherRow() {
     const control = this.myForm.controls.addRows as FormArray;
     control.push(this.fb.group({
-      itemNo: [null],
-      itemDesc: [null],
+      itemNo: [null, Validators.required],
+      itemDesc: [null, Validators.required],
       partners: [[]],
       itemType: [''],
-      partner: [null],
-      quantity: [null],
-      poNum: [null]
+      partner: [null, Validators.required],
+      quantity: [null, Validators.required],
+      poNum: [null, Validators.required]
     }));
     this.adjustCols.emit('new');
   }
   cancelNewInventory() {
-
     const control = this.myForm.controls.addRows as FormArray;
     control.controls = [];
-
     this.adjustCols.emit('cancel');
-    // this.newRowHeight = 100;
-    // this.table.rowDetail.toggleExpandRow(this.rows[0]);
-    // this.isAddBtnClicked.emit(false);
-    // this.isNewRowEnabled = false;
-    // this.dataTableBodyCellWidth();
   }
   removeCurrentRow(i) {
     const control = this.myForm.controls.addRows as FormArray;
@@ -116,10 +110,8 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
   }
   addRowsToPrinter() {
     const control = this.myForm.controls.addRows as FormArray;
-    // console.log(control.value);
     const newRecord = [];
     _.each(control.value, (val) => {
-      // console.log('SAVE ', val);
       newRecord.push({
         ItemPartner: {
           ItemPartnerId: val.partner
@@ -130,25 +122,13 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
       });
     });
 
-    this.printerService.saveNewPrintItem(newRecord).subscribe(newRecords => {
-      // console.log('SAVEDDDDD >>>> ', newRecords);
-      // const tempArr = [];
-      // _.each(newRecords, (record, index) => {
-      //   const tempChildArr = [];
-      //   _.each(record.children, (child) => {
-      //     tempChildArr.push(new PrintOrder(child));
-      //   });
-      //   record.children = tempChildArr;
-      //   tempArr.push(new PrintOrder(record));
-      // });
-      // // console.log('TEMP ARRRRRRRR', tempArr);
-      // const merged = _.merge(_.keyBy(this.rows, 'printOrderId'), _.keyBy(newRecords, 'printOrderId'));
-      // this.rows = _.values(merged);
-      this.rowsUpdate.emit(this.rows);
-      // console.log(values);
-      console.log(this.rows);
-
-    });
+    this.commonService.validateAllFields(this.myForm);
+    if (this.myForm.valid) {
+      this.printerService.saveNewPrintItem(newRecord).subscribe(newRecords => {
+        this.rowsUpdate.emit(this.rows);
+        console.log(this.rows);
+      });
+    }
 
   }
 
