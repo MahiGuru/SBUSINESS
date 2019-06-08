@@ -14,7 +14,8 @@
       {{row?.itemPartner?.item?.itemNo}}
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column name="description" prop="itemPartner.item.itemDescription" editable="true">
+  <ngx-datatable-column name="description" [cellClass]="'ellipsis'" prop="itemPartner.item.itemDescription"
+    editable="true">
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
       <span [matTooltip]="row?.itemPartner?.item?.itemDescription" matTooltipPosition="above" matTooltipClass="tooltip">
         {{row?.itemPartner?.item?.itemDescription}}

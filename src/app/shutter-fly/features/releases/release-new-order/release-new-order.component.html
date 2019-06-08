@@ -17,19 +17,26 @@
           <div [formGroupName]="i" fxLayout="row" fxLayoutGap="0px" fxLayoutAlign="center">
             <span class="new-item" fxFlexAlign="center">
               <mat-select [placeholder]="'Item No'" formControlName="itemNo" (selectionChange)="onItemChange($event, i)"
-                disabled>
+                [ngClass]="{'error': comp.get('itemNo').touched && comp.get('itemNo').invalid}" disabled>
                 <mat-option *ngFor="let option of releaseItems" [value]="option?.item?.itemNo">
                   {{ option?.item?.itemNo }}
                 </mat-option>
               </mat-select>
+              <p class="error pabsoulte mt-5" *ngIf="comp.get('itemNo').touched && comp.get('itemNo').invalid">
+                Please enter ItemNo
+              </p>
             </span>
             <span class="new-item" fxFlexAlign="center">
               <mat-select [placeholder]="'Item Desc'" formControlName="itemDesc"
+                [ngClass]="{'error': comp.get('itemDesc').touched && comp.get('itemDesc').invalid}"
                 (selectionChange)="onItemChange($event, i)" disabled>
                 <mat-option *ngFor="let option of releaseItems" [value]="option?.item?.itemNo">
                   {{ option?.item?.itemDescription }}
                 </mat-option>
               </mat-select>
+              <p class="error pabsoulte mt-5" *ngIf="comp.get('itemDesc').touched && comp.get('itemDesc').invalid">
+                Please enter item Description
+              </p>
             </span>
             <span class="new-item" fxFlexAlign="center">
               {{comp.get('itemType').value}}
@@ -37,14 +44,23 @@
             <!-- <input *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId" /> -->
             <span class="new-item" fxFlexAlign="center">
               <mat-select [placeholder]="'Please choose'" formControlName="partner"
+                [ngClass]="{'error': comp.get('partner').touched && comp.get('partner').invalid}">
+
                 (selectionChange)="onPartnerChange($event, i)">
                 <mat-option *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId">
                   {{ partner?.partner?.partnerCode }}
                 </mat-option>
               </mat-select>
+              <p class="error pabsoulte mt-5" *ngIf="comp.get('partner').touched && comp.get('partner').invalid">
+                Please enter Partner
+              </p>
             </span>
             <span class="new-item" fxFlexAlign="center">
-              <input matInput placeholder="Search Filter By" formControlName="quantity">
+              <input matInput placeholder="Quantity" formControlName="quantity"
+                [ngClass]="{'error': comp.get('quantity').touched && comp.get('quantity').invalid}">
+              <p class="error pabsoulte mt-5" *ngIf="comp.get('quantity').touched && comp.get('quantity').invalid">
+                Please enter Quantity
+              </p>
             </span>
             <div class="new-item" fxFlexAlign="center">
               <i class="material-icons red" (click)="removeCurrentRow(i)">

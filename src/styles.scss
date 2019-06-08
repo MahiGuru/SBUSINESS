@@ -509,4 +509,20 @@ box-shadow:0px 0px 5px #ccc;
       color: #e20057;
     }
   }
+
+}
+.mat-snack-bar-container{
+  color: #fff !important;
+  &.snackbar{
+    background-color: #00c954 !important;
+  }
+  &.error-snack{
+    background-color: #e72300 !important;
+  }
+  &.warning-snack{
+    background-color: #ff8819 !important;
+  }
+  &.delete-snack{
+    background-color: #2e2e2e !important;
+  }
 }

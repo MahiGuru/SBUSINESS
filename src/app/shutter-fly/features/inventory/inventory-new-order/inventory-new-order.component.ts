@@ -98,6 +98,7 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
   }
   onDetailToggle(event) {
   }
+
   addRowsToInventory() {
     const control = this.myForm.controls.addRows as FormArray;
     const newRecord = [];
@@ -124,6 +125,11 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
           tempArr.push(new Inventory(record));
         });
         this.onSave.emit(tempArr);
+      }, err => {
+        console.log(err);
+        const error: any = this.commonService.strToObj(err.error);
+        console.log(error);
+        this.commonService.openSnackBar(error.Error, 'FAILED', 'error-snack');
       });
     } else {
 

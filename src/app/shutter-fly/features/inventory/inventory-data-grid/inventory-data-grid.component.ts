@@ -13,6 +13,7 @@ import { Inventory } from '../../../core/models/newInventory';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from 'src/app/shutter-fly/shared/components/confirm-dialog/confirm-dialog.component';
+import { CommonService } from 'src/app/shutter-fly/shared/services/common.service';
 
 
 @Component({
@@ -56,6 +57,7 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
 
   constructor(public inventoryService: InventoryService,
               public dialog: MatDialog,
+              public commonService: CommonService,
               private elem: ElementRef) {
     this.getScreenSize();
   }
@@ -103,12 +105,12 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
     this.rows.unshift(new Inventory());
     this.rows = [...this.rows];
     this.isNewRowEnabled = true;
-    this.newRowHeight = 100;
+    this.newRowHeight = 50;
     setTimeout(() => {
       this.table.rowDetail.toggleExpandRow(this.rows[0]);
       this.setColsFromMultiLevelElements('add-row-section', 'new-item');
       this.dataTableBodyCellWidth();
-      this.rows[0].childrenHeight = 100;
+      this.rows[0].childrenHeight = 50;
       this.setRowDetailHeight(this.rows[0]);
     }, 100);
   }
@@ -117,7 +119,7 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
   }
 
   /*** filter input change output callback */
-  filterCallback(rows){
+  filterCallback(rows) {
     this.rows = [...rows];
     console.log(rows, this.rows);
     this.dataTableBodyCellWidth();
@@ -125,6 +127,8 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
 
   /*** ON SAVE new rows output callback */
   onSaveRowsUpdate(newRecords) {
+    this.isNewRowEnabled = false;
+    this.commonService.openSnackBar('Successfully Created', 'SAVE');
     const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
     this.rows = _.values(merged);
     this.dataTableBodyCellWidth();
@@ -148,8 +152,14 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
       if (result) {
         const record = { ItemPartner: { ItemPartnerId: result.row.itemPartner.item.itemId } };
         this.inventoryService.deleteInventory(record).subscribe(newRecords => {
+          this.commonService.openSnackBar('Successfully Deleted', 'DELETE', 'delete-snack');
           this.rows = _.filter(this.rows, (n) => n.itemPartner.item.itemNo !== row.itemPartner.item.itemNo);
           this.dataTableBodyCellWidth();
+        }, err => {
+          console.log(err);
+          const error: any = this.commonService.strToObj(err.error);
+          this.commonService.openSnackBar(error.Error, 'DELETE', 'error-snack');
+
         });
       }
     });
@@ -157,26 +167,31 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
 
   /** save edited value using waste API */
   updateEditedValue(row) {
-    row.editable = false;
     console.log(row);
     const data = [{
       ReleaseOrderId: row.itemPartner.item.itemId,
       Waste: row.waste,
-      }
-    ]
+    }
+    ];
     this.inventoryService.updateInventoryOrder(data).subscribe(res => {
       console.log(res);
-    })
+      row.editable = false;
+      this.commonService.openSnackBar('Successfully Updated', 'UPDATE', 'warning-snack');
+    }, err => {
+      row.editable = false;
+      const error: any = this.commonService.strToObj(err.error);
+      this.commonService.openSnackBar(error.Error, 'UPDATE FAILED', 'error-snack');
+    });
   }
 
   /***** OUTPUT CALLBACKS  - NEW ROWS */
-  rowsUpdate(rows) {}
+  rowsUpdate(rows) { }
 
   adjustCols(type) {
     if (type === 'new') {
       this.rows[0].childrenHeight += 60;
       this.setColsFromMultiLevelElements('add-row-section', 'new-item');
-    } else if(type === 'remove'){
+    } else if (type === 'remove') {
       this.rows[0].childrenHeight -= 60;
     } else if (type === 'cancel') {
       this.rows.splice(0, 1);
@@ -185,7 +200,7 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
       this.isAddBtnClicked.emit(false);
       this.isNewRowEnabled = false;
       this.newRowHeight = 100;
-      this.rows[0].childrenHeight = 100;
+      this.rows[0].childrenHeight = 50;
       this.dataTableBodyCellWidth();
     }
     this.setRowDetailHeight(this.rows[0]);
@@ -197,7 +212,7 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
    * /
    *
   /***ROW DETAIL HEIGHT ADJUST HERE  */
-  setRowDetailHeight(row){
+  setRowDetailHeight(row) {
     console.log(row.childrenHeight);
     setTimeout(() => {
       const rowDetailDivs = this.elem.nativeElement.querySelectorAll('.datatable-row-detail');
@@ -233,12 +248,12 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
   }
 
   /** Loop Parent elements and inside children element loop and apply the width */
-  setColsFromMultiLevelElements(parent, child){
+  setColsFromMultiLevelElements(parent, child) {
     setTimeout(() => {
       const colWidth = (this.windowWidth / (this.cols.length + 1));
-      const childRow = this.elem.nativeElement.querySelectorAll('.'+ parent);
+      const childRow = this.elem.nativeElement.querySelectorAll('.' + parent);
       _.each(childRow, (childCell, i) => {
-        const tblbodyCell = childCell.querySelectorAll('.'+ child);
+        const tblbodyCell = childCell.querySelectorAll('.' + child);
         this.setColWidth(tblbodyCell, colWidth);
       });
     }, 500);

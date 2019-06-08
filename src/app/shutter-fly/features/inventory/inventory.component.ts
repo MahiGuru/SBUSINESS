@@ -42,23 +42,8 @@ export class InventoryComponent implements OnInit {
 
   toggleExpandRow(row) {
     this.isAddNewBtnClicked = true;
-    // this.rows.unshift(new Inventory());
-    // this.rows = [...this.rows];
-
-    // const addRow = new Inventory();
-    // this.addedRows = [
-    //   ...this.addedRows, addRow
-    // ];
-
-    // setTimeout(() => {
-    //   this.table.rowDetail.toggleExpandRow(this.rows[0]);
-    // }, 100);
   }
   async ngOnInit() {
-    // this.sharedOrderService.data$.subscribe((val) => {
-    //   // console.log('SUBSCRIBE >>>> ', val);
-    //   this.rows = val;
-    // });
     this.inventoryService.getInventoryItems().subscribe((rows: any) => {
       // // console.log('ROWS, ', rows);
       const tempRows = [];
@@ -70,16 +55,6 @@ export class InventoryComponent implements OnInit {
       this.rows = tempRows;
       // // console.log(this.rows, tempRows);
     });
-    const addedRows = [];
-    const calculatedRows = [];
-    // this.inventoryService.addedInventoryItems().subscribe((rows: any) => {
-    //   addedRows = rows;
-    //   this.inventoryService.calculatedInventoryItems().subscribe((rows: any) => {
-    //     calculatedRows = rows;
-    //     this.rows = _.merge(addedRows, calculatedRows);
-    //     // console.log("ROWS 2222 ", this.rows);
-    //   });
-    // });
   }
   isAddBtnClicked(event) {
     this.isAddNewBtnClicked = event;

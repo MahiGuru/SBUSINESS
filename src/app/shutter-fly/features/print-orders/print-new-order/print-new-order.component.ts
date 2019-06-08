@@ -3,7 +3,7 @@ import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { PrintOrderService } from 'src/app/shutter-fly/shared/services/print-order.service'; 
+import { PrintOrderService } from 'src/app/shutter-fly/shared/services/print-order.service';
 import { CommonService } from 'src/app/shutter-fly/shared/services/common.service';
 
 
@@ -30,9 +30,9 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
   selectedItemType: any;
   partners: any;
   constructor(public printerService: PrintOrderService,
-              public commonService: CommonService,
-              public inventoryService: InventoryService,
-              public fb: FormBuilder) { }
+    public commonService: CommonService,
+    public inventoryService: InventoryService,
+    public fb: FormBuilder) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isAddBtnClicked && changes.isAddBtnClicked.currentValue) {
       console.log('ON CHANGES ');
@@ -126,7 +126,11 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
     if (this.myForm.valid) {
       this.printerService.saveNewPrintItem(newRecord).subscribe(newRecords => {
         this.rowsUpdate.emit(this.rows);
+        this.commonService.openSnackBar('Successfully Created New Record', 'SAVE');
         console.log(this.rows);
+      }, err => {
+        const error: any = this.commonService.strToObj(err.error);
+        this.commonService.openSnackBar(error.Error, 'Failed', 'error-snack');
       });
     }
 

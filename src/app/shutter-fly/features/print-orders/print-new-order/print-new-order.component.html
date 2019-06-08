@@ -57,7 +57,7 @@
                 </p>
               </span>
               <span class="new-item" [fxFlexAlign]="'center'">
-                <input matInput placeholder="Quantity" formControlName="quantity"
+                <input matInput type="number" placeholder="Quantity" formControlName="quantity"
                   [ngClass]="{'error': comp.get('quantity').touched && comp.get('quantity').invalid}">
                 <p class="error pabsoulte mt-5" *ngIf="comp.get('quantity').touched && comp.get('quantity').invalid">
                   Please enter Quantity

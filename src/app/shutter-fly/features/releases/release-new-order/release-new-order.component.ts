@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { InventoryService } from 'src/app/shutter-fly/shared/services/inventory.service';
 import { Inventory } from 'src/app/shutter-fly/core/models/newInventory';
 import * as _ from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 import { ReleasesService } from 'src/app/shutter-fly/shared/services/releases.service';
+import { CommonService } from 'src/app/shutter-fly/shared/services/common.service';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
   partners: any;
   constructor(public inventoryService: InventoryService,
               public releaseService: ReleasesService,
+              public commonService: CommonService,
               public fb: FormBuilder) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.childRow && changes.childRow.currentValue) {
@@ -46,12 +48,12 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
       addRows: this.fb.array([])
     });
     this.addForm = this.fb.group({
-      itemNo: [''],
-      itemDesc: [''],
+      itemNo: ['', Validators.required],
+      itemDesc: ['', Validators.required],
       itemType: [''],
-      partner: [''],
-      quantity: [''],
-      poNum: ['']
+      partner: ['', Validators.required],
+      quantity: [null, Validators.required],
+      poNum: [null]
     });
     this.releaseService.getReleaseItems().subscribe(res => {
       this.releaseItems = res;
@@ -84,13 +86,13 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
   addInitialRows() {
     const control = this.myForm.controls.addRows as FormArray;
     control.push(this.fb.group({
-      itemNo: [1],
-      itemDesc: [1],
+      itemNo: [null, Validators.required],
+      itemDesc: [null, Validators.required],
       partners: [[]],
       itemType: [''],
-      partner: [1],
-      quantity: [1],
-      poNum: [1]
+      partner: [null, Validators.required],
+      quantity: [null, Validators.required],
+      poNum: [null, Validators.required]
     }));
     control.controls[0].get('itemNo').setValue(this.selectedItem.itemId);
     control.controls[0].get('itemDesc').setValue(this.selectedItem.itemId);
@@ -104,13 +106,13 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
     console.log('SELECTED ITEM :', selectedItem, control, control.controls[control.value.length - 1]);
 
     control.push(this.fb.group({
-      itemNo: [selectedItem[0] ? selectedItem[0].item.itemId : 1],
-      itemDesc: [selectedItem[0] ? selectedItem[0].item.itemId : 1],
+      itemNo: [selectedItem[0] ? selectedItem[0].item.itemId : 1, Validators.required],
+      itemDesc: [selectedItem[0] ? selectedItem[0].item.itemId : 1, Validators.required],
       partners: [[]],
-      itemType: [selectedItem[0] ? selectedItem[0].item.itemType : 1],
-      partner: [1],
-      quantity: [0],
-      poNum: [0]
+      itemType: [selectedItem[0] ? selectedItem[0].item.itemType : 1, Validators.required],
+      partner: [null, Validators.required],
+      quantity: [null, Validators.required],
+      poNum: [null]
     }));
 
     setTimeout(() => {
@@ -160,13 +162,15 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
         }
       );
     });
-    this.onSave.emit(newRecord);
-    // console.log(newRecord);
-    // this.releaseService.saveNewReleaseItem(newRecord).subscribe(newRecords => {
-    //   const tempArr = [];
-    //   this.adjustCols.emit('new');
-    // });
-
+    this.commonService.validateAllFields(this.myForm);
+    if (this.myForm.valid) {
+      this.onSave.emit(newRecord);
+      // console.log(newRecord);
+      // this.releaseService.saveNewReleaseItem(newRecord).subscribe(newRecords => {
+      //   const tempArr = [];
+      //   this.adjustCols.emit('new');
+      // });
+    }
   }
 
   onItemChange(item, index) {

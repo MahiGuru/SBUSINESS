@@ -1,13 +1,28 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
 
-  constructor() { }
+  constructor(private _snackBar: MatSnackBar) { }
 
+  openSnackBar(message: string, action: string, className = 'snackbar') {
+    this._snackBar.open(message, action, {
+      duration: 20000,
+      panelClass: className
+    });
+  }
+  strToObj(str) {
+    const obj = {};
+    if (str || typeof str === 'string') {
+      const objStr = str.match(/\{(.)+\}/g);
+      eval('obj =' + objStr);
+    }
+    return obj;
+  }
   validateAllFields(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach(field => {
       const control = formGroup.get(field);

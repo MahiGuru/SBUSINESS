@@ -16,6 +16,7 @@ import { BehaviorSubject } from 'rxjs';
 import { SharedOrdersService } from 'src/app/shutter-fly/shared/services/shared-orders.service';
 import { ReleasesService } from 'src/app/shutter-fly/shared/services/releases.service';
 import { ReleaseOrder } from 'src/app/shutter-fly/core/models/releaseOrder';
+import { CommonService } from 'src/app/shutter-fly/shared/services/common.service';
 
 
 @Component({
@@ -80,7 +81,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     console.log(this.windowHeight, this.windowWidth);
   }
   constructor(public sharedOrderService: SharedOrdersService,
-              public inventoryService: InventoryService,
+              public commonService: CommonService,
               public fb: FormBuilder,
               public cdr: ChangeDetectorRef,
               public dialog: MatDialog,
@@ -131,16 +132,19 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     console.log(orders, row);
     this.releaseService.saveNewReleaseItem(orders).subscribe(newRecords => {
       row.isAssemblerChanged = false;
+      this.commonService.openSnackBar('Successfully Created New Record', 'SAVE');
       setTimeout(() => {
         this.isNewRowEnabled = false;
         this.table.rowDetail.toggleExpandRow(row);
         this.getReleaseOrders();
       }, 500);
+    }, err => {
+      const error: any = this.commonService.strToObj(err.error);
+      this.commonService.openSnackBar(error.Error, 'New Order Failed', 'error-snack');
     });
   }
 
   saveAssembler(row) {
-    console.log('ROWWWW ', row);
     const newRecord = [];
     newRecord.push(
       {
@@ -150,18 +154,20 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
         ItemPartner: {
           ItemPartnerId: row.itemPartner.itemPartnerId
         },
-        // ItemPartnerId:
         Quantity: row.quantity
       }
     );
-    console.log(newRecord);
     this.releaseService.saveNewReleaseItem(newRecord).subscribe(newRecords => {
+      this.commonService.openSnackBar('Successfully assigned assembler!', 'SAVE');
       row.isAssemblerChanged = false;
       setTimeout(() => {
         this.isNewRowEnabled = false;
         this.table.rowDetail.toggleExpandRow(row);
         this.getReleaseOrders();
       }, 500);
+    }, err => {
+      const error: any = this.commonService.strToObj(err.error);
+      this.commonService.openSnackBar(error.Error, 'Failed', 'error-snack');
     });
   }
   onItemChange(event, row) {
@@ -204,7 +210,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     this.isNewRowEnabled = true;
     if (!(row.childrenHeight && row.childrenHeight.length === 0)) { row.childrenHeight = 60; }
     console.log('ADJUST COLSSS', row.childrenHeight);
-    row.childrenHeight = row.childrenHeight + 30;
+    row.childrenHeight = row.childrenHeight + 40;
     console.log(row);
     this.childRow = row;
     console.log(this.childRow);
@@ -226,8 +232,12 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       Status: status
     }];
     this.releaseService.updateReleaseOrderStatus(orderRecord).subscribe(newRecords => {
+      this.commonService.openSnackBar('Successfully Updated Status', 'Status Update');
       console.log(newRecords);
       this.getReleaseOrders();
+    }, err => {
+      const error: any = this.commonService.strToObj(err.error);
+      this.commonService.openSnackBar(error.Error, 'Update Failed', 'error-snack');
     });
   }
   /**
