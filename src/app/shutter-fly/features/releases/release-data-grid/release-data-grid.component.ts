@@ -118,6 +118,11 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     row.itemAssemblerId = null;
     row.isAssemblerChanged = false;
   }
+  quantityCheck(childQuantity, row) {
+    if (row.originalQuantity >= childQuantity) {
+      row.quantity = row.originalQuantity - childQuantity;
+    }
+  }
   onSaveNewOrder(orders, row) {
     orders.push({
       ReleaseOrderId: row.releaseOrderId,
@@ -130,18 +135,21 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       Quantity: row.quantity
     });
     console.log(orders, row);
-    this.releaseService.saveNewReleaseItem(orders).subscribe(newRecords => {
-      row.isAssemblerChanged = false;
-      this.commonService.openSnackBar('Successfully Created New Record', 'SAVE');
-      setTimeout(() => {
-        this.isNewRowEnabled = false;
-        this.table.rowDetail.toggleExpandRow(row);
-        this.getReleaseOrders();
-      }, 500);
-    }, err => {
-      const error: any = this.commonService.strToObj(err.error);
-      this.commonService.openSnackBar(error.Error, 'New Order Failed', 'error-snack');
-    });
+    this.commonService.validateAllFields(this.myForm);
+    if (this.myForm.valid) {
+      this.releaseService.saveNewReleaseItem(orders).subscribe(newRecords => {
+        row.isAssemblerChanged = false;
+        this.commonService.openSnackBar('Successfully Created New Record', 'SAVE');
+        setTimeout(() => {
+          this.isNewRowEnabled = false;
+          this.table.rowDetail.toggleExpandRow(row);
+          this.getReleaseOrders();
+        }, 500);
+      }, err => {
+        const error: any = this.commonService.strToObj(err.error);
+        this.commonService.openSnackBar(error.Error, 'New Order Failed', 'error-snack');
+      });
+    }
   }
 
   saveAssembler(row) {

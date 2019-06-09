@@ -7,6 +7,7 @@ import {
 import { PrintOrderService } from 'src/app/shutter-fly/shared/services/print-order.service';
 import { ReleasesService } from 'src/app/shutter-fly/shared/services/releases.service';
 import { ORDERS } from 'src/app/shutter-fly/core/models/order-state';
+import { CommonService } from './../../../shared/services/common.service';
 
 @Component({
   selector: 'sb-release-sub-orders',
@@ -39,11 +40,15 @@ export class ReleaseSubOrdersComponent implements OnInit {
   releaseItems: any;
   childRow: any;
   isAssemblerChanged: boolean;
-  constructor(public releaseService: ReleasesService) { }
+  constructor(public releaseService: ReleasesService, public commonService: CommonService) { }
 
   ngOnInit() {
     this.role = localStorage.getItem('role');
     this.addInitialRows();
+    _.each(this.row.children, (children) => {
+      children.originalQuantity = children.quantity;
+      console.log('CHILD ', children);
+    });
     this.releaseService.getReleaseItems().subscribe(res => {
       this.releaseItems = res;
       const releaseItem = _.filter(this.releaseItems, (val) => {
@@ -78,11 +83,14 @@ export class ReleaseSubOrdersComponent implements OnInit {
     });
     console.log(orders, row);
     this.releaseService.saveNewReleaseItem(orders).subscribe(newRecords => {
+      this.commonService.openSnackBar('Successfully created new order!', 'NEW ORDER SAVE');
       this.adjustCols.emit('save');
       // row.isAssemblerChanged = false;
       // row.isNewRowEnabled = false;
       this.rowsUpdate.emit(newRecords);
-
+    }, err => {
+      const error: any = this.commonService.strToObj(err.error);
+      this.commonService.openSnackBar(error.Error, 'NEW ORDER Failed', 'error-snack');
     });
   }
 
@@ -102,12 +110,21 @@ export class ReleaseSubOrdersComponent implements OnInit {
     );
     console.log(newRecord);
     this.releaseService.saveNewReleaseItem(newRecord).subscribe(newRecords => {
+      this.commonService.openSnackBar('Successfully Updated Order!', 'UPDATE');
       this.adjustCols.emit('save');
       row.isAssemblerChanged = false;
+    }, err => {
+      const error: any = this.commonService.strToObj(err.error);
+      this.commonService.openSnackBar(error.Error, 'UPDATE Failed', 'error-snack');
     });
   }
   onSavePropertyVal(row) {
     row.editable = false;
+  }
+  quantityCheck(childQuantity, row) {
+    if (row.originalQuantity >= childQuantity) {
+      row.quantity = row.originalQuantity - childQuantity;
+    }
   }
   updateOrderStatus(row, status) {
     console.log(row);
@@ -118,8 +135,12 @@ export class ReleaseSubOrdersComponent implements OnInit {
       Status: status
     }];
     this.releaseService.updateReleaseOrderStatus(orderRecord).subscribe(newRecords => {
+      this.commonService.openSnackBar('Successfully Updated order!', 'Update');
       console.log(newRecords);
       this.rowsUpdate.emit(newRecords);
+    }, err => {
+      const error: any = this.commonService.strToObj(err.error);
+      this.commonService.openSnackBar(error.Error, 'Update Failed', 'error-snack');
     });
   }
   addAnotherRow(row) {

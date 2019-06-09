@@ -70,7 +70,8 @@
     <ng-template let-row="row" ngx-datatable-cell-template>
       <span *ngIf="role== 'admin'">
         <input matInput placeholder="Quantity" *ngIf="(row.children && row.children.length == 0)"
-          [(ngModel)]="row.quantity" [disabled]="(row.status == 'Released' || row.status == 'PreReleased')">
+          [(ngModel)]="row.quantity"
+          [disabled]="((row.assemblers && row.assemblers.length == 0) || (row.status == 'Released' || row.status == 'PreReleased'))">
       </span>
       <span *ngIf="role !== 'admin' && (row.children && row.children.length == 0)">
         {{ row.quantity }}
@@ -121,7 +122,8 @@
       <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">
         <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" [childRow]="childRow"
-          (adjustCols)="adjustCols($event, row)" (onSave)="onSaveNewOrder($event, row)">
+          (adjustCols)="adjustCols($event, row)" (onSave)="onSaveNewOrder($event, row)"
+          (quantityEmit)="quantityCheck($event, row)">
         </sb-release-new-order>
       </section>
     </ng-template>

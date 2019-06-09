@@ -21,6 +21,7 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
 
   @Output() adjustCols: EventEmitter<any> = new EventEmitter();
   @Output() rowsUpdate: EventEmitter<any> = new EventEmitter();
+  @Output() quantityEmit: EventEmitter<any> = new EventEmitter();
   @Output() onSave: EventEmitter<any> = new EventEmitter();
 
   public selectedPartner: any = new BehaviorSubject('');
@@ -30,6 +31,7 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
   releaseItems: any;
   selectedItemType: any;
   partners: any;
+  totalQuantity = 0;
   constructor(public inventoryService: InventoryService,
               public releaseService: ReleasesService,
               public commonService: CommonService,
@@ -141,12 +143,26 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
       this.adjustCols.emit('remove');
     }
   }
+  onQuantityChange(value, index) {
+    const control = this.myForm.controls.addRows as FormArray;
+    console.log(this.myForm.get('addRows'), this.childRow);
+    this.totalQuantity = 0;
+    _.each(this.myForm.get('addRows').value, (addedRow: any) => {
+      this.totalQuantity += +addedRow.quantity;
+    });
+    if (this.totalQuantity <= this.childRow.originalQuantity) {
+      this.quantityEmit.emit(this.totalQuantity);
+    } else {
+      control.controls[index].get('quantity').setValue(null);
+      this.commonService.openSnackBar('Quantity should not be greater than the ORDER', 'Quantity Exceeds', 'error-snack');
+    }
+  }
   onDetailToggle(event) {
     // console.log('Detail Toggled', event);
   }
   addRowsToRelease(row) {
     const control = this.myForm.controls.addRows as FormArray;
-    console.log('SAVEEEEE ', row, this.childRow);
+    console.log('SAVEEEEE ', this.childRow);
     const newRecord = [];
     _.each(control.value, (val) => {
       console.log(val);
@@ -163,13 +179,11 @@ export class ReleaseNewOrderComponent implements OnInit, OnChanges {
       );
     });
     this.commonService.validateAllFields(this.myForm);
-    if (this.myForm.valid) {
-      this.onSave.emit(newRecord);
-      // console.log(newRecord);
-      // this.releaseService.saveNewReleaseItem(newRecord).subscribe(newRecords => {
-      //   const tempArr = [];
-      //   this.adjustCols.emit('new');
-      // });
+    console.log(this.totalQuantity, this.childRow.quantity);
+    if (this.totalQuantity <= this.childRow.quantity) {
+      if (this.myForm.valid) { this.onSave.emit(newRecord); }
+    } else {
+      this.commonService.openSnackBar('Quantity should not be greater than the ORDER', 'Quantity Exceeds', 'error-snack');
     }
   }
 

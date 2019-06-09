@@ -11,7 +11,7 @@ export class CommonService {
 
   openSnackBar(message: string, action: string, className = 'snackbar') {
     this._snackBar.open(message, action, {
-      duration: 20000,
+      duration: 2000,
       panelClass: className
     });
   }

@@ -86,8 +86,9 @@
       </div>
       <div class="release-detail" *ngIf="nrow.isNewRowEnabled" fxLayout="row">
         <section class="row-detail newRow">
-          <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" [childRow]="childRow"
-            (adjustCols)="adjustNewCols($event, row)" (onSave)="onSaveNewOrder($event, nrow)">
+          <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" [childRow]="nrow"
+            (adjustCols)="adjustNewCols($event, row)" (onSave)="onSaveNewOrder($event, nrow)"
+            (quantityEmit)="quantityCheck($event, nrow)">
           </sb-release-new-order>
         </section>
       </div>
