@@ -20,7 +20,7 @@
               <span class="new-item" [fxFlexAlign]="'center'">
                 <mat-select [placeholder]="'Item No'" formControlName="itemNo"
                   [ngClass]="{'error': comp.get('itemNo').touched && comp.get('itemNo').invalid}"
-                  (selectionChange)="onItemChange($event, i)">
+                  (valueChange)="onItemChange($event, i)">
                   <mat-option *ngFor="let option of printItems" [value]="option?.item?.itemNo">
                     {{ option?.item?.itemNo }}
                   </mat-option>
@@ -32,7 +32,7 @@
               <span class="new-item" [fxFlexAlign]="'center'">
                 <mat-select [placeholder]="'Item Desc'" formControlName="itemDesc"
                   [ngClass]="{'error': comp.get('itemDesc').touched && comp.get('itemDesc').invalid}"
-                  (selectionChange)="onItemChange($event, i)">
+                  (valueChange)="onItemChange($event, i)">
                   <mat-option *ngFor="let option of printItems" [value]="option?.item?.itemNo">
                     {{ option?.item?.itemDescription }}
                   </mat-option>
@@ -46,7 +46,7 @@
               </span>
               <!-- <input *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId" /> -->
               <span class="new-item" [fxFlexAlign]="'center'">
-                <mat-select formControlName="partner" (selectionChange)="onPartnerChange($event, i)"
+                <mat-select formControlName="partner" (valueChange)="onPartnerChange($event, i)"
                   [ngClass]="{'error': comp.get('partner').touched && comp.get('partner').invalid}">
                   <mat-option *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId">
                     {{ partner?.partner?.partnerCode }}

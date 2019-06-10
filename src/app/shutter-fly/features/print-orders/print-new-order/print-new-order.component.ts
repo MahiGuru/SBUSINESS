@@ -30,9 +30,9 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
   selectedItemType: any;
   partners: any;
   constructor(public printerService: PrintOrderService,
-    public commonService: CommonService,
-    public inventoryService: InventoryService,
-    public fb: FormBuilder) { }
+              public commonService: CommonService,
+              public inventoryService: InventoryService,
+              public fb: FormBuilder) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isAddBtnClicked && changes.isAddBtnClicked.currentValue) {
       console.log('ON CHANGES ');
@@ -139,7 +139,7 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
   onItemChange(item, index) {
     const control = this.myForm.controls.addRows as FormArray;
     const selectedItem = _.filter(this.printItems, (iitem) => {
-      return iitem.item.itemNo === item.value;
+      return iitem.item.itemNo === item;
     });
     this.selectedItem = selectedItem[0];
 
@@ -154,7 +154,7 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
 
   onPartnerChange(item) {
     const filteredPartner = (_.filter(this.partners, (partner) => {
-      return partner.partnerId === item.value;
+      return partner.partnerId === item;
     }));
     this.selectedPartner.next(filteredPartner);
     // console.log('Patner selected', this.selectedPartner);

@@ -59,6 +59,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   addForm: FormGroup;
   role: string;
   isAssemblerChanged: boolean;
+  originalReleaseItems: BehaviorSubject<any> = new BehaviorSubject('');
 
   @Output() isAddBtnClicked: EventEmitter<any> = new EventEmitter();
   filterVal: any;
@@ -92,6 +93,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.rows && changes.rows.currentValue && changes.rows.currentValue.length > 0) {
+
       this.originalRows = this.rows;
       this.setColHeaderWidth();
       this.dataTableBodyCellWidth();
@@ -110,8 +112,21 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       itemType: [''],
       partner: ['']
     });
-
-    this.setAssemblers(this.rows);
+    this.releaseService.getReleaseItems().subscribe(res => {
+      this.originalReleaseItems.next(res);
+    });
+    this.originalReleaseItems.subscribe(items => {
+      this.releaseItems = items;
+      console.log(this.rows);
+      // this.setAssemblers(this.rows);
+    });
+    setTimeout(() => {
+      _.each(this.rows, (row) => {
+        row.originalQuantity = row.quantity;
+        console.log('CHILD ', row);
+      });
+      this.setAssemblers(this.rows);
+    }, 1000);
 
   }
   cancelItemChange(row) {
@@ -184,13 +199,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   }
   getReleaseOrders() {
     this.releaseService.getAllReleaseRecords().subscribe((rows: any) => {
-      console.log('ROWS, ', rows);
-      this.releaseService.getReleaseItems().subscribe(res => {
-        this.releaseItems = res;
-        console.log('this.releaseItems >>>> ', this.releaseItems);
-        this.setAssemblers(rows);
-        console.log(res);
-      });
+      this.setAssemblers(rows);
     });
   }
   /****
@@ -205,8 +214,6 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
         // console.log(val, row);
       });
       const releaseOrders = new ReleaseOrder(row);
-      console.log('BEFORE >> ', releaseOrders, releaseItem[0]);
-
       releaseOrders.assemblers = (releaseItem[0]) ? releaseItem[0].itemPartner : [];
       console.log(releaseOrders);
       tempRows.push(releaseOrders);

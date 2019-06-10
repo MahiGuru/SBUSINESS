@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import * as _ from 'lodash';
 import {
   faWindowClose, faCheckSquare,
@@ -14,11 +14,13 @@ import { CommonService } from './../../../shared/services/common.service';
   templateUrl: './release-sub-orders.component.html',
   styleUrls: ['./release-sub-orders.component.scss']
 })
-export class ReleaseSubOrdersComponent implements OnInit {
+export class ReleaseSubOrdersComponent implements OnInit, OnChanges {
+
 
   @Input() row: any;
   @Input() rows: any;
   @Input() table: any;
+  @Input() parentReleaseItems: any;
 
   @Output() rowsUpdate: EventEmitter<any> = new EventEmitter();
   @Output() adjustCols: EventEmitter<any> = new EventEmitter();
@@ -41,7 +43,11 @@ export class ReleaseSubOrdersComponent implements OnInit {
   childRow: any;
   isAssemblerChanged: boolean;
   constructor(public releaseService: ReleasesService, public commonService: CommonService) { }
-
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.parentReleaseItems && changes.parentReleaseItems.currentValue) {
+      this.releaseItems = this.parentReleaseItems;
+    }
+  }
   ngOnInit() {
     this.role = localStorage.getItem('role');
     this.addInitialRows();
@@ -49,15 +55,15 @@ export class ReleaseSubOrdersComponent implements OnInit {
       children.originalQuantity = children.quantity;
       console.log('CHILD ', children);
     });
-    this.releaseService.getReleaseItems().subscribe(res => {
-      this.releaseItems = res;
-      const releaseItem = _.filter(this.releaseItems, (val) => {
-        return val.item.itemId === this.row.itemPartner.item.itemId;
-        // console.log(val, row);
-      });
-      this.row.assemblers = (releaseItem[0]) ? releaseItem[0].itemPartner : [];
-      console.log('SUBORDER >>>> ', this.row);
-    });
+    // this.releaseService.getReleaseItems().subscribe(res => {
+    //   this.releaseItems = res;
+    //   const releaseItem = _.filter(this.releaseItems, (val) => {
+    //     return val.item.itemId === this.row.itemPartner.item.itemId;
+    //     // console.log(val, row);
+    //   });
+    //   this.row.assemblers = (releaseItem[0]) ? releaseItem[0].itemPartner : [];
+    //   console.log('SUBORDER >>>> ', this.row);
+    // });
   }
   onItemChange(event, nrow) {
     console.log(event, nrow);
@@ -165,15 +171,15 @@ export class ReleaseSubOrdersComponent implements OnInit {
     } else {
       row.childrenHeight = row.childrenHeight - 20;
     }
-    this.releaseService.getReleaseItems().subscribe(res => {
-      this.releaseItems = res;
-      const releaseItem = _.filter(this.releaseItems, (val) => {
-        return val.item.itemId === this.row.itemPartner.item.itemId;
-        // console.log(val, row);
-      });
-      this.row.assemblers = (releaseItem[0]) ? releaseItem[0].itemPartner : [];
-      console.log('SUBORDER >>>> ', this.row);
-    });
+    // this.releaseService.getReleaseItems().subscribe(res => {
+    //   this.releaseItems = res;
+    //   const releaseItem = _.filter(this.releaseItems, (val) => {
+    //     return val.item.itemId === this.row.itemPartner.item.itemId;
+    //     // console.log(val, row);
+    //   });
+    //   this.row.assemblers = (releaseItem[0]) ? releaseItem[0].itemPartner : [];
+    //   console.log('SUBORDER >>>> ', this.row);
+    // });
     this.adjustCols.emit(val);
   }
 

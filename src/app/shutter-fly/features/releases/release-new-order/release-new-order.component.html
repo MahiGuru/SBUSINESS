@@ -16,7 +16,7 @@
         <div class="newRow add-row-section mtb-2" *ngFor="let comp of myForm.get('addRows').controls; let i=index">
           <div [formGroupName]="i" fxLayout="row" fxLayoutGap="0px" fxLayoutAlign="center">
             <span class="new-item" fxFlexAlign="center">
-              <mat-select [placeholder]="'Item No'" formControlName="itemNo" (selectionChange)="onItemChange($event, i)"
+              <mat-select [placeholder]="'Item No'" formControlName="itemNo" (valueChange)="onItemChange($event, i)"
                 [ngClass]="{'error': comp.get('itemNo').touched && comp.get('itemNo').invalid}" disabled>
                 <mat-option *ngFor="let option of releaseItems" [value]="option?.item?.itemNo">
                   {{ option?.item?.itemNo }}
@@ -29,7 +29,7 @@
             <span class="new-item" fxFlexAlign="center">
               <mat-select [placeholder]="'Item Desc'" formControlName="itemDesc"
                 [ngClass]="{'error': comp.get('itemDesc').touched && comp.get('itemDesc').invalid}"
-                (selectionChange)="onItemChange($event, i)" disabled>
+                (valueChange)="onItemChange($event, i)" disabled>
                 <mat-option *ngFor="let option of releaseItems" [value]="option?.item?.itemNo">
                   {{ option?.item?.itemDescription }}
                 </mat-option>
@@ -44,9 +44,8 @@
             <!-- <input *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId" /> -->
             <span class="new-item" fxFlexAlign="center">
               <mat-select [placeholder]="'Please choose'" formControlName="partner"
-                [ngClass]="{'error': comp.get('partner').touched && comp.get('partner').invalid}">
-
-                (selectionChange)="onPartnerChange($event, i)">
+                [ngClass]="{'error': comp.get('partner').touched && comp.get('partner').invalid}"
+                (valueChange)="onPartnerChange($event, comp.get('partners').value)">
                 <mat-option *ngFor="let partner of comp.get('partners').value" [value]="partner.itemPartnerId">
                   {{ partner?.partner?.partnerCode }}
                 </mat-option>

@@ -30,7 +30,7 @@
         <aside fxFlex fxFlexAlign="center">
           <span *ngIf="role === 'admin'">
             <mat-select [placeholder]="'Please choose'" [(ngModel)]="row.itemAssemblerId"
-              (selectionChange)="onItemChange($event, row)"
+              (valueChange)="onItemChange($event, row)"
               [disabled]="(row.status == 'Released' || row.status == 'PreReleased')"
               *ngIf="(row.assemblers && row.assemblers.length > 0 && (row.children && row.children.length == 0))">
               <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
@@ -54,14 +54,7 @@
             *ngIf="((row.assemblers && row.assemblers.length > 0) && (row.children && row.children.length == 0) && !row.isAssemblerChanged)">
             <i class="material-icons green"> add_circle </i>
           </span>
-          <div *ngIf="row.isAssemblerChanged">
-            <span (click)="cancelItemChange(row)" class="mr-5">
-              <i class="material-icons red"> cancel_presentation </i>
-            </span>
-            <span (click)="saveAssembler(row)">
-              <i class="material-icons save-green"> save </i>
-            </span>
-          </div>
+
         </aside>
       </div>
     </ng-template>
@@ -92,7 +85,7 @@
   </ngx-datatable-column>
   <ngx-datatable-column [sortable]="false">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-      <div class="row-action-btn">
+      <div class="row-action-btn" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
         <span
           *ngIf="row.children && row.children.length == 0 && row.itemAssemblerId && ((row.status === OrdersState.PRINTED && role == 'admin') || (row.status === 'PreReleased' && role == 'printer'))">
           <span
@@ -109,7 +102,16 @@
         <span class="active-green" *ngIf="row.status === 'Released' && (role == 'admin')">
           <fa-icon [icon]="faCheckCircle" [ngClass]="'fa-icon fs-16'"></fa-icon>
         </span>
+
+        <span fxFlexAlign="center" (click)="cancelItemChange(row)" class="mr-5"
+          *ngIf="row.isAssemblerChanged && !isNewRowEnabled">
+          <i class="material-icons red"> cancel_presentation </i>
+        </span>
+        <span fxFlexAlign="center" (click)="saveAssembler(row)" *ngIf="row.isAssemblerChanged && !isNewRowEnabled">
+          <i class="material-icons save-green"> save </i>
+        </span>
       </div>
+
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-row-detail #myDetailRow>
@@ -117,13 +119,13 @@
       <section *ngIf="row.children && row.children.length > 0" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">
         <sb-release-sub-orders [row]="row" [table]="table" (rowsUpdate)="rowsUpdate($event)"
-          (adjustCols)="adjustCols($event, row)"></sb-release-sub-orders>
+          [parentReleaseItems]="releaseItems" (adjustCols)="adjustCols($event, row)"></sb-release-sub-orders>
       </section>
       <section *ngIf="!(row.children && row.children.length > 0)" class="row-detail"
         [ngStyle]="{'height': row.childrenHeight+'px'}">
-        <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" [childRow]="childRow"
+        <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" [childRow]="row"
           (adjustCols)="adjustCols($event, row)" (onSave)="onSaveNewOrder($event, row)"
-          (quantityEmit)="quantityCheck($event, row)">
+          (quantityEmit)="quantityCheck($event, row)" [orderReleaseItems]="releaseItems">
         </sb-release-new-order>
       </section>
     </ng-template>

@@ -129,8 +129,16 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
   onSaveRowsUpdate(newRecords) {
     this.isNewRowEnabled = false;
     this.commonService.openSnackBar('Successfully Created', 'SAVE');
-    const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
-    this.rows = _.values(merged);
+    // const merged = _.merge(_.keyBy(this.rows, 'itemPartner.item.itemNo'), _.keyBy(newRecords, 'itemPartner.item.itemNo'));
+    // this.rows = _.values(merged);
+    this.inventoryService.getInventoryItems().subscribe((rows: any) => {
+      const tempRows = [];
+      _.each(rows, (row) => {
+        const inventory = new Inventory(row);
+        tempRows.push(inventory);
+      });
+      this.rows = tempRows;
+    });
     this.dataTableBodyCellWidth();
   }
 

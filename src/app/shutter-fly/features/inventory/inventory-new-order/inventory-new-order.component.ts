@@ -140,19 +140,22 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
   onItemChange(item, index) {
     const control = this.myForm.controls.addRows as FormArray;
     const selectedItem = _.filter(this.inventoryItems, (iitem) => {
-      return iitem.itemId === item.value;
+      return iitem.itemId === item;
     });
-    control.controls[index].get('itemNo').setValue(selectedItem[0].itemId);
-    control.controls[index].get('itemDesc').setValue(selectedItem[0].itemId);
-    control.controls[index].get('itemType').setValue(selectedItem[0].itemTypeCode);
+    if (selectedItem && selectedItem.length > 0) {
+      control.controls[index].get('itemNo').setValue(selectedItem[0].itemId);
+      control.controls[index].get('itemDesc').setValue(selectedItem[0].itemId);
+      control.controls[index].get('itemType').setValue(selectedItem[0].itemTypeCode);
+    }
     // console.log('INDEX', index, item);
 
   }
 
   onPartnerChange(item) {
     const filteredPartner = (_.filter(this.partners, (partner) => {
-      return partner.partnerId === item.value;
+      return partner.partnerId === item;
     }));
+    console.log(item, filteredPartner);
     this.selectedPartner.next(filteredPartner);
     // console.log('Patner selected', this.selectedPartner);
   }

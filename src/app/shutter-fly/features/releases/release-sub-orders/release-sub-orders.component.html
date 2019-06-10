@@ -16,7 +16,7 @@
             <aside fxFlex fxFlexAlign="center">
               <span *ngIf="role === 'admin' ">
                 <mat-select [placeholder]="'Please choose'" [(ngModel)]="nrow.itemAssemblerId"
-                  (selectionChange)="onItemChange($event, nrow)"
+                  (valueChange)="onItemChange($event, nrow)"
                   [disabled]="(nrow.status == 'Released' || nrow.status == 'PreReleased')">
                   <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
                     {{ option?.partner?.partnerCode }}
@@ -88,7 +88,7 @@
         <section class="row-detail newRow">
           <sb-release-new-order [isAddBtnClicked]="isNewRowEnabled" [rows]="rows" [row]="row" [childRow]="nrow"
             (adjustCols)="adjustNewCols($event, row)" (onSave)="onSaveNewOrder($event, nrow)"
-            (quantityEmit)="quantityCheck($event, nrow)">
+            (quantityEmit)="quantityCheck($event, nrow)" [orderReleaseItems]="releaseItems">
           </sb-release-new-order>
         </section>
       </div>
