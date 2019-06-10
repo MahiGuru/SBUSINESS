@@ -45,7 +45,6 @@ export class InventoryComponent implements OnInit {
   }
   async ngOnInit() {
     this.inventoryService.getInventoryItems().subscribe((rows: any) => {
-      // // console.log('ROWS, ', rows);
       const tempRows = [];
       _.each(rows, (row) => {
         const inventory = new Inventory(row);
@@ -53,7 +52,6 @@ export class InventoryComponent implements OnInit {
       });
 
       this.rows = tempRows;
-      // // console.log(this.rows, tempRows);
     });
   }
   isAddBtnClicked(event) {

@@ -53,20 +53,16 @@ export class ReleaseSubOrdersComponent implements OnInit, OnChanges {
     this.addInitialRows();
     _.each(this.row.children, (children) => {
       children.originalQuantity = children.quantity;
-      console.log('CHILD ', children);
     });
     // this.releaseService.getReleaseItems().subscribe(res => {
     //   this.releaseItems = res;
     //   const releaseItem = _.filter(this.releaseItems, (val) => {
     //     return val.item.itemId === this.row.itemPartner.item.itemId;
-    //     // console.log(val, row);
     //   });
     //   this.row.assemblers = (releaseItem[0]) ? releaseItem[0].itemPartner : [];
-    //   console.log('SUBORDER >>>> ', this.row);
     // });
   }
   onItemChange(event, nrow) {
-    console.log(event, nrow);
     nrow.isAssemblerChanged = true;
   }
   cancelChildRowClick(row) {
@@ -87,7 +83,6 @@ export class ReleaseSubOrdersComponent implements OnInit, OnChanges {
       },
       Quantity: row.quantity
     });
-    console.log(orders, row);
     this.releaseService.saveNewReleaseItem(orders).subscribe(newRecords => {
       this.commonService.openSnackBar('Successfully created new order!', 'NEW ORDER SAVE');
       this.adjustCols.emit('save');
@@ -101,7 +96,6 @@ export class ReleaseSubOrdersComponent implements OnInit, OnChanges {
   }
 
   saveAssembler(row) {
-    console.log(row);
     const newRecord = [];
     newRecord.push(
       {
@@ -114,7 +108,6 @@ export class ReleaseSubOrdersComponent implements OnInit, OnChanges {
         Quantity: row.quantity
       }
     );
-    console.log(newRecord);
     this.releaseService.saveNewReleaseItem(newRecord).subscribe(newRecords => {
       this.commonService.openSnackBar('Successfully Updated Order!', 'UPDATE');
       this.adjustCols.emit('save');
@@ -133,7 +126,6 @@ export class ReleaseSubOrdersComponent implements OnInit, OnChanges {
     }
   }
   updateOrderStatus(row, status) {
-    console.log(row);
     const orderRecord = [{
       ReleaseOrderId: row.releaseOrderId,
       Quantity: row.quantity,
@@ -142,7 +134,6 @@ export class ReleaseSubOrdersComponent implements OnInit, OnChanges {
     }];
     this.releaseService.updateReleaseOrderStatus(orderRecord).subscribe(newRecords => {
       this.commonService.openSnackBar('Successfully Updated order!', 'Update');
-      console.log(newRecords);
       this.rowsUpdate.emit(newRecords);
     }, err => {
       const error: any = this.commonService.strToObj(err.error);
@@ -150,11 +141,9 @@ export class ReleaseSubOrdersComponent implements OnInit, OnChanges {
     });
   }
   addAnotherRow(row) {
-    console.log('ADD ANOTHER ROW >>> ', row);
     row.isNewRowEnabled = true;
     this.isNewRowEnabled = true;
     if (!(row.childrenHeight && row.childrenHeight.length === 0)) { row.childrenHeight = 60; }
-    console.log('ADJUST COLSSS', row.childrenHeight);
     row.childrenHeight = row.childrenHeight + 30;
     this.childRow = row;
     this.adjustCols.emit('new');
@@ -163,9 +152,7 @@ export class ReleaseSubOrdersComponent implements OnInit, OnChanges {
 
   }
   adjustNewCols(val, row) {
-    console.log(val, row.childrenHeight);
     if (row.childrenHeight.length === 0) { row.childrenHeight = 60; }
-    console.log('ADJUST COLSSS', val, row.childrenHeight);
     if (val === 'new') {
       row.childrenHeight = row.childrenHeight + 30;
     } else {
@@ -175,10 +162,8 @@ export class ReleaseSubOrdersComponent implements OnInit, OnChanges {
     //   this.releaseItems = res;
     //   const releaseItem = _.filter(this.releaseItems, (val) => {
     //     return val.item.itemId === this.row.itemPartner.item.itemId;
-    //     // console.log(val, row);
     //   });
     //   this.row.assemblers = (releaseItem[0]) ? releaseItem[0].itemPartner : [];
-    //   console.log('SUBORDER >>>> ', this.row);
     // });
     this.adjustCols.emit(val);
   }

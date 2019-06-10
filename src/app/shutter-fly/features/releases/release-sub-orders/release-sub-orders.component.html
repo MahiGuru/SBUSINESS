@@ -38,14 +38,7 @@
                 *ngIf="(!isNewRowEnabled && row.assemblers && row.assemblers.length > 0 && !nrow.isAssemblerChanged)">
                 <i class="material-icons green"> add_circle </i>
               </span>
-              <div *ngIf="nrow.isAssemblerChanged">
-                <span (click)="cancelItemChange(nrow)" class="mr-5">
-                  <i class="material-icons red"> cancel_presentation </i>
-                </span>
-                <span (click)="saveAssembler(nrow)">
-                  <i class="material-icons save-green"> save </i>
-                </span>
-              </div>
+
             </aside>
           </div>
           <!-- ( nrow.itemAssemblerId == null || nrow.itemAssemblerId == undefined) ||  -->
@@ -67,7 +60,7 @@
           {{(nrow.status == 'Printed' && role == 'admin') || (nrow.status == 'PreReleased' && role == 'printer') ? 'Pending Release' : nrow.status}}
         </span>
 
-        <span class="child-item" fxFlexAlign="center">
+        <span class="child-item" fxLayout="row" fxFlexAlign="start center">
           <span
             *ngIf="(nrow.itemAssemblerId) && nrow.status === 'Printed' || (nrow.status === 'PreReleased' && role == 'printer' )"
             matTooltip="Release to Assemblers" matTooltipPosition="above" matTooltipClass="tooltip"
@@ -81,7 +74,12 @@
           <span class="active-green" *ngIf="nrow.status === 'Released' && (role == 'admin')">
             <fa-icon [icon]="faCheckCircle" [ngClass]="'fa-icon fs-16'"></fa-icon>
           </span>
-
+          <span (click)="cancelItemChange(nrow)" class="mr-5" *ngIf="nrow.isAssemblerChanged && !isNewRowEnabled">
+            <i class="material-icons red"> cancel_presentation </i>
+          </span>
+          <span (click)="saveAssembler(nrow)" *ngIf="nrow.isAssemblerChanged && !isNewRowEnabled">
+            <i class="material-icons save-green"> save </i>
+          </span>
         </span>
       </div>
       <div class="release-detail" *ngIf="nrow.isNewRowEnabled" fxLayout="row">

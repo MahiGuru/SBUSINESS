@@ -88,7 +88,6 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
     });
     row.children = childRows;
     row.childrenHeight = (row.children && row.children.length > 0) ? row.children.length * 60 : 100;
-    console.log(row);
     this.table.rowDetail.toggleExpandRow(row);
     this.setColsFromMultiLevelElements('newRow', 'child-item');
     this.setRowDetailHeight(row);
@@ -121,7 +120,6 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
   /*** filter input change output callback */
   filterCallback(rows) {
     this.rows = [...rows];
-    console.log(rows, this.rows);
     this.dataTableBodyCellWidth();
   }
 
@@ -164,7 +162,6 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
           this.rows = _.filter(this.rows, (n) => n.itemPartner.item.itemNo !== row.itemPartner.item.itemNo);
           this.dataTableBodyCellWidth();
         }, err => {
-          console.log(err);
           const error: any = this.commonService.strToObj(err.error);
           this.commonService.openSnackBar(error.Error, 'DELETE', 'error-snack');
 
@@ -175,14 +172,12 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
 
   /** save edited value using waste API */
   updateEditedValue(row) {
-    console.log(row);
     const data = [{
       ReleaseOrderId: row.itemPartner.item.itemId,
       Waste: row.waste,
     }
     ];
     this.inventoryService.updateInventoryOrder(data).subscribe(res => {
-      console.log(res);
       row.editable = false;
       this.commonService.openSnackBar('Successfully Updated', 'UPDATE', 'warning-snack');
     }, err => {
@@ -221,7 +216,6 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
    *
   /***ROW DETAIL HEIGHT ADJUST HERE  */
   setRowDetailHeight(row) {
-    console.log(row.childrenHeight);
     setTimeout(() => {
       const rowDetailDivs = this.elem.nativeElement.querySelectorAll('.datatable-row-detail');
       _.each(rowDetailDivs, (elem) => {
@@ -232,7 +226,6 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
   /** Datatable body column width */
   dataTableBodyCellWidth() {
     setTimeout(() => {
-      console.log('DATA TABLE BODY CELL');
       const bodyCellRow = this.elem.nativeElement.querySelectorAll('.datatable-body-row');
       this.setBodyCellWidth(bodyCellRow);
     }, 300);

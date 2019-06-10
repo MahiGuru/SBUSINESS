@@ -38,50 +38,8 @@ export class PrintOrdersComponent implements OnInit {
 
   }
 
-  // updateFilter(filterVal) {
-  //   const val = filterVal.toLowerCase();
-  //   // filter our data
-  //   const temp = this.temp.filter((d) => {
-  //     return d.itemType.toLowerCase().indexOf(val) !== -1 || !val;
-  //   });
-
-  //   // update the rows
-  //   this.rows = temp;
-  //   // Whenever the filter changes, always go back to the first page
-  //   this.table.offset = 0;
-  // }
-  // toggleExpandRow(row) {
-  //   this.rows.unshift(new Inventory());
-  //   this.rows = [...this.rows];
-
-  //   const addRow = new Inventory();
-  //   this.addedRows = [
-  //     ...this.addedRows, addRow
-  //   ];
-
-  //   setTimeout(() => {
-  //     this.table.rowDetail.toggleExpandRow(this.rows[0]);
-  //   }, 100);
-  // }
-  // addAnotherRow() {
-  //   const addRow = new Inventory();
-  //   this.addedRows.push(addRow);
-  //   this.newRowHeight += 30;
-  // }
-  // removeCurrentRow(currentRow) {
-  //   this.addedRows.splice(this.addedRows.indexOf(currentRow), 1);
-  //   this.newRowHeight -= 30;
-  // }
-  // onDetailToggle(event) {
-  //   // console.log('Detail Toggled', event);
-  // }
   ngOnInit() {
-    // this.sharedOrderService.data$.subscribe((val) => {
-    //   // console.log('PRINT ORDER >>> SUBSCRIBE >>>> ', val);
-    //   this.rows = val;
-    // });
     this.printService.getAllPrintRecords().subscribe((rows: any) => {
-      // // console.log('ROWS, ', rows);
       const tempRows = [];
       _.each(rows, (row) => {
         const inventory = new PrintOrder(row);
@@ -89,41 +47,11 @@ export class PrintOrdersComponent implements OnInit {
       });
 
       this.rows = tempRows;
-      // // console.log(this.rows, tempRows, '\n\n\n\n\n');
     });
   }
   toggleExpandRow(row) {
     this.isAddNewBtnClicked = true;
   }
-  // addRowsToInventory() {
-  //   if (this.addedRows.length > 0) {
-  //     this.rows.splice(0, 1);
-  //     this.addedRows.forEach(row => {
-  //       this.rows.unshift(row);
-  //     });
-  //     this.rows = [...this.rows];
-  //     this.table.rowDetail.toggleExpandRow(this.rows[0]);
-  //   }
-  // }
-  // cancelNewInventory() {
-  //   this.rows.splice(0, 1);
-  //   this.addedRows = [];
-  //   this.rows = [...this.rows];
-  //   this.table.rowDetail.toggleExpandRow(this.rows[0]);
-  // }
-
-  // deleteOrder() {
-  //   const dialogRef = this.dialog.open(DeleteDialogComponent, {
-  //     width: '350px',
-  //     height: '350px',
-  //     data: {}
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     // console.log('The dialog was closed');
-  //     // this.animal = result;
-  //   });
-  // }
 
   isAddBtnClicked(event) {
     this.isAddNewBtnClicked = event;

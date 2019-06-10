@@ -79,7 +79,6 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   getScreenSize(event?) {
     this.windowHeight = window.innerHeight;
     this.windowWidth = window.innerWidth;
-    console.log(this.windowHeight, this.windowWidth);
   }
 
   constructor(public sharedOrderService: SharedOrdersService,
@@ -107,7 +106,6 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
 
   toggleExpandRow(row) {
     row.childrenHeight = 0;
-    // console.log('Toggled Expand Row!', row);
     const childRows = [];
     _.each(row.children, (chrow) => {
       childRows.push(new PrintOrder(chrow));
@@ -170,12 +168,10 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('CANCEL DIALOG BOX CCALLED', result);
       this.updateOrderStatus(result, 'Cancel');
     });
   }
   updateOrderStatus(row, status) {
-    console.log(row);
     const orderRecord = [{
       PrintOrderId: row.printOrderId,
       Quantity: row.quantity,
@@ -183,7 +179,6 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
       Status: status
     }];
     this.printerService.updatePrintOrderStatus(orderRecord).subscribe(newRecords => {
-      console.log('SAVEDDDD', newRecords);
       this.commonService.openSnackBar('Successfully Updated Status', 'Status Update');
       this.getPrintOrders();
     }, err => {
@@ -194,7 +189,6 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   /***** OUTPUT CALLBACKS  - NEW ROWS */
   rowsUpdate(rows) {
     this.isNewRowEnabled = false;
-    console.log('ROWS UPDATE');
     this.getPrintOrders();
   }
   adjustCols(type) {
@@ -222,7 +216,6 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   /*** filter input change output callback */
   filterCallback(rows) {
     this.rows = [...rows];
-    console.log(rows, this.rows);
     this.dataTableBodyCellWidth();
   }
   /** Datatable body column width */
@@ -270,7 +263,6 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   }
   /***ROW DETAIL HEIGHT ADJUST HERE  */
   setRowDetailHeight(row) {
-    console.log(row.childrenHeight);
     setTimeout(() => {
       const rowDetailDivs = this.elem.nativeElement.querySelectorAll('.datatable-row-detail');
       _.each(rowDetailDivs, (elem) => {

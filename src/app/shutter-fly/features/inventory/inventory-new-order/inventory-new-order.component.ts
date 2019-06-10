@@ -34,14 +34,11 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
               public fb: FormBuilder) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isAddBtnClicked && changes.isAddBtnClicked.currentValue) {
-      console.log('ON CHANGES ');
     }
 
-    // console.log('ORIGINAL ROWS ', this.originalRows, this.rows);
   }
 
   ngOnInit() {
-    console.log('ngONINIT');
     this.myForm = this.fb.group({
       addRows: this.fb.array([])
     });
@@ -53,13 +50,11 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
     });
     this.inventoryService.getAddItems().subscribe(res => {
       this.inventoryItems = res;
-      // console.log('INV ITEMS >>>> ', res, this.inventoryItems);
       this.selectedItemType = res[0].itemType;
       this.selectedItem = res[0];
     });
     this.inventoryService.getPartners().subscribe(partners => {
       this.partners = partners;
-      // console.log('partners >>>> ', partners, this.partners);
     });
     this.addInitialRows();
   }
@@ -126,9 +121,7 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
         });
         this.onSave.emit(tempArr);
       }, err => {
-        console.log(err);
         const error: any = this.commonService.strToObj(err.error);
-        console.log(error);
         this.commonService.openSnackBar(error.Error, 'FAILED', 'error-snack');
       });
     } else {
@@ -147,7 +140,6 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
       control.controls[index].get('itemDesc').setValue(selectedItem[0].itemId);
       control.controls[index].get('itemType').setValue(selectedItem[0].itemTypeCode);
     }
-    // console.log('INDEX', index, item);
 
   }
 
@@ -155,9 +147,7 @@ export class InventoryNewOrderComponent implements OnInit, OnChanges {
     const filteredPartner = (_.filter(this.partners, (partner) => {
       return partner.partnerId === item;
     }));
-    console.log(item, filteredPartner);
     this.selectedPartner.next(filteredPartner);
-    // console.log('Patner selected', this.selectedPartner);
   }
 
 }

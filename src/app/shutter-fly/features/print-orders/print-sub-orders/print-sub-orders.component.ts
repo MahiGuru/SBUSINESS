@@ -47,7 +47,6 @@ export class PrintSubOrdersComponent implements OnInit {
       Status: status
     }];
     this.printerService.updatePrintOrderStatus(orderRecord).subscribe(newRecords => {
-      console.log('SAVEDDDD', newRecords);
       this.rowsUpdate.emit(this.rows);
     });
   }

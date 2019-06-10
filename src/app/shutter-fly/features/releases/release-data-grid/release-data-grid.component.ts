@@ -79,7 +79,6 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   getScreenSize(event?) {
     this.windowHeight = window.innerHeight;
     this.windowWidth = window.innerWidth;
-    console.log(this.windowHeight, this.windowWidth);
   }
   constructor(public sharedOrderService: SharedOrdersService,
               public commonService: CommonService,
@@ -98,7 +97,6 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       this.setColHeaderWidth();
       this.dataTableBodyCellWidth();
     }
-    // console.log('ORIGINAL ROWS ', this.originalRows, this.rows);
   }
 
   ngOnInit() {
@@ -117,13 +115,10 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     });
     this.originalReleaseItems.subscribe(items => {
       this.releaseItems = items;
-      console.log(this.rows);
-      // this.setAssemblers(this.rows);
     });
     setTimeout(() => {
       _.each(this.rows, (row) => {
         row.originalQuantity = row.quantity;
-        console.log('CHILD ', row);
       });
       this.setAssemblers(this.rows);
     }, 1000);
@@ -146,10 +141,8 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       ItemPartner: {
         ItemPartnerId: row.itemPartner.itemPartnerId
       },
-      // ItemPartnerId:
       Quantity: row.quantity
     });
-    console.log(orders, row);
     this.commonService.validateAllFields(this.myForm);
     if (this.myForm.valid) {
       this.releaseService.saveNewReleaseItem(orders).subscribe(newRecords => {
@@ -194,7 +187,6 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     });
   }
   onItemChange(event, row) {
-    console.log(event);
     row.isAssemblerChanged = true;
   }
   getReleaseOrders() {
@@ -208,14 +200,11 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   setAssemblers(rows) {
     const tempRows = [];
     _.each(rows, (row) => {
-      // console.log(row.item.itemId, row.itemPartner.item.itemId);
       const releaseItem = _.filter(this.releaseItems, (val) => {
         return val.item.itemId === row.itemPartner.item.itemId;
-        // console.log(val, row);
       });
       const releaseOrders = new ReleaseOrder(row);
       releaseOrders.assemblers = (releaseItem[0]) ? releaseItem[0].itemPartner : [];
-      console.log(releaseOrders);
       tempRows.push(releaseOrders);
     });
     this.rows = [...tempRows];
@@ -224,11 +213,8 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   addNewBtnClicked(row) {
     this.isNewRowEnabled = true;
     if (!(row.childrenHeight && row.childrenHeight.length === 0)) { row.childrenHeight = 60; }
-    console.log('ADJUST COLSSS', row.childrenHeight);
     row.childrenHeight = row.childrenHeight + 40;
-    console.log(row);
     this.childRow = row;
-    console.log(this.childRow);
     setTimeout(() => {
       this.table.rowDetail.toggleExpandRow(row);
       row.childrenHeight = 100;
@@ -239,7 +225,6 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
 
   /*** UPDATE ORDER STATUS FROM PRINTED TO PRERELEASE(ADMIN) OR RELEASED */
   updateOrderStatus(row, status) {
-    console.log(row);
     const orderRecord = [{
       ReleaseOrderId: row.releaseOrderId,
       Quantity: row.quantity,
@@ -248,7 +233,6 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     }];
     this.releaseService.updateReleaseOrderStatus(orderRecord).subscribe(newRecords => {
       this.commonService.openSnackBar('Successfully Updated Status', 'Status Update');
-      console.log(newRecords);
       this.getReleaseOrders();
     }, err => {
       const error: any = this.commonService.strToObj(err.error);
@@ -260,13 +244,11 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
    */
   toggleExpandRow(row) {
     this.newRowHeight = 0;
-    // console.log('Toggled Expand Row!', row);
     const childRows = [];
     _.each(row.children, (chrow) => {
       childRows.push(new ReleaseOrder(chrow));
     });
     row.children = childRows;
-    // console.log(row);
     this.table.rowDetail.toggleExpandRow(row);
     row.childrenHeight = (row.children && row.children.length > 0) ? row.children.length * 70 : 100;
     setTimeout(() => {
@@ -284,7 +266,6 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   /*** filter input change output callback */
   filterCallback(rows) {
     this.rows = [...rows];
-    console.log(rows, this.rows);
     this.dataTableBodyCellWidth();
   }
 
@@ -325,7 +306,6 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
 
   /** Data table header column width set */
   setColHeaderWidth() {
-    console.log('COLWIDTH >> ', this.cols.length, this.windowWidth);
     const colWidth = (this.windowWidth / (this.cols.length + 1));
     setTimeout(() => {
       const twoElem = this.elem.nativeElement.querySelectorAll('.datatable-header-cell');
@@ -344,7 +324,6 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   }
   /***ROW DETAIL HEIGHT ADJUST HERE  */
   setRowDetailHeight(row) {
-    console.log(row.childrenHeight);
     setTimeout(() => {
       const rowDetailDivs = this.elem.nativeElement.querySelectorAll('.datatable-row-detail');
       _.each(rowDetailDivs, (elem) => {

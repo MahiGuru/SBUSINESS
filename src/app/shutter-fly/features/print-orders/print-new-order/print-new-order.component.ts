@@ -35,14 +35,11 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
               public fb: FormBuilder) { }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isAddBtnClicked && changes.isAddBtnClicked.currentValue) {
-      console.log('ON CHANGES ');
     }
 
-    // console.log('ORIGINAL ROWS ', this.originalRows, this.rows);
   }
 
   ngOnInit() {
-    console.log('ngONINIT');
     this.myForm = this.fb.group({
       addRows: this.fb.array([])
     });
@@ -56,13 +53,11 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
     });
     this.printerService.getPrintItems().subscribe(res => {
       this.printItems = res;
-      // console.log('printItems ITEMS >>>> ', res, this.printItems);
       this.selectedItemType = res[0].itemType;
       this.selectedItem = res[0];
     });
     this.inventoryService.getPartners().subscribe(partners => {
       this.partners = partners;
-      // console.log('partners >>>> ', partners, this.partners);
     });
     this.addInitialRows();
   }
@@ -106,7 +101,6 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
     this.adjustCols.emit('remove');
   }
   onDetailToggle(event) {
-    // console.log('Detail Toggled', event);
   }
   addRowsToPrinter() {
     const control = this.myForm.controls.addRows as FormArray;
@@ -127,7 +121,6 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
       this.printerService.saveNewPrintItem(newRecord).subscribe(newRecords => {
         this.rowsUpdate.emit(this.rows);
         this.commonService.openSnackBar('Successfully Created New Record', 'SAVE');
-        console.log(this.rows);
       }, err => {
         const error: any = this.commonService.strToObj(err.error);
         this.commonService.openSnackBar(error.Error, 'Failed', 'error-snack');
@@ -144,11 +137,9 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
     this.selectedItem = selectedItem[0];
 
     control.controls[index].get('partners').setValue(selectedItem[0].itemPartner);
-    console.log('on item change', selectedItem);
     control.controls[index].get('itemNo').setValue(selectedItem[0].item.itemNo);
     control.controls[index].get('itemDesc').setValue(selectedItem[0].item.itemNo);
     control.controls[index].get('itemType').setValue(selectedItem[0].item.itemTypeCode);
-    // console.log('INDEX', index, item);
 
   }
 
@@ -157,7 +148,6 @@ export class PrintNewOrderComponent implements OnInit, OnChanges {
       return partner.partnerId === item;
     }));
     this.selectedPartner.next(filteredPartner);
-    // console.log('Patner selected', this.selectedPartner);
   }
 
 }
