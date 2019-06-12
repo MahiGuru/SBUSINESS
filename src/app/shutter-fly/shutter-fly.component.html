@@ -1,4 +1,6 @@
-<div class="container" fxLayout="column" fxLayoutAlign="stretch" [style.width.px]="windowWidth - 200">
+<div class="container" fxLayout="column" fxLayoutAlign="stretch"
+  [ngClass]="(windowWidth > 1580) ? 'desktop': (windowWidth >= 768 && windowWidth <= 1580) ? 'laptop' : 'mobile'"
+  [style.width.px]="(windowWidth > 1580) ?( windowWidth - 200) : windowWidth-80">
   <header fxFlex="80px" class="header">
     <sb-toolbar></sb-toolbar>
   </header>

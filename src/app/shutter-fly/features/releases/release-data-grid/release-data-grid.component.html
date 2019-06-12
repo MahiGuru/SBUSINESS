@@ -3,11 +3,12 @@
   [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
   <ngx-datatable-column name="ItemNo#">
     <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-
-      <a href="javascript:void(0)" class="dt-arrow" title="Expand/Collapse Row" (click)="toggleExpandRow(row)"
-        *ngIf="row.children && row.children.length > 0">
-        <fa-icon [icon]="!expanded ? faCaretRight: faCaretDown"></fa-icon>
-      </a>
+      <span class="ngdt-arrow">
+        <a href="javascript:void(0)" class="dt-arrow" title="Expand/Collapse Row" (click)="toggleExpandRow(row)"
+          *ngIf="row.children && row.children.length > 0">
+          <fa-icon [icon]="!expanded ? faCaretRight: faCaretDown"></fa-icon>
+        </a>
+      </span>
       <!-- <span (click)="addNewBtnClicked(row)" *ngIf="(row.children && row.children.length <= 0)">
         <i class="material-icons green"> add_circle </i>
       </span> -->
@@ -31,7 +32,7 @@
           <span *ngIf="role === 'admin'">
             <mat-select [placeholder]="'Please choose'" [(ngModel)]="row.itemAssemblerId"
               (valueChange)="onItemChange($event, row)"
-              [disabled]="(row.status == 'Released' || row.status == 'PreReleased')"
+              [disabled]="(row.status == 'Released' || row.status == 'PreReleased' || row.status == 'Received')"
               *ngIf="(row.assemblers && row.assemblers.length > 0 && (row.children && row.children.length == 0))">
               <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
                 {{ option?.partner?.partnerCode }}
@@ -40,7 +41,7 @@
           </span>
           <span *ngIf="role !== 'admin' && (row.children && row.children.length == 0)">
             <mat-select [placeholder]="'Please choose'" [(ngModel)]="row.itemAssemblerId"
-              [disabled]="(row.status == 'Released' || row.status == 'PreReleased')">
+              [disabled]="(row.status == 'Released' || row.status == 'PreReleased' || row.status == 'Received')">
               <mat-option *ngFor="let option of row.assemblers" [value]="option.itemPartnerId">
                 {{ option?.partner?.partnerCode }}
               </mat-option>
@@ -96,7 +97,7 @@
         </span>
 
         <span *ngIf="(row.status === 'Released' && (role == 'assembler'))" matTooltip="Mark as Received"
-          matTooltipPosition="above" matTooltipClass="tooltip">
+          (click)="updateOrderStatus(row, 'Received')" matTooltipPosition="above" matTooltipClass="tooltip">
           <fa-icon [icon]="faDownload" [ngClass]="'fa-icon fs-16'"></fa-icon>
         </span>
         <span class="active-green" *ngIf="row.status === 'Released' && (role == 'admin')">

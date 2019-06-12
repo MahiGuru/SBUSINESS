@@ -52,13 +52,13 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?) {
     this.windowHeight = window.innerHeight;
-    this.windowWidth = window.innerWidth - 200;
+    this.windowWidth = (window.innerWidth > 1580) ? (window.innerWidth - 200) : window.innerWidth;
   }
 
   constructor(public inventoryService: InventoryService,
-              public dialog: MatDialog,
-              public commonService: CommonService,
-              private elem: ElementRef) {
+    public dialog: MatDialog,
+    public commonService: CommonService,
+    private elem: ElementRef) {
     this.getScreenSize();
   }
 
@@ -262,13 +262,12 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
 
   /*** SET Column width */
   setColWidth(tblbodyCell, colWidth) {
+
     _.each(tblbodyCell, (tblCell, j) => {
-      if (j === 0) {
-        tblCell.style.width = (colWidth + 100) + 'px';
-      } else if (j === 1) {
-        tblCell.style.width = (colWidth + 200) + 'px';
+      if (j === 1) {
+        tblCell.style.width = (colWidth + ((this.cols.length + 1) * 10)) + 'px';
       } else {
-        tblCell.style.width = colWidth - (370 / (this.cols.length + 1)) + 'px';
+        tblCell.style.width = colWidth - ((this.cols.length + 1)) + 'px';
       }
     });
   }

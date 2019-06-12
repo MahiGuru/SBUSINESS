@@ -78,7 +78,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?) {
     this.windowHeight = window.innerHeight;
-    this.windowWidth = window.innerWidth;
+    this.windowWidth = (window.innerWidth > 1580) ? (window.innerWidth - 200) : window.innerWidth;
   }
   constructor(public sharedOrderService: SharedOrdersService,
               public commonService: CommonService,
@@ -252,7 +252,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     this.table.rowDetail.toggleExpandRow(row);
     row.childrenHeight = (row.children && row.children.length > 0) ? row.children.length * 70 : 100;
     setTimeout(() => {
-      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const colWidth = (this.windowWidth / (this.cols.length));
       const childRow = this.elem.nativeElement.querySelectorAll('.newRow');
       _.each(childRow, (childCell, i) => {
         // childCell.style.width = this.windowWidth + 'px';
@@ -295,7 +295,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   /** Datatable body column width */
   dataTableBodyCellWidth() {
     setTimeout(() => {
-      const colWidth = (this.windowWidth / (this.cols.length + 1));
+      const colWidth = (this.windowWidth / (this.cols.length));
       const wActiveClass = this.elem.nativeElement.querySelectorAll('.w-active');
       const bodyCellRow = this.elem.nativeElement.querySelectorAll('.datatable-body-row');
       if (bodyCellRow.length > wActiveClass.length) {
@@ -306,7 +306,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
 
   /** Data table header column width set */
   setColHeaderWidth() {
-    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    const colWidth = (this.windowWidth / (this.cols.length));
     setTimeout(() => {
       const twoElem = this.elem.nativeElement.querySelectorAll('.datatable-header-cell');
       this.setColWidth(twoElem, colWidth);
@@ -315,7 +315,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
 
   /** Datatable Body column width */
   setBodyCellWidth(bodyCellRow) {
-    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    const colWidth = (this.windowWidth / (this.cols.length));
     _.each(bodyCellRow, (bodyCell, i) => {
       bodyCell.classList.add('w-active');
       const tblbodyCell = bodyCell.querySelectorAll('.datatable-body-cell');
@@ -334,7 +334,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   /** Loop Parent elements and inside children element loop and apply the width */
   setColsFromMultiLevelElements(parent, child) {
     setTimeout(() => {
-      const colWidth = (this.windowWidth - 200 / (this.cols.length + 1));
+      const colWidth = (this.windowWidth - 200 / (this.cols.length));
       const childRow = this.elem.nativeElement.querySelectorAll('.' + parent);
       _.each(childRow, (childCell, i) => {
         const tblbodyCell = childCell.querySelectorAll('.' + child);
@@ -342,6 +342,8 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       });
     }, 500);
   }
+
+
   /*** SET Column width */
   setColWidth(tblbodyCell, colWidth) {
     _.each(tblbodyCell, (tblCell, j) => {
@@ -354,8 +356,9 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
       }
     });
   }
+
   setBodyColWidth(bodyCellRow) {
-    const colWidth = (this.windowWidth / (this.cols.length + 1));
+    const colWidth = (this.windowWidth / (this.cols.length));
     _.each(bodyCellRow, (bodyCell, i) => {
       const tblbodyCell = bodyCell.querySelectorAll('.datatable-body-cell');
       this.setColWidth(tblbodyCell, colWidth);

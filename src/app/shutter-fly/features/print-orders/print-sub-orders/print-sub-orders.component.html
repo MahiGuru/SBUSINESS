@@ -3,7 +3,7 @@
   <div [ngStyle]="{'position': 'absolute', 'width': '100%'}">
     <div fxLayout="row" class="newRow" fxLayoutGap="0px" *ngFor="let nrow of row.children; let i= index">
 
-      <span class="child-item"> {{nrow.itemPartner?.item?.itemNo}}
+      <span class="child-item"> <span class="ngdt-arrow">&nbsp;</span>{{nrow.itemPartner?.item?.itemNo}}
       </span>
       <span class="child-item ellipsis description">{{nrow.itemPartner.item.itemDescription}}
       </span>

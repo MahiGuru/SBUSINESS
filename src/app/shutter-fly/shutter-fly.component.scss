@@ -108,7 +108,22 @@
     box-sizing: border-box;
   }
   .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell, .newRow > span{
-    font-size: 12px !important;
+    font-size: 0.75em !important;
+  }
+
+  .ngdt-arrow{
+    width:20px;
+    display: inline-block;
+  }
+  .laptop{
+    .ngx-datatable.material .datatable-header .datatable-header-cell,
+    .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell,
+    .newRow .new-item, .newRow .child-item{
+      padding:0.9em 0.5rem;
+    }
+    .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell .datatable-body-cell-label{
+      word-break: break-all;
+    }
   }
   .container {
     // width: 1800px;

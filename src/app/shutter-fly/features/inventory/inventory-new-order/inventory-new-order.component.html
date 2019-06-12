@@ -13,7 +13,7 @@
       </div>
       <div class="newRow add-row-section mtb-2" *ngFor="let comp of myForm.get('addRows').controls; let i=index">
         <div [formGroupName]="i" fxLayout="row" fxLayoutAlign="start">
-          <span class="new-item" [fxFlexAlign]="'center'">
+          <span class="new-item first-new-item" [fxFlexAlign]="'center'">
             <mat-select [placeholder]="'Item No'"
               [ngClass]="{'error': comp.get('itemNo').touched && comp.get('itemNo').invalid}" formControlName="itemNo"
               (valueChange)="onItemChange($event, i)">

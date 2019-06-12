@@ -45,7 +45,7 @@
   <ngx-datatable-column [sortable]="false" [flexGrow]="1">
     <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
       <div class="row-action-btn" *ngIf="(row.children && row.children.length < 1) && !isNewRowEnabled">
-        <span *ngIf="!row.editable" fxLayout="row" fxLayoutGap="20px">
+        <span *ngIf="!row.editable" fxLayout="row" fxLayoutGap="5px">
           <span (click)="row.editable = true" matTooltip="Edit Item" matTooltipPosition="above"
             matTooltipClass="tooltip">
             <fa-icon [icon]="faPencilAlt" [ngClass]="'fa-icon fs-16'"></fa-icon>
@@ -55,7 +55,7 @@
             <fa-icon [icon]="faTrashAlt" [ngClass]="'fa-icon  fs-16'"></fa-icon>
           </span>
         </span>
-        <span *ngIf="row.editable" fxLayout="row" fxLayoutGap="10px">
+        <span *ngIf="row.editable" fxLayout="row" fxLayoutGap="5px">
           <span (click)="row.editable = false">
             <fa-icon [icon]="faWindowClose" [ngClass]="'fa-icon text-red fs-24'"></fa-icon>
           </span>

@@ -3,7 +3,7 @@
     <div class="newRow sub-row" *ngFor="let nrow of row.children; let i= index">
       <div fxLayout="row" fxLayoutGap="0px" fxLayoutAlign="center">
         <span class="child-item" [fxFlexAlign]="'center'" fxFlexAlign="center">
-
+          <span class="ngdt-arrow">&nbsp;</span>
           {{nrow.itemPartner.item.itemNo}}
         </span>
         <span class="child-item ellipsis description" fxFlexAlign="center">{{nrow.itemPartner.item.itemDescription}}
