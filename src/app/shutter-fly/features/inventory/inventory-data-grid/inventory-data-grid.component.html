@@ -32,10 +32,10 @@
       <span *ngIf="!row.editable">{{row.waste}}</span>
     </ng-template>
   </ngx-datatable-column>
-  <ngx-datatable-column prop="overAge" editable="true" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column prop="overAge" name="Overage" editable="true" [flexGrow]="1"></ngx-datatable-column>
   <ngx-datatable-column prop="completed" editable="true" [flexGrow]="1"></ngx-datatable-column>
   <ngx-datatable-column prop="sfOnHand" editable="true" [flexGrow]="1"></ngx-datatable-column>
-  <ngx-datatable-column prop="pOnHand" editable="true" [flexGrow]="1"></ngx-datatable-column>
+  <ngx-datatable-column prop="pOnHand" name="P onhand" editable="true" [flexGrow]="1"></ngx-datatable-column>
   <ngx-datatable-column name="Updated At" editable="true" [flexGrow]="1">
     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
       <span *ngIf="!isNewRowEnabled">{{ row.updatedAt | dateFormat}}</span>
