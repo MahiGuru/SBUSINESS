@@ -1,17 +1,17 @@
 <div class="mtb-8" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-    <mat-form-field fxFlex="30" class="filter-input" [floatLabel]="'never'">
-      <input matInput placeholder="Search Filter By" [(ngModel)]="filterVal">
+  <mat-form-field fxFlex="30" class="filter-input" [floatLabel]="'never'">
+    <input matInput placeholder="Search Filter By" [(ngModel)]="filterVal" (keydown.enter)="updateFilter(filterVal)">
 
-      <mat-icon matPrefix class="search-icon">search</mat-icon>
-      <button mat-button *ngIf="filterVal" matSuffix mat-icon-button aria-label="Clear" (click)="cleaFilterInput()">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-    <div fxFlex>
-      <button class="apply-btn" mat-raised-button color="accent" (click)='updateFilter(filterVal)'>Apply</button>
-    </div>
-    <div fxFlex fxFlexAlign="center" class="text-right">
-      <button mat-button> <i class="material-icons"> arrow_downward </i> Import</button>
-      <button mat-button> <i class="material-icons"> arrow_upward </i> Export </button>
-    </div>
+    <mat-icon matPrefix class="search-icon">search</mat-icon>
+    <button mat-button *ngIf="filterVal" matSuffix mat-icon-button aria-label="Clear" (click)="cleaFilterInput()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <div fxFlex>
+    <button class="apply-btn" mat-raised-button color="accent" (click)='updateFilter(filterVal)'>Apply</button>
   </div>
+  <div fxFlex fxFlexAlign="center" class="text-right">
+    <button mat-button> <i class="material-icons"> arrow_downward </i> Import</button>
+    <button mat-button> <i class="material-icons"> arrow_upward </i> Export </button>
+  </div>
+</div>

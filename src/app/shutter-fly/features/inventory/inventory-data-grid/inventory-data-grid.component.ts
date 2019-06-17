@@ -56,9 +56,9 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
   }
 
   constructor(public inventoryService: InventoryService,
-    public dialog: MatDialog,
-    public commonService: CommonService,
-    private elem: ElementRef) {
+              public dialog: MatDialog,
+              public commonService: CommonService,
+              private elem: ElementRef) {
     this.getScreenSize();
   }
 
@@ -188,7 +188,9 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
   }
 
   /***** OUTPUT CALLBACKS  - NEW ROWS */
-  rowsUpdate(rows) { }
+  rowsUpdate(rows) {
+    this.dataTableBodyCellWidth();
+  }
 
   adjustCols(type) {
     if (type === 'new') {

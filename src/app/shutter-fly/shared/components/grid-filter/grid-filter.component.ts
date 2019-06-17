@@ -3,7 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
 @Component({
   selector: 'sb-grid-filter',
   templateUrl: './grid-filter.component.html',
-  styleUrls: ['./grid-filter.component.sass']
+  styleUrls: ['./grid-filter.component.scss']
 })
 export class GridFilterComponent implements OnInit {
   @Input() rows: any;
@@ -26,7 +26,10 @@ export class GridFilterComponent implements OnInit {
     // filter our data
     const temp = this.rows.filter((d) => {
       if (d.itemPartner) {
-        return d.itemPartner.item.itemNo.toLowerCase().indexOf(val) !== -1 || !val;
+        return (d.itemPartner.item.itemNo.toLowerCase().indexOf(val) !== -1 ||
+          d.itemPartner.item.itemType.toLowerCase().indexOf(val) !== -1 ||
+          d.itemPartner.item.itemDescription.toLowerCase().indexOf(val) !== -1
+          || !val);
       }
       return false;
     });
@@ -40,7 +43,6 @@ export class GridFilterComponent implements OnInit {
     this.filterVal = '';
     this.rows = this.origRows;
     this.rowsUpdate.emit(this.origRows);
-
   }
 
 
