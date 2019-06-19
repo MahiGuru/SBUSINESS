@@ -97,6 +97,10 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
 
   /** Pagination Callback */
   paginationCallback(event) {
+    if (this.isNewRowEnabled) {
+      this.adjustCols('new');
+      this.rows[0].childrenHeight = 50;
+    }
     this.dataTableBodyCellWidth();
   }
 
@@ -120,6 +124,7 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
   /*** filter input change output callback */
   filterCallback(rows) {
     this.rows = [...rows];
+    this.adjustCols('cancel');
     this.dataTableBodyCellWidth();
   }
 
@@ -189,6 +194,7 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
 
   /***** OUTPUT CALLBACKS  - NEW ROWS */
   rowsUpdate(rows) {
+    this.adjustCols('cancel');
     this.dataTableBodyCellWidth();
   }
 
@@ -199,14 +205,16 @@ export class InventoryDataGridComponent implements OnInit, OnChanges {
     } else if (type === 'remove') {
       this.rows[0].childrenHeight -= 60;
     } else if (type === 'cancel') {
-      this.rows.splice(0, 1);
-      this.rows = [...this.rows];
-      this.table.rowDetail.toggleExpandRow(this.rows[0]);
-      this.isAddBtnClicked.emit(false);
-      this.isNewRowEnabled = false;
-      this.newRowHeight = 100;
-      this.rows[0].childrenHeight = 50;
-      this.dataTableBodyCellWidth();
+      if (this.rows && this.rows.length >= 2) {
+        this.rows.splice(0, 1);
+        this.rows = [...this.rows];
+        this.table.rowDetail.toggleExpandRow(this.rows[0]);
+        this.isAddBtnClicked.emit(false);
+        this.isNewRowEnabled = false;
+        this.newRowHeight = 100;
+        this.rows[0].childrenHeight = 50;
+        this.dataTableBodyCellWidth();
+      }
     }
     this.setRowDetailHeight(this.rows[0]);
   }

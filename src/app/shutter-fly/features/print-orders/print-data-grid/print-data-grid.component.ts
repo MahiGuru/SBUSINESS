@@ -188,7 +188,7 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
   }
   /***** OUTPUT CALLBACKS  - NEW ROWS */
   rowsUpdate(rows) {
-    this.isNewRowEnabled = false;
+    this.adjustCols('cancel');
     this.getPrintOrders();
   }
   adjustCols(type) {
@@ -198,25 +198,31 @@ export class PrintDataGridComponent implements OnInit, OnChanges {
     } else if (type === 'remove') {
       this.rows[0].childrenHeight -= 60;
     } else if (type === 'cancel') {
-      this.rows.splice(0, 1);
-      this.rows = [...this.rows];
-      this.table.rowDetail.toggleExpandRow(this.rows[0]);
-      this.isAddBtnClicked.emit(false);
-      this.isNewRowEnabled = false;
-      this.newRowHeight = 100;
-      this.rows[0].childrenHeight = 100;
-      this.dataTableBodyCellWidth();
+      if (this.rows && this.rows.length >= 2) {
+        this.rows.splice(0, 1);
+        this.rows = [...this.rows];
+        this.table.rowDetail.toggleExpandRow(this.rows[0]);
+        this.isAddBtnClicked.emit(false);
+        this.isNewRowEnabled = false;
+        this.newRowHeight = 100;
+        this.rows[0].childrenHeight = 100;
+        this.dataTableBodyCellWidth();
+      }
     }
     this.setRowDetailHeight(this.rows[0]);
   }
   /** Pagination Callback */
   paginationCallback(event) {
+    if (this.isNewRowEnabled) {
+      this.rows[0].childrenHeight = 50;
+      this.adjustCols('new');
+    }
     this.dataTableBodyCellWidth();
   }
   /*** filter input change output callback */
   filterCallback(rows) {
     this.rows = [...rows];
-    this.dataTableBodyCellWidth();
+    this.adjustCols('cancel');
   }
   /** Datatable body column width */
   dataTableBodyCellWidth() {

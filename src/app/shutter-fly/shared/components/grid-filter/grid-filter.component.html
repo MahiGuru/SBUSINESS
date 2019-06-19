@@ -1,6 +1,7 @@
 <div class="mtb-8" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
   <mat-form-field fxFlex="30" class="filter-input" [floatLabel]="'never'">
-    <input matInput placeholder="Search Filter By" [(ngModel)]="filterVal" (keydown.enter)="updateFilter(filterVal)">
+    <input matInput placeholder="Search Filter By" [(ngModel)]="filterVal" (input)="updateFilter(filterVal)"
+      (keydown.enter)="updateFilter(filterVal)">
 
     <mat-icon matPrefix class="search-icon">search</mat-icon>
     <button mat-button *ngIf="filterVal" matSuffix mat-icon-button aria-label="Clear" (click)="cleaFilterInput()">

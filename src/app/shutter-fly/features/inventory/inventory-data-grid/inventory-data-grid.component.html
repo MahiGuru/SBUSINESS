@@ -1,4 +1,4 @@
-<sb-grid-filter [rows]="rows" (rowsUpdate)="filterCallback($event)"></sb-grid-filter>
+<sb-grid-filter [rows]="rows" [totalRows]="originalRows" (rowsUpdate)="filterCallback($event)"></sb-grid-filter>
 
 <ngx-datatable #table class='material expandable' [columns]="cols" [columnMode]="'force'" [headerHeight]="50"
   [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows' (page)="paginationCallback($event)">

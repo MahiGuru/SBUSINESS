@@ -81,12 +81,12 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
     this.windowWidth = (window.innerWidth > 1580) ? (window.innerWidth - 200) : window.innerWidth;
   }
   constructor(public sharedOrderService: SharedOrdersService,
-              public commonService: CommonService,
-              public fb: FormBuilder,
-              public cdr: ChangeDetectorRef,
-              public dialog: MatDialog,
-              public releaseService: ReleasesService,
-              private elem: ElementRef) {
+    public commonService: CommonService,
+    public fb: FormBuilder,
+    public cdr: ChangeDetectorRef,
+    public dialog: MatDialog,
+    public releaseService: ReleasesService,
+    private elem: ElementRef) {
     this.getScreenSize();
   }
 

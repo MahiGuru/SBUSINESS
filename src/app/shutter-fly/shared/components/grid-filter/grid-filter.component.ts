@@ -1,12 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'sb-grid-filter',
   templateUrl: './grid-filter.component.html',
   styleUrls: ['./grid-filter.component.scss']
 })
-export class GridFilterComponent implements OnInit {
+export class GridFilterComponent implements OnInit, OnChanges {
   @Input() rows: any;
+  @Input() totalRows: any;
 
   @Output() rowsUpdate: EventEmitter<any> = new EventEmitter();
 
@@ -14,17 +16,19 @@ export class GridFilterComponent implements OnInit {
   filterVal: any;
 
   constructor() { }
+  ngOnChanges(changes: SimpleChanges): void {
 
+
+  }
   ngOnInit() {
+    console.log('this.originalRows', this.totalRows);
   }
 
   updateFilter(filterVal) {
-    console.log(this.rows);
-    this.origRows = this.rows;
     if (filterVal === '') { this.rowsUpdate.emit(this.rows); }
-    const val = filterVal.toLowerCase();
+    const val = filterVal ? filterVal.toLowerCase() : filterVal;
     // filter our data
-    const temp = this.rows.filter((d) => {
+    const temp = this.totalRows.filter((d) => {
       if (d.itemPartner) {
         return (d.itemPartner.item.itemNo.toLowerCase().indexOf(val) !== -1 ||
           d.itemPartner.item.itemType.toLowerCase().indexOf(val) !== -1 ||
@@ -39,10 +43,10 @@ export class GridFilterComponent implements OnInit {
   }
 
   cleaFilterInput() {
-    console.log('clearInput', this.origRows);
+    console.log('clearInput', this.totalRows);
     this.filterVal = '';
-    this.rows = this.origRows;
-    this.rowsUpdate.emit(this.origRows);
+    this.rows = this.totalRows;
+    this.rowsUpdate.emit(this.totalRows);
   }
 
 
