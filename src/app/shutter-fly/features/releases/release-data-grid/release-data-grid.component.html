@@ -52,7 +52,7 @@
         <aside [fxFlex]="(row.isAssemblerChanged) ? '60px': '30px'" fxFlexAlign="center"
           *ngIf="role === 'admin' && !(row.status == 'Released' || row.status == 'PreReleased')">
           <span (click)="addNewBtnClicked(row)"
-            *ngIf="((row.assemblers && row.assemblers.length > 0) && (row.children && row.children.length == 0) && !row.isAssemblerChanged)">
+            *ngIf="(!isNewRowEnabled && (row.assemblers && row.assemblers.length > 0) && (row.children && row.children.length == 0) && !row.isAssemblerChanged)">
             <i class="material-icons green"> add_circle </i>
           </span>
 

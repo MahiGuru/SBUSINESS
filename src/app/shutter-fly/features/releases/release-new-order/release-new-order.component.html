@@ -1,6 +1,6 @@
 <div [ngStyle]="{'width': '100%'}">
   <form [formGroup]="myForm">
-    <div formArrayName="addRows">
+    <div formArrayName="addRows" class="addRows">
       <div class="row-ab-actions">
         <span fxFlex fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
           <i class="material-icons cancel-ic" (click)="cancelNewInventory()">
@@ -61,7 +61,7 @@
                 Please enter Quantity
               </p>
             </span>
-            <div class="new-item" fxFlexAlign="center">
+            <div class="new-item pt-10" fxFlexAlign="center">
               <i class="material-icons red" (click)="removeCurrentRow(i)">
                 remove_circle
               </i>

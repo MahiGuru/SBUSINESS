@@ -334,7 +334,7 @@ export class ReleaseDataGridComponent implements OnInit, OnChanges {
   /** Loop Parent elements and inside children element loop and apply the width */
   setColsFromMultiLevelElements(parent, child) {
     setTimeout(() => {
-      const colWidth = (this.windowWidth - 200 / (this.cols.length));
+      const colWidth = (this.windowWidth / (this.cols.length));
       const childRow = this.elem.nativeElement.querySelectorAll('.' + parent);
       _.each(childRow, (childCell, i) => {
         const tblbodyCell = childCell.querySelectorAll('.' + child);
